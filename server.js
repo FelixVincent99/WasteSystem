@@ -1,5 +1,6 @@
 const express = require('express');
 const url = require('url');
+const path = require('path');
 var app = express();
 var server = require('http').createServer(app);
 var router = express.Router();
@@ -8,6 +9,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use('/api', router);
 const sensor = require('./api/sensor_api');
+
+app.use(express.static(path.join(__dirname, 'views')));
+app.get('/', (req, res) => res.render('index'));
 
 app.route('/send_from_sensor').get((request, res) => {
     var data = url.parse(request.url, true).query;
