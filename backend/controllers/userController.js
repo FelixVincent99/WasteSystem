@@ -12,7 +12,7 @@ const Op = db.Sequelize.Op;
 //@route     /api/users/createUser
 //@access    Private
 const createUser = asyncHandler(async (req, res) => {
-    const {name, email, password, role} = req.body;    
+    const {name, email, password, role} = req.body;
 
     //validation
     if(!name || !email || !password || !role){
@@ -43,7 +43,8 @@ const createUser = asyncHandler(async (req, res) => {
         name: name,
         email: email,
         role: role,
-        password: hashedPassword,        
+        password: hashedPassword,
+        status: '1'
     });
 
     if(user){
@@ -85,7 +86,7 @@ const loginUser = asyncHandler( async (req, res) => {
 // Generate token
 const generateToken = (id) => {
     return jwt.sign({id}, process.env.JWT_SECRET,{
-        expiresIn: '30d'
+        expiresIn: 86400 //24 hours
     })
 }
 

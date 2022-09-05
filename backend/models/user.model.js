@@ -15,6 +15,10 @@ module.exports = (sequelize, Sequelize) => {
         role:{
             type: Sequelize.INTEGER,
             allowNull: false,            
+        },
+        status:{
+            type: Sequelize.INTEGER,
+            allowNull: false,            
         }
     });
     return User;
