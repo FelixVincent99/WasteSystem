@@ -6,10 +6,13 @@ import {ToastContainer} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 import PrivateRoute from './components/PrivateRoute';
-import SideNavbar from './components/SideNavbar';
+import ResponsiveNavbar from './components/ResponsiveNavbar';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import CreateUser from './pages/User/CreateUser';
+
+//area
+import Area from './pages/Area/Area';
 
 function App() {  
 
@@ -17,9 +20,11 @@ function App() {
 
   return (
     <>
-      {user ? <SideNavbar /> : <></>}
+      {/* {user ? <SideNavbar /> : <></>} */}
       <Router>
-        <Routes>          
+        {user ? <ResponsiveNavbar /> : <></>}
+        <Routes>
+          <Route path='/area' element={<PrivateRoute><Area /></PrivateRoute>}></Route>
           <Route path='/login' element={<Login />}></Route>
           <Route path='/' element={<PrivateRoute><Home /></PrivateRoute>}></Route>
           <Route path='/create-user' element={<PrivateRoute><CreateUser /></PrivateRoute>}></Route>
