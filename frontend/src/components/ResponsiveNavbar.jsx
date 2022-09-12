@@ -1,6 +1,5 @@
 import {useState} from 'react';
 import PropTypes from 'prop-types';
-import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
@@ -21,6 +20,7 @@ import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import MapIcon from '@mui/icons-material/Map';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import { AppBar } from '@mui/material';
 
 import {useDispatch} from 'react-redux'
 import {logout, reset} from '../features/auth/authSlice'
@@ -73,9 +73,7 @@ function ResponsiveNavbar(props) {
     ];  
 
     const drawer = (
-        <div>
-        <Toolbar />
-        <Divider />
+        <div>        
         <List>
             {menuList.map((menuItem, index) => (
             <ListItem key={menuItem.name} disablePadding>                
@@ -102,36 +100,11 @@ function ResponsiveNavbar(props) {
 
 
 
-  return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <AppBar
-        position="fixed"
-        sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
-        }}
-      >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
-          >
+  return (      
+      <Box component="nav" sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }} aria-label="mailbox folders">
+        <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={handleDrawerToggle} sx={{ mr: 2, display: { sm: 'none' } }}>
             <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            {moduleName}
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Box
-        component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-        aria-label="mailbox folders"
-      >
+        </IconButton>
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Drawer
           container={container}
@@ -159,7 +132,6 @@ function ResponsiveNavbar(props) {
           {drawer}
         </Drawer>
       </Box>
-    </Box>
   );
 }
 
