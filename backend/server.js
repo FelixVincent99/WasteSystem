@@ -18,7 +18,7 @@ db.sequelize.sync({ force: true }).then(() => {
 });
 
 var corsOptions = {
-    origin: "http://localhost:8081"
+    origin: "http://localhost:8001"
 };
 
 const PORT  = process.env.PORT || 8000;
@@ -26,7 +26,7 @@ const PORT  = process.env.PORT || 8000;
 app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(errorHandler);
+
 
 app.get("/", (req, res) => {
     res.status(200).json({ message: "Testing for waste management system." });
@@ -37,4 +37,5 @@ app.use('/api/areas', require('./routes/areaRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/iotDevices', require('./routes/iotDevicesRoutes'));
 
+app.use(errorHandler);
 app.listen(PORT, () => console.log(`Server is running on port ${ PORT }`))
