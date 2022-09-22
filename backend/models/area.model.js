@@ -7,8 +7,7 @@ module.exports = (sequelize, Sequelize) => {
         },
         status: {
             type: Sequelize.INTEGER,
-            allowNull: false,
-            unique: true
+            allowNull: false
         },
     });
     return Area;
