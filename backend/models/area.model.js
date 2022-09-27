@@ -1,15 +1,12 @@
-module.exports = (sequelize, Sequelize) => {
+module.exports = (sequelize, DataTypes) => {
     const Area = sequelize.define("Area", {
         areaCode: {
-            type: Sequelize.STRING,
-            allowNull: false,
-            unique: true
+            type: DataTypes.TEXT,
+            allowNull: false
         },
         status: {
-            type: Sequelize.INTEGER,
-            allowNull: false,
-            unique: true
-        },
+            type: DataTypes.INTEGER
+        }
     });
     return Area;
 };

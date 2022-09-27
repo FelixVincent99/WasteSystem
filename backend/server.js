@@ -10,7 +10,7 @@ var app = express();
 const db = require("./models");
 const initialDBSetup = require("./models/dummyData");
 db.sequelize.sync().then(() => {
-// db.sequelize.sync({ force: true }).then(() => {
+    // db.sequelize.sync({ force: true }).then(() => {
     // initialDBSetup();
     console.log("Synced DB");
 }).catch((err) => {
@@ -21,7 +21,7 @@ var corsOptions = {
     origin: "http://localhost:8001"
 };
 
-const PORT  = process.env.PORT || 8000;
+const PORT = process.env.PORT || 8000;
 
 app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: true }));
@@ -36,6 +36,8 @@ app.get("/", (req, res) => {
 app.use('/api/areas', require('./routes/areaRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/iotDevices', require('./routes/iotDevicesRoutes'));
+app.use('/api/trucks', require('./routes/truckRoutes'));
+app.use('/api/manpowers', require('./routes/manpowerRoutes'));
 
 app.use(errorHandler);
 app.listen(PORT, () => console.log(`Server is running on port ${ PORT }`))
