@@ -11,7 +11,7 @@ const db = require("./models");
 const initialDBSetup = require("./models/dummyData");
 db.sequelize.sync().then(() => {
 // db.sequelize.sync({ force: true }).then(() => {
-    initialDBSetup();
+    // initialDBSetup();
     console.log("Synced DB");
 }).catch((err) => {
     console.log("Failed to sync db: " + err.message);

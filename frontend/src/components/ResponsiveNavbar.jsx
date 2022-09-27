@@ -48,22 +48,22 @@ function ResponsiveNavbar(props) {
         {
             name: 'Area',
             icon: <LocationOnIcon/>,
-            link: 'area'
+            link: 'arealist'
         },
         {
             name: 'Manpower',
             icon: <EngineeringIcon/>,
-            link: 'manpower'
+            link: 'manpowerlist'
         },
         {
             name: 'Truck',
             icon: <LocalShippingIcon/>,
-            link: 'truck'
+            link: 'trucklist'
         },
         {
             name: 'Scheduling',
             icon: <CalendarMonthIcon/>,
-            link: 'scheduling'
+            link: 'schedulinglist'
         },
         {
             name: 'Map',
@@ -73,7 +73,9 @@ function ResponsiveNavbar(props) {
     ];  
 
     const drawer = (
-        <div>        
+        <div>      
+        <Toolbar />
+        <Divider />
         <List>
             {menuList.map((menuItem, index) => (
             <ListItem key={menuItem.name} disablePadding>                
@@ -100,11 +102,20 @@ function ResponsiveNavbar(props) {
 
 
 
-  return (      
-      <Box component="nav" sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }} aria-label="mailbox folders">
-        <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={handleDrawerToggle} sx={{ mr: 2, display: { sm: 'none' } }}>
+  return (
+    <>
+      <CssBaseline />
+      <AppBar position="fixed" sx={{width: { sm: `calc(100% - ${drawerWidth}px)` }, ml: { sm: `${drawerWidth}px` },}}>
+        <Toolbar>
+          <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={handleDrawerToggle} sx={{ mr: 2, display: { sm: 'none' } }}>
             <MenuIcon />
-        </IconButton>
+          </IconButton>
+          <Typography variant="h6" noWrap component="div">
+            {moduleName}
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Box component="nav" sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }} aria-label="mailbox folders">
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Drawer
           container={container}
@@ -132,6 +143,7 @@ function ResponsiveNavbar(props) {
           {drawer}
         </Drawer>
       </Box>
+    </>
   );
 }
 

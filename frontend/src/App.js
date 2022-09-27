@@ -13,8 +13,9 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import CreateUser from './pages/User/CreateUser';
 
-//area
+//module
 import Area from './pages/Area/Area';
+import TruckList from './pages/Truck/TruckList';
 
 function App() {  
 
@@ -27,8 +28,10 @@ function App() {
       <Router>
         {user ? <ResponsiveNavbar /> : <></>}
         <Box component="main" sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}>
+        <Toolbar />
         <Routes>
-          <Route path='/area' element={<PrivateRoute><Area /></PrivateRoute>}></Route>
+          <Route path='/arealist' element={<PrivateRoute><Area /></PrivateRoute>}></Route>
+          <Route path='/trucklist' element={<PrivateRoute><TruckList /></PrivateRoute>}></Route>
           <Route path='/login' element={<Login />}></Route>
           <Route path='/' element={<PrivateRoute><Home /></PrivateRoute>}></Route>
           <Route path='/create-user' element={<PrivateRoute><CreateUser /></PrivateRoute>}></Route>
