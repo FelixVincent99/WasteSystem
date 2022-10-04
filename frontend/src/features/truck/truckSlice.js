@@ -1,7 +1,13 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
 import truckService from './truckService'
 
-const initialState = [];
+const initialState = {
+    isError: false,
+    isSuccess: false,
+    isLoading: false,
+    message: '',
+    truck: []
+};
 
 export const createTruck = createAsyncThunk(
     'trucks/create',
@@ -52,10 +58,29 @@ export const getTruck = createAsyncThunk(
 const truckSlice = createSlice({
     name: 'truck',
     initialState,
+    reducers: {
+        reset: (state)=>{
+            state.isLoading = false;
+            state.isError = false;
+            state.isSuccess = false;
+            state.message = '';
+        }           
+    },
     extraReducers: (builder)=>{
         builder
+        .addCase(createTruck.pending, (state)=>{
+            state.isLoading = true
+        })
         .addCase(createTruck.fulfilled, (state, action)=>{
-            state.push(action.payload)
+            state.isLoading = false
+            state.isSuccess = true
+            state.truck.push(action.payload)
+        })
+        .addCase(createTruck.rejected, (state, action)=>{
+            state.isLoading = false
+            state.isError = true
+            state.message = action.payload
+            state.truck = []
         })
         .addCase(getAllTrucks.fulfilled, (state, action)=>{
             return [...action.payload]
@@ -73,5 +98,5 @@ const truckSlice = createSlice({
     }
 })
 
-const { reducer } = truckSlice
-export default reducer
+export const {reset} = truckSlice.actions
+export default truckSlice.reducer
