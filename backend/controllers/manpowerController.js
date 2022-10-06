@@ -44,7 +44,7 @@ const updateManpower = asyncHandler(async(req, res) => {
 
     let id = req.params.id;
     const manpower = await Manpower.update(req.body, { where: { id: id } });
-    res.status(200).send(manpower);
+    res.status(204).send(manpower);
 });
 
 

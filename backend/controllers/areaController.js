@@ -79,7 +79,7 @@ const updateArea = asyncHandler(async(req, res) => {
     }
 
     const area = await Area.update(req.body, { where: { id: id } });
-    res.status(200).send(area);
+    res.status(204).send(area);
 });
 
 module.exports = {

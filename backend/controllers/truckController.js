@@ -77,7 +77,7 @@ const updateTruck = asyncHandler(async(req, res) => {
     }
 
     const truck = await Truck.update(req.body, { where: { id: id } });
-    res.status(200).send(truck);
+    res.status(204).send(truck);
 });
 
 module.exports = {
