@@ -6,7 +6,7 @@ const initialState = {
     isSuccess: false,
     isLoading: false,
     message: '',
-    truck: []
+    trucks: []
 };
 
 export const createTruck = createAsyncThunk(
@@ -25,7 +25,13 @@ export const createTruck = createAsyncThunk(
 export const getAllTrucks = createAsyncThunk(
     'trucks/getAll',
     async ()=>{
-        return await truckService.getAll()
+        const truckList = await truckService.getAll()
+        const proccessedTruckList = truckList.map(truckItem => {
+            truckItem.statusType = truckItem.status === 1? 'Active': truckItem.status === 2? 'Temporarily Unavailable': truckItem.status === 3? 'Inactive': 'Error'
+            truckItem.truckTypeName = truckItem.truckType === 1? 'Compactor Truck': truckItem.truckType === 2? 'RoRo Truck': truckItem.truckType === 3? 'Prime Mover': 'Error'
+            return truckItem
+        })
+        return proccessedTruckList
     }
 )
 
@@ -74,16 +80,25 @@ const truckSlice = createSlice({
         .addCase(createTruck.fulfilled, (state, action)=>{
             state.isLoading = false
             state.isSuccess = true
-            state.truck.push(action.payload)
+            state.trucks.push(action.payload)
         })
         .addCase(createTruck.rejected, (state, action)=>{
             state.isLoading = false
             state.isError = true
-            state.message = action.payload
-            state.truck = []
+            state.message = action.payload            
+        })
+        .addCase(getAllTrucks.pending, (state)=>{
+            state.isLoading = true
         })
         .addCase(getAllTrucks.fulfilled, (state, action)=>{
-            return [...action.payload]
+            state.isLoading = false
+            state.trucks = action.payload
+        })
+        .addCase(getAllTrucks.rejected, (state, action)=>{
+            state.isLoading = false
+            state.isError = true
+            state.message = action.payload
+            state.trucks = []
         })
         .addCase(updateTruck.fulfilled, (state, action)=>{
             const index = state.findIndex(truck => truck.id === action.payload.id)
