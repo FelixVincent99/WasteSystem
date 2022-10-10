@@ -40,6 +40,7 @@ function AddTruck() {
             toast.error(message)
         }
         if(isSuccess){
+            toast.success("Truck has been created")
             navigate('/trucklist')
         }
 

@@ -6,7 +6,8 @@ const initialState = {
     isSuccess: false,
     isLoading: false,
     message: '',
-    trucks: []
+    trucks: [],
+    currentTruck: {}
 };
 
 export const createTruck = createAsyncThunk(
@@ -100,15 +101,30 @@ const truckSlice = createSlice({
             state.message = action.payload
             state.trucks = []
         })
-        .addCase(updateTruck.fulfilled, (state, action)=>{
-            const index = state.findIndex(truck => truck.id === action.payload.id)
-            state[index] = {
-                ...state[index],
-                ...action.payload,
-            }
+        .addCase(getTruck.pending, (state)=>{
+            state.isLoading = true
         })
-        .addCase(getTruck.fulfilled, (state,action)=>{
-            return [...action.payload]
+        .addCase(getTruck.fulfilled, (state, action)=>{
+            state.isLoading = false
+            state.currentTruck = action.payload
+        })
+        .addCase(getTruck.rejected, (state, action)=>{
+            state.isLoading = false
+            state.isError = true
+            state.message = action.payload
+            state.currentTruck = {}
+        })
+        .addCase(updateTruck.pending, (state, action)=>{
+            state.isLoading = true
+        })
+        .addCase(updateTruck.fulfilled, (state, action)=>{
+            state.isLoading = false
+            state.isSuccess = true                        
+        })
+        .addCase(updateTruck.rejected, (state, action)=>{
+            state.isLoading = false
+            state.isError = true            
+            state.message = action.payload
         })
     }
 })

@@ -17,6 +17,7 @@ import CreateUser from './pages/User/CreateUser';
 import Area from './pages/Area/Area';
 import TruckList from './pages/Truck/TruckList';
 import AddTruck from './pages/Truck/AddTruck';
+import Truck from './pages/Truck/Truck';
 
 function App() {  
 
@@ -34,6 +35,7 @@ function App() {
           <Route path='/arealist' element={<PrivateRoute><Area /></PrivateRoute>}></Route>
           <Route path='/trucklist' element={<PrivateRoute><TruckList /></PrivateRoute>}></Route>
           <Route path='/addtruck' element={<PrivateRoute><AddTruck /></PrivateRoute>}></Route>
+          <Route path='/truck/:id' element={<PrivateRoute><Truck /></PrivateRoute>}></Route>
           <Route path='/login' element={<Login />}></Route>
           <Route path='/' element={<PrivateRoute><Home /></PrivateRoute>}></Route>
           <Route path='/create-user' element={<PrivateRoute><CreateUser /></PrivateRoute>}></Route>

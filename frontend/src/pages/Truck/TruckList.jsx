@@ -1,8 +1,8 @@
-import React, {useState, useEffect, useCallback} from 'react'
-import {useDispatch, useSelector} from 'react-redux'
-import { getAllTrucks, reset} from '../../features/truck/truckSlice'
-import { Link } from 'react-router-dom'
-import { DataGrid, GridToolbar } from '@mui/x-data-grid'
+import React, { useEffect, useCallback } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { getAllTrucks} from '../../features/truck/truckSlice'
+import { useNavigate } from 'react-router-dom'
+import { DataGrid } from '@mui/x-data-grid'
 
 
 
@@ -20,6 +20,8 @@ function TruckList() {
   useEffect(()=>{
     initFetch()
   },[initFetch])
+
+  let navigate = useNavigate();
 
   const rows = trucks
   const columns = [
@@ -75,7 +77,8 @@ function TruckList() {
   ]
 
   const handleRowClick = (params) => {
-    console.log(params)
+    const path="/truck/" + params.id
+    navigate(path);
   }
 
 

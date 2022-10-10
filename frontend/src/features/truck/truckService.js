@@ -8,7 +8,7 @@ const getAll = async () => {
 };
 
 const get = async (id) => {
-    const response = await http.get(API_URL + `${id}`)
+    const response = await http.get(API_URL + `/${id}`)
     return response.data
   
 };
@@ -20,8 +20,8 @@ const create = async (data) => {
     return response.data  
 };
 
-const update = async (id, data) => {
-    const response = await http.put(API_URL + `${id}`, data.truckData)
+const update = async (data) => {
+    const response = await http.put(API_URL + `/${data.truckData.id}`, data.truckData)
     return response.data
 };
 
