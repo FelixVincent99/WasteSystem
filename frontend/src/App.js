@@ -5,6 +5,7 @@ import {useSelector} from 'react-redux'
 import {ToastContainer} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { Box } from '@mui/system';
+// eslint-disable-next-line
 import { Toolbar } from '@mui/material';
 
 import PrivateRoute from './components/PrivateRoute';
