@@ -2,7 +2,7 @@ import React, { useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllTrucks} from '../../features/truck/truckSlice'
 import { useNavigate } from 'react-router-dom'
-import { DataGrid } from '@mui/x-data-grid'
+import { DataGrid, GridToolbar } from '@mui/x-data-grid'
 
 
 
@@ -90,6 +90,7 @@ function TruckList() {
           rows={rows} 
           columns={columns}
           onRowClick={handleRowClick}
+          components={{ Toolbar: GridToolbar }}
         />
         </div>
       </div>
