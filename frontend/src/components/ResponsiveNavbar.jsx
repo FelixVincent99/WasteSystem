@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
+// eslint-disable-next-line
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
@@ -12,7 +13,9 @@ import ListItemLink from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
+// eslint-disable-next-line
 import Toolbar from '@mui/material/Toolbar';
+// eslint-disable-next-line
 import Typography from '@mui/material/Typography';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import EngineeringIcon from '@mui/icons-material/Engineering';
@@ -20,6 +23,7 @@ import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import MapIcon from '@mui/icons-material/Map';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+// eslint-disable-next-line
 import { AppBar } from '@mui/material';
 
 import {useDispatch} from 'react-redux'
@@ -30,6 +34,7 @@ const drawerWidth = 240;
 function ResponsiveNavbar(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
+  // eslint-disable-next-line
   const [moduleName, setModuleName] = useState("")
 
   const handleDrawerToggle = () => {
