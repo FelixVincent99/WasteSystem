@@ -3,10 +3,11 @@ const Area = db.areas;
 const Op = db.Sequelize.Op;
 const asyncHandler = require('express-async-handler');
 
+// 1. add area
+
 const addArea = asyncHandler(async(req, res) => {
     const { areaCode } = req.body;
 
-    console.log(req.body);
     if (!areaCode) {
         res.status(400);
         throw new Error('Area Code cannot be empty');
@@ -19,14 +20,14 @@ const addArea = asyncHandler(async(req, res) => {
         throw new Error('Area Code already exists');
     }
 
-    const area = {
-        areaCode: areaCode,
+    let data = {
+        areaCode: req.body.areaCode,
         status: 1
     }
 
-    const addArea = await Area.create(area);
+    const area = await Area.create(data);
 
-    if (addArea) {
+    if (area) {
         res.status(201).send(area);
     } else {
         res.status(400);
@@ -38,7 +39,7 @@ const addArea = asyncHandler(async(req, res) => {
 
 const getAllAreas = asyncHandler(async(req, res) => {
 
-    let areas = await Area.findAll({});
+    let areas = await Area.findAll({ where: { status: 1 } });
     res.status(200).send(areas);
 });
 
@@ -47,7 +48,7 @@ const getAllAreas = asyncHandler(async(req, res) => {
 const getOneArea = asyncHandler(async(req, res) => {
 
     let id = req.params.id;
-    let area = await Area.findOne({ where: { id: id } });
+    let area = await Area.findOne({ where: { id: id, status: 1 } });
     res.status(200).send(area);
 });
 
@@ -56,23 +57,34 @@ const getOneArea = asyncHandler(async(req, res) => {
 const updateArea = asyncHandler(async(req, res) => {
 
     let id = req.params.id;
+
+    let areaCode = req.body.areaCode.toUpperCase();
+    if (!areaCode) {
+        res.status(400);
+        throw new Error('Area Code cannot be empty');
+    }
+
+    const areaExists = await Truck.findOne({
+        where: {
+            areaCode: areaCode,
+            id: {
+                [Op.not]: id
+            }
+        }
+    });
+
+    if (areaExists) {
+        res.status(400);
+        throw new Error('Area Code already exists');
+    }
+
     const area = await Area.update(req.body, { where: { id: id } });
-    res.status(200).send(area);
-});
-
-// 4. delete area
-
-const deleteArea = asyncHandler(async(req, res) => {
-
-    let id = req.params.id;
-    await Area.update({ status: 0 }, { where: { id: id } });
-    res.status(200).send('Area is deleted !');
+    res.status(204).send(area);
 });
 
 module.exports = {
     addArea,
     getAllAreas,
     getOneArea,
-    updateArea,
-    deleteArea
+    updateArea
 }

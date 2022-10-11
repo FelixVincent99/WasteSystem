@@ -14,10 +14,10 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER
         },
         averageFuelConsumption: {
-            type: Sequelize.INTEGER
+            type: Sequelize.FLOAT
         },
         milage: {
-            type: Sequelize.INTEGER
+            type: Sequelize.FLOAT
         },
         status: {
             type: Sequelize.INTEGER

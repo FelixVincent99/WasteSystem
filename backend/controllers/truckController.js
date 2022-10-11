@@ -8,13 +8,25 @@ const asyncHandler = require('express-async-handler');
 const addTruck = asyncHandler(async(req, res) => {
 
     let data = {
-        truckNo: req.body.truckNo,
+        truckNo: req.body.truckNo.toUpperCase(),
         operationStartDate: req.body.operationStartDate,
         operationEndDate: req.body.operationEndDate,
         truckType: req.body.truckType,
         averageFuelConsumption: req.body.averageFuelConsumption,
         milage: req.body.milage,
         status: req.body.status
+    }
+
+    if (!data.truckNo) {
+        res.status(400);
+        throw new Error('Truck No cannot be empty');
+    }
+
+    const truckExists = await Truck.findOne({ where: { truckNo: data.truckNo } });
+
+    if (truckExists) {
+        res.status(400);
+        throw new Error('Truck No already exists');
     }
 
     const truck = await Truck.create(data);
@@ -25,7 +37,7 @@ const addTruck = asyncHandler(async(req, res) => {
 
 const getAllTrucks = asyncHandler(async(req, res) => {
 
-    let trucks = await Truck.findAll({});
+    let trucks = await Truck.findAll({ where: { status: 1 } });
     res.status(200).send(trucks);
 });
 
@@ -43,24 +55,34 @@ const getOneTruck = asyncHandler(async(req, res) => {
 const updateTruck = asyncHandler(async(req, res) => {
 
     let id = req.params.id;
+
+    let truckNo = req.body.truckNo.toUpperCase();
+    if (!truckNo) {
+        res.status(400);
+        throw new Error('Truck No cannot be empty');
+    }
+
+    const truckExists = await Truck.findOne({
+        where: {
+            truckNo: truckNo,
+            id: {
+                [Op.not]: id
+            }
+        }
+    });
+
+    if (truckExists) {
+        res.status(400);
+        throw new Error('Truck No already exists');
+    }
+
     const truck = await Truck.update(req.body, { where: { id: id } });
-    res.status(200).send(truck);
+    res.status(204).send(truck);
 });
-
-// 4. delete truck
-
-const deleteTruck = asyncHandler(async(req, res) => {
-
-    let id = req.params.id;
-    await Truck.update({ status: 0 }, { where: { id: id } });
-    res.status(200).send('Truck is deleted !');
-});
-
 
 module.exports = {
     addTruck,
     getAllTrucks,
     getOneTruck,
-    updateTruck,
-    deleteTruck
+    updateTruck
 }

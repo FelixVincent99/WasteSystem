@@ -25,7 +25,7 @@ const addManpower = asyncHandler(async(req, res) => {
 
 const getAllManpowers = asyncHandler(async(req, res) => {
 
-    let manpowers = await Manpower.findAll({});
+    let manpowers = await Manpower.findAll({ where: { status: 1 } });
     res.status(200).send(manpowers);
 });
 
@@ -34,7 +34,7 @@ const getAllManpowers = asyncHandler(async(req, res) => {
 const getOneManpower = asyncHandler(async(req, res) => {
 
     let id = req.params.id;
-    let manpower = await Manpower.findOne({ where: { id: id } });
+    let manpower = await Manpower.findOne({ where: { id: id, status: 1 } });
     res.status(200).send(manpower);
 });
 
@@ -44,16 +44,7 @@ const updateManpower = asyncHandler(async(req, res) => {
 
     let id = req.params.id;
     const manpower = await Manpower.update(req.body, { where: { id: id } });
-    res.status(200).send(manpower);
-});
-
-// 4. delete manpower
-
-const deleteManpower = asyncHandler(async(req, res) => {
-
-    let id = req.params.id;
-    await Manpower.update({ status: 0 }, { where: { id: id } });
-    res.status(200).send('Manpower is deleted !');
+    res.status(204).send(manpower);
 });
 
 
@@ -61,6 +52,5 @@ module.exports = {
     addManpower,
     getAllManpowers,
     getOneManpower,
-    updateManpower,
-    deleteManpower
+    updateManpower
 }
