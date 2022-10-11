@@ -18,7 +18,7 @@ const initialDBSetup = require("./models/dummyData");
 });
 
 var corsOptions = {
-    origin: "http://localhost:3306"
+    origin: "http://localhost:80"
 };
 
 const PORT = process.env.PORT || 8000;
