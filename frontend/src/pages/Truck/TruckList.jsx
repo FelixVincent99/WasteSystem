@@ -63,13 +63,13 @@ function TruckList() {
       flex: 0.5
     },
     {
-      field: 'operationStartDate',
+      field: 'operationStartDateFormatted',
       headerName: 'Operation Start Date',
       minWidth:150,
       flex: 1
     },
     {
-      field: 'operationEndDate',
+      field: 'operationEndDateFormatted',
       headerName: 'Operation End Date',
       minWidth:150,
       flex: 1
@@ -93,7 +93,7 @@ function TruckList() {
       flex: 0.5
     },
     {
-      field: 'updatedAt',
+      field: 'updatedAtFormatted',
       headerName: 'Latest Update',
       minWidth:150,
       flex: 1
