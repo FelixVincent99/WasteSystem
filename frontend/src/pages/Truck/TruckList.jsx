@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getAllTrucks} from '../../features/truck/truckSlice'
 import { useNavigate } from 'react-router-dom'
 import { DataGrid, GridToolbar } from '@mui/x-data-grid'
+import { Button } from '@mui/material'
 
 
 
@@ -83,18 +84,21 @@ function TruckList() {
 
 
   return (
-    <div style={{ height: 400, width: '100%' }}>
-      <div style={{ display: 'flex', height: '100%' }}>
-        <div style={{ flexGrow: 1 }}>
-        <DataGrid 
-          rows={rows} 
-          columns={columns}
-          onRowClick={handleRowClick}
-          components={{ Toolbar: GridToolbar }}
-        />
+    <>
+      <Button sx={{ my:2 }} href="/addTruck" variant="contained">Add Truck</Button>  
+      <div style={{ height: 400, width: '100%' }}>
+        <div style={{ display: 'flex', height: '100%' }}>
+          <div style={{ flexGrow: 1 }}>
+          <DataGrid 
+            rows={rows} 
+            columns={columns}
+            onRowClick={handleRowClick}
+            components={{ Toolbar: GridToolbar }}
+          />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 
