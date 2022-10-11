@@ -24,6 +24,29 @@ function TruckList() {
 
   let navigate = useNavigate();
 
+  const renderDetailsButton = (params) => {
+    return (
+        <strong>
+            <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                style={{ marginLeft: 16 }}
+                onClick={() => {
+                  handleEditClick(params)
+                }}
+            >
+                Edit
+            </Button>
+        </strong>
+    )
+  }
+
+  const handleEditClick = (params) => {
+    const path="/truck/" + params.id
+    navigate(path);
+  }  
+
   const rows = trucks
   const columns = [
     {
@@ -75,12 +98,15 @@ function TruckList() {
       minWidth:150,
       flex: 1
     },
+    {
+      field: 'action',
+      headerName: 'Action',
+      minWidth: 150,
+      flex: 1,
+      renderCell: renderDetailsButton,
+      disableClickEventBubbling: true,
+    },
   ]
-
-  const handleRowClick = (params) => {
-    const path="/truck/" + params.id
-    navigate(path);
-  }
 
 
   return (
@@ -92,7 +118,6 @@ function TruckList() {
           <DataGrid 
             rows={rows} 
             columns={columns}
-            onRowClick={handleRowClick}
             components={{ Toolbar: GridToolbar }}
           />
           </div>
