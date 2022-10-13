@@ -10,7 +10,7 @@ var app = express();
 const db = require("./models");
 const initialDBSetup = require("./models/dummyData");
 // db.sequelize.sync().then(() => {
-    db.sequelize.sync({ force: true }).then(() => {
+db.sequelize.sync({ force: true }).then(() => {
     initialDBSetup();
     console.log("Synced DB");
 }).catch((err) => {
@@ -35,7 +35,7 @@ app.get("/", (req, res) => {
 //all routes
 app.use('/api/areas', require('./routes/areaRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
-app.use('/api/iotDevices', require('./routes/iotDevicesRoutes'));
+app.use('/api/iot', require('./routes/iotDevicesRoutes'));
 app.use('/api/trucks', require('./routes/truckRoutes'));
 app.use('/api/manpowers', require('./routes/manpowerRoutes'));
 
