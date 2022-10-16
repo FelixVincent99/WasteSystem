@@ -18,7 +18,7 @@ db.sequelize.sync({ force: true }).then(() => {
 });
 
 var corsOptions = {
-    origin: "http://219.93.5.3:80"
+    origin: "http://219.93.5.3"
 };
 
 const PORT = process.env.PORT || 8000;
