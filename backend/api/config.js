@@ -1,8 +1,8 @@
 const mysql = require('mysql');
 var config = mysql.createConnection({
     host: "localhost",
-    user: "felix",
-    password: "August@2022",
+    user: "root",
+    password: "",
     database: "dbtssmartsystem"
 });
 
