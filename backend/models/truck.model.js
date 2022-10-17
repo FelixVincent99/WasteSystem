@@ -1,26 +1,27 @@
-module.exports = (sequelize, Sequelize) => {
+module.exports = (sequelize, DataTypes) => {
     const Truck = sequelize.define("Truck", {
         truckNo: {
-            type: Sequelize.STRING,
+            type: DataTypes.STRING,
             allowNull: false,
         },
         operationStartDate: {
-            type: Sequelize.DATE
+            type: DataTypes.DATE
         },
         operationEndDate: {
-            type: Sequelize.DATE
+            type: DataTypes.DATE
         },
         truckType: {
-            type: Sequelize.INTEGER
+            type: DataTypes.INTEGER
         },
         averageFuelConsumption: {
-            type: Sequelize.FLOAT
+            type: DataTypes.FLOAT
         },
         milage: {
-            type: Sequelize.FLOAT
+            type: DataTypes.FLOAT
         },
         status: {
-            type: Sequelize.INTEGER
+            type: DataTypes.INTEGER,
+            allowNull: false
         }
     });
     return Truck;

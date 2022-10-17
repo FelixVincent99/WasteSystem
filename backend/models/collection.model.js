@@ -1,16 +1,16 @@
-module.exports = (sequelize, Sequelize) => {
+module.exports = (sequelize, DataTypes) => {
     const Collection = sequelize.define("Collection", {
         routeID: {
-            type: Sequelize.INTEGER,
+            type: DataTypes.INTEGER,
         },
         weight: {
-            type: Sequelize.INTEGER,
+            type: DataTypes.FLOAT,
         },
         lat: {
-            type: Sequelize.STRING,
+            type: DataTypes.STRING,
         },
         lng: {
-            type: Sequelize.STRING,
+            type: DataTypes.STRING,
         },
     });
     return Collection;
