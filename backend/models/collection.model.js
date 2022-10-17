@@ -4,7 +4,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER,
         },
         weight: {
-            type: Sequelize.INTEGER,
+            type: Sequelize.FLOAT,
         },
         lat: {
             type: Sequelize.STRING,

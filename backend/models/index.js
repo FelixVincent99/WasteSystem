@@ -30,8 +30,14 @@ db.users.belongsToMany(db.roles, {
 });
 db.ROLES = ["admin", "manager", "supervisor"];
 
-db.areas = require("./area.model.js")(sequelize, Sequelize);
-db.collections = require("./collection.model.js")(sequelize, Sequelize);
 db.trucks = require("./truck.model.js")(sequelize, Sequelize);
+db.areas = require("./area.model.js")(sequelize, Sequelize);
+db.stops = require("./stop.model.js")(sequelize, Sequelize);
 db.manpowers = require("./manpower.model.js")(sequelize, Sequelize);
+db.schedules = require("./schedule.model.js")(sequelize, Sequelize);
+db.routes = require("./route.model.js")(sequelize, Sequelize);
+db.collections = require("./collection.model.js")(sequelize, Sequelize);
+db.bins = require("./bin.model.js")(sequelize, Sequelize);
+db.bincollections = require("./bincollection.model.js")(sequelize, Sequelize);
+
 module.exports = db;

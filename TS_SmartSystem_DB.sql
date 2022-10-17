@@ -2,8 +2,8 @@ DROP DATABASE IF EXISTS dbtssmartsystem;
 CREATE DATABASE dbtssmartsystem;
 USE dbtssmartsystem;
 
-CREATE TABLE tbltruck(
-    truckID INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE trucks(
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     truckNo VARCHAR(10) NOT NULL,
     operationStartDate DATETIME NOT NULL,
     operationEndDate DATETIME NULL,
@@ -11,32 +11,32 @@ CREATE TABLE tbltruck(
     averageFuelConsumption INT(6) NULL,
     milage INT(6) NULL,    
     status INT(1) NOT NULL,
-    createdDateTime DATETIME NOT NULL,
-    PRIMARY KEY (truckID)
+    createdAt DATETIME NOT NULL,
+    updatedAt DATETIME NOT NULL
 );
 
-CREATE TABLE tblarea(
-    areaID INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE areas(
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     areaCode VARCHAR(16) NOT NULL,
     status INT(1) NOT NULL,
-    createdDateTime DATETIME NOT NULL,
-    PRIMARY KEY (areaID)
+    createdAt DATETIME NOT NULL,
+    updatedAt DATETIME NOT NULL
 );
 
-CREATE TABLE tbllorong(
-    lorongID INT NOT NULL AUTO_INCREMENT,
-    lorongName TEXT NOT NULL,
-    areaID INT NOT NULL,
-    numberOfBins INT(5) NULL,
-    averageWeight INT(6) NULL,
-    averageFuelConsumption INT(6) NULL,
+CREATE TABLE stops(
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    stopName VARCHAR(255) NOT NULL,
+    areaId INT NOT NULL,
+    binAmount INT NULL,
+    averageWeight FLOAT NULL,
+    averageFuelConsumption FLOAT NULL,
     status INT(1) NOT NULL,
-    createdDateTime DATETIME NOT NULL,
-    PRIMARY KEY (lorongID)
+    createdAt DATETIME NOT NULL,
+    updatedAt DATETIME NOT NULL
 );
 
-CREATE TABLE tblmanpower(
-    mpID INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE manpowers(
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     mpName TEXT NOT NULL,
     mpAge INT(2) NOT NULL,
     role INT(1) NOT NULL,
@@ -44,61 +44,82 @@ CREATE TABLE tblmanpower(
     operationStartDate DATETIME NOT NULL,
     operationEndDate DATETIME NULL,
     status INT(1) NOT NULL,
-    createdDateTime DATETIME NOT NULL,
-    PRIMARY KEY (mpID)
+    createdAt DATETIME NOT NULL,
+    updatedAt DATETIME NOT NULL
 );
 
-CREATE TABLE tblschedule(
-    scheduleID INT NOT NULL AUTO_INCREMENT,    
+CREATE TABLE schedules(
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,    
     scheduleDate DATE NOT NULL,
     startDateTime DATETIME NOT NULL,
     endDateTime DATETIME NOT NULL,
-    areaID INT NOT NULL,
-    truckID INT NOT NULL,
-    driverID INT NOT NULL,
-    loaderID INT NOT NULL,
-    weightFromSensor INT(6) NULL,
-    actualWeight INT(6) NULL,
-    fuelConsumption INT(6) NULL,
-    totalMilage INT(6) NULL,
+    areaId INT NOT NULL,
+    truckId INT NOT NULL,
+    driverId INT NOT NULL,
+    loaderId INT NOT NULL,
+    weightFromSensor FLOAT NULL,
+    actualWeight FLOAT NULL,
+    fuelConsumption FLOAT NULL,
+    totalMilage FLOAT NULL,
     status INT(1) NOT NULL,
-    createdDateTime DATETIME NOT NULL,
-    PRIMARY KEY (scheduleID)
+    createdAt DATETIME NOT NULL,
+    updatedAt DATETIME NOT NULL
 );
 
 CREATE TABLE tblroute(
-    routeID INT NOT NULL AUTO_INCREMENT,
-    scheduleID INT NOT NULL,
-    lorongID INT NOT NULL,    
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    scheduleId INT NOT NULL,
+    stopId INT NOT NULL,    
     status INT(1) NOT NULL,
-    createdDateTime DATETIME NOT NULL,
-    PRIMARY KEY (routeID)
+    createdAt DATETIME NOT NULL,
+    updatedAt DATETIME NOT NULL
 );
 
-CREATE TABLE tblcollection(
-    collectionID INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE collections( --single
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     routeID INT,
     weight INT(6),
     lat TEXT,
     lng TEXT,
-    collectionTime DATETIME,
-    PRIMARY KEY (collectionID)
+    createdAt DATETIME NOT NULL,
+    updatedAt DATETIME NOT NULL
 );
 
-CREATE TABLE tblbincollection(
-    binCollectionID INT NOT NULL AUTO_INCREMENT,
-    collectionID INT NOT NULL,
-    binID INT NOT NULL,
-    weight INT(6) NOT NULL,
+CREATE TABLE bins( --single
+    binID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    stopId INT NOT NULL,
+    binType INT(1) NOT NULL,
+    binCapacity FLOAT NOT NULL,
+    status INT(1) NOT NULL,
+    createdAt DATETIME NOT NULL,
+    updatedAt DATETIME NOT NULL
+);
+
+CREATE TABLE bincollections( --single
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    collectionId INT NOT NULL,
+    binId INT NOT NULL,
+    weight FLOAT NOT NULL,
     lat TEXT NOT NULL,
     lng TEXT NOT NULL,
-    PRIMARY KEY (binCollectionID)
+    createdAt DATETIME NOT NULL,
+    updatedAt DATETIME NOT NULL
 );
 
-CREATE TABLE tblbin(
-    binID INT NOT NULL AUTO_INCREMENT,
-    lorongID INT NOT NULL,
-    binType INT(1) NOT NULL,
-    binCapacity TEXT NOT NULL,
-    PRIMARY KEY (binID)
+CREATE TABLE roles(
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255),
+    createdAt DATETIME NOT NULL,
+    updatedAt DATETIME NOT NULL
+);
+
+CREATE TABLE users(
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role INT NOT NULL,
+    status INT NOT NULL,
+    createdAt DATETIME NOT NULL,
+    updatedAt DATETIME NOT NULL
 );
