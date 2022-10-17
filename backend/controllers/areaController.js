@@ -64,7 +64,7 @@ const updateArea = asyncHandler(async(req, res) => {
         throw new Error('Area Code cannot be empty');
     }
 
-    const areaExists = await Truck.findOne({
+    const areaExists = await Area.findOne({
         where: {
             areaCode: areaCode,
             id: {
