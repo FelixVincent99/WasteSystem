@@ -5,17 +5,20 @@ const Role = db.roles;
 const initialDBSetup = (()=> {
     Role.create({
         id: 1,
-        name: "admin"
+        name: "admin",
+        status: "1"
     });
     
     Role.create({
         id: 2,
-        name: "manager"
+        name: "manager",
+        status: "1"
     });
     
     Role.create({
         id: 3,
-        name: "supervisor"
+        name: "supervisor",
+        status: "1"
     });
 
     User.create({
