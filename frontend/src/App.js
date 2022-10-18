@@ -19,6 +19,12 @@ import TruckList from './pages/Truck/TruckList';
 import AddTruck from './pages/Truck/AddTruck';
 import Truck from './pages/Truck/Truck';
 
+
+//Manpower
+import Manpower from './pages/Manpower/Manpower';
+import ManpowerList from './pages/Manpower/ManpowerList';
+import AddManpower from './pages/Manpower/AddManpower'; 
+
 function App() {  
 
   const {user} = useSelector((state)=> state.auth)
@@ -36,6 +42,9 @@ function App() {
           <Route path='/trucklist' element={<PrivateRoute><TruckList /></PrivateRoute>}></Route>
           <Route path='/addtruck' element={<PrivateRoute><AddTruck /></PrivateRoute>}></Route>
           <Route path='/truck/:id' element={<PrivateRoute><Truck /></PrivateRoute>}></Route>
+          <Route path='/manpowerlist' element={<PrivateRoute><ManpowerList /></PrivateRoute>}></Route>
+          <Route path='/addmanpower' element={<PrivateRoute><AddManpower /></PrivateRoute>}></Route>
+          <Route path='/manpower/:id' element={<PrivateRoute><Manpower /></PrivateRoute>}></Route>
           <Route path='/login' element={<Login />}></Route>
           <Route path='/' element={<PrivateRoute><Home /></PrivateRoute>}></Route>
           <Route path='/create-user' element={<PrivateRoute><CreateUser /></PrivateRoute>}></Route>
