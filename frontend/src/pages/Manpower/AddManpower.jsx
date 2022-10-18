@@ -78,7 +78,7 @@ function AddManpower() {
             <FormControl sx={{ m: 1, minWidth: 120 }}>
                 <InputLabel id="roleLabel">Role</InputLabel>
                 <Select labelId="roleLabel" id="role" name="role" value={role} label="Role" onChange={onChangeManpower}>
-                    <MenuItem value="1">Drive</MenuItem>
+                    <MenuItem value="1">Driver</MenuItem>
                     <MenuItem value="2">Loader</MenuItem>
                 </Select>
             </FormControl>
