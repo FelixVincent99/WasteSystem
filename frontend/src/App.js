@@ -13,8 +13,13 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import CreateUser from './pages/User/CreateUser';
 
-//module
-import Area from './pages/Area/Area';
+//area module
+import AreaList from './pages/Area/AreaList'
+import AddArea from './pages/Area/AddArea';
+import Area from './pages/Area/Area'
+
+
+//truck module
 import TruckList from './pages/Truck/TruckList';
 import AddTruck from './pages/Truck/AddTruck';
 import Truck from './pages/Truck/Truck';
@@ -32,10 +37,14 @@ function App() {
         <Box component="main" sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}>
         <Toolbar />
         <Routes>
-          <Route path='/arealist' element={<PrivateRoute><Area /></PrivateRoute>}></Route>
+          <Route path='/arealist' element={<PrivateRoute><AreaList /></PrivateRoute>}></Route>
+          <Route path='/addarea' element={<PrivateRoute><AddArea /></PrivateRoute>}></Route>
+          <Route path='/area/:id' element={<PrivateRoute><Area /></PrivateRoute>}></Route>
+
           <Route path='/trucklist' element={<PrivateRoute><TruckList /></PrivateRoute>}></Route>
           <Route path='/addtruck' element={<PrivateRoute><AddTruck /></PrivateRoute>}></Route>
           <Route path='/truck/:id' element={<PrivateRoute><Truck /></PrivateRoute>}></Route>
+
           <Route path='/login' element={<Login />}></Route>
           <Route path='/' element={<PrivateRoute><Home /></PrivateRoute>}></Route>
           <Route path='/create-user' element={<PrivateRoute><CreateUser /></PrivateRoute>}></Route>

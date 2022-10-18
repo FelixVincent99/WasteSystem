@@ -18,7 +18,7 @@ import Button from '@mui/material/Button'
 
 function AddTruck() {
 
-    const initialTruckState = {        
+    const initialTruckState = {
         truckNo: "",
         operationStartDate: new Date(),
         operationEndDate: new Date(),
@@ -65,7 +65,6 @@ function AddTruck() {
             milage,
             status
         }
-        console.log(truckData)
         dispatch(createTruck({truckData}))
     }
 
