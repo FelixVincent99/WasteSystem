@@ -40,7 +40,7 @@ function AddManpower() {
         }
         if(isSuccess){
             toast.success("Manpower has been created")
-            // navigate('/manpowerlist')
+            navigate('/manpowerlist')
         }
 
         dispatch(reset())
