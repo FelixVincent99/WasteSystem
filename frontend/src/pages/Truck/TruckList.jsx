@@ -13,6 +13,7 @@ function TruckList() {
   
 
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const initFetch = useCallback(()=>{
    dispatch(getAllTrucks())
@@ -20,9 +21,7 @@ function TruckList() {
 
   useEffect(()=>{
     initFetch()
-  },[initFetch])
-
-  let navigate = useNavigate();
+  },[initFetch])  
 
   const renderDetailsButton = (params) => {
     return (

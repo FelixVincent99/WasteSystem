@@ -1,26 +1,27 @@
-module.exports = (sequelize, Sequelize) => {
+module.exports = (sequelize, DataTypes) => {
     const Manpower = sequelize.define("Manpower", {
         mpName: {
-            type: Sequelize.STRING,
+            type: DataTypes.STRING,
             allowNull: false,
         },
         mpAge: {
-            type: Sequelize.INTEGER
+            type: DataTypes.INTEGER
         },
         role: {
-            type: Sequelize.INTEGER
+            type: DataTypes.INTEGER
         },
         gender: {
-            type: Sequelize.INTEGER
+            type: DataTypes.INTEGER
         },
         operationStartDate: {
-            type: Sequelize.DATE
+            type: DataTypes.DATE
         },
         operationEndDate: {
-            type: Sequelize.DATE
+            type: DataTypes.DATE
         },
         status: {
-            type: Sequelize.INTEGER
+            type: DataTypes.INTEGER,
+            allowNull: false
         }
     });
     return Manpower;
