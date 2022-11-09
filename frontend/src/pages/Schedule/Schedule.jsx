@@ -17,7 +17,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 
 import { createSchedule, updateSchedule, reset } from '../../features/schedule/scheduleSlice'
 import Spinner from '../../components/Spinner'
-import { getAllDrivers, getAllLoaders } from '../../features/manpower/manpowerSlice'
+import { getAllManpowers } from '../../features/manpower/manpowerSlice'
 import { getAllAreas } from '../../features/area/areaSlice'
 import { getAllTrucks } from '../../features/truck/truckSlice'
 
@@ -63,12 +63,20 @@ function Schedule() {
     const {isError, isLoading, isSuccess, message} = useSelector(state => state.schedules)
     const areas = useSelector(state => state.areas.areas)
     const trucks = useSelector(state => state.trucks.trucks)
-    const drivers = useSelector(state => state.manpowers.drivers)
-    const loaders = useSelector(state => state.manpowers.loaders)
+    const manpowers = useSelector(state => state.manpowers.manpowers)
 
+    var drivers = []
+    var loaders = []
+    for(var a=0; a<manpowers.length; a++){
+        if(manpowers[a].role === 'Driver'){
+            drivers.push(manpowers[a])
+        }else if(manpowers[a].role === 'Loader'){
+            loaders.push(manpowers[a])
+        }
+    }
+    
     const initFetch = useCallback(()=>{
-        dispatch(getAllDrivers())
-        dispatch(getAllLoaders())
+        dispatch(getAllManpowers())
         dispatch(getAllAreas())
         dispatch(getAllTrucks())
         dispatch(reset())
@@ -168,7 +176,7 @@ function Schedule() {
                 <Select labelId="manpowerLabel" id="loaderId" name="loaderId" value={loaderId} input={<OutlinedInput label="Name" />} onChange={onChangeSchedule} multiple >
                     {loaders.map(( {id, mpName}, index) =>  <MenuItem key={index} value={id}>{mpName}</MenuItem>)}
                 </Select>
-            </FormControl>            
+            </FormControl>
         </Stack>
         <Box m={2} display="flex" justifyContent="flex-end" alignItems="flex-end">
             <Button type="submit" variant="contained" color="primary" size="large">Submit</Button>

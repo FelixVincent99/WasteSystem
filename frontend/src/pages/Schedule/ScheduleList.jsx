@@ -25,7 +25,7 @@ function ScheduleList() {
       dispatch(getAllSchedules())
   },[dispatch])
 
-  useEffect(() => {
+  useEffect(() => {    
       initFetch()
   },[initFetch])
 
