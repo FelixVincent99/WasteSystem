@@ -23,11 +23,23 @@ const update = async (data) => {
     return response.data
 };
 
+const getAllDrivers = async () => {
+    const response = await http.get(API_URL + '/drivers')
+    return response.data
+};
+
+const getAllLoaders = async () => {
+    const response = await http.get(API_URL + '/loaders')
+    return response.data
+};
+
 const manpowerService = {
   getAll,
   get,
   create,
   update,
+  getAllDrivers,
+  getAllLoaders,
 };
 
 export default manpowerService;

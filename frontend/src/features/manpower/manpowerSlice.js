@@ -25,14 +25,14 @@ export const createManpower = createAsyncThunk(
 export const getAllManpowers = createAsyncThunk(
     'manpowers/getAll',
     async ()=>{
-        const manpowerList = await manpowerService.getAll()        
+        const manpowerList = await manpowerService.getAll()
         const proccessedManpowerList = manpowerList.map(manpowerItem => {
             manpowerItem.statusType = manpowerItem.status === 1? 'Active': manpowerItem.status === 2? 'Temporarily Unavailable': manpowerItem.status === 3? 'Inactive': 'Error'
             manpowerItem.role = manpowerItem.role === 1? 'Driver': manpowerItem.role === 2? 'Loader': 'Error'
             manpowerItem.gender =  manpowerItem.gender === 1? 'Male': manpowerItem.gender === 2? 'Female': 'Error'
             manpowerItem.operationStartDateFormatted =  manpowerItem.operationStartDate.split("T")[0]
-            manpowerItem.operationEndDateFormatted =  manpowerItem.operationEndDate.split("T")[0]
-            manpowerItem.updatedAtFormatted =  manpowerItem.updatedAt.split("T")[0]
+            manpowerItem.operationEndDateFormatted = manpowerItem.operationEndDateFormatted === 1 ?  manpowerItem.operationEndDate.split("T")[0] : ''
+            manpowerItem.updatedAtFormatted =  manpowerItem.updatedAt.split("T")[0]            
             return manpowerItem
         })
         return proccessedManpowerList
@@ -60,6 +60,40 @@ export const getManpower = createAsyncThunk(
             const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
             return thunkAPI.rejectWithValue(message)
         }
+    }
+)
+
+export const getAllDrivers = createAsyncThunk(
+    'manpowers/getAllDrivers',
+    async ()=>{
+        const driverList = await manpowerService.getAllDrivers()
+        const proccessedDriverList = driverList.map(manpowerItem => {
+            manpowerItem.statusType = manpowerItem.status === 1? 'Active': manpowerItem.status === 2? 'Temporarily Unavailable': manpowerItem.status === 3? 'Inactive': 'Error'
+            manpowerItem.role = manpowerItem.role === 1? 'Driver': 'Error'
+            manpowerItem.gender =  manpowerItem.gender === 1? 'Male': manpowerItem.gender === 2? 'Female': 'Error'
+            manpowerItem.operationStartDateFormatted =  manpowerItem.operationStartDate.split("T")[0]
+            manpowerItem.operationEndDateFormatted = manpowerItem.operationEndDateFormatted === 1 ?  manpowerItem.operationEndDate.split("T")[0] : ''
+            manpowerItem.updatedAtFormatted =  manpowerItem.updatedAt.split("T")[0]            
+            return manpowerItem
+        })        
+        return proccessedDriverList
+    }
+)
+
+export const getAllLoaders = createAsyncThunk(
+    'manpowers/getAllLoaders',
+    async ()=>{
+        const loaderList = await manpowerService.getAllLoaders()
+        const proccessedLoaderList = loaderList.map(manpowerItem => {
+            manpowerItem.statusType = manpowerItem.status === 1? 'Active': manpowerItem.status === 2? 'Temporarily Unavailable': manpowerItem.status === 3? 'Inactive': 'Error'
+            manpowerItem.role = manpowerItem.role === 2? 'Loader': 'Error'
+            manpowerItem.gender =  manpowerItem.gender === 1? 'Male': manpowerItem.gender === 2? 'Female': 'Error'
+            manpowerItem.operationStartDateFormatted =  manpowerItem.operationStartDate.split("T")[0]
+            manpowerItem.operationEndDateFormatted = manpowerItem.operationEndDateFormatted === 1 ?  manpowerItem.operationEndDate.split("T")[0] : ''
+            manpowerItem.updatedAtFormatted =  manpowerItem.updatedAt.split("T")[0]            
+            return manpowerItem
+        })
+        return proccessedLoaderList
     }
 )
 
@@ -126,6 +160,32 @@ const manpowerSlice = createSlice({
             state.isLoading = false
             state.isError = true            
             state.message = action.payload
+        })
+        .addCase(getAllDrivers.pending, (state)=>{
+            state.isLoading = true
+        })
+        .addCase(getAllDrivers.fulfilled, (state, action)=>{
+            state.isLoading = false
+            state.drivers = action.payload
+        })
+        .addCase(getAllDrivers.rejected, (state, action)=>{
+            state.isLoading = false
+            state.isError = true
+            state.message = action.payload
+            state.drivers = []
+        })
+        .addCase(getAllLoaders.pending, (state)=>{
+            state.isLoading = true
+        })
+        .addCase(getAllLoaders.fulfilled, (state, action)=>{
+            state.isLoading = false
+            state.loaders = action.payload
+        })
+        .addCase(getAllLoaders.rejected, (state, action)=>{
+            state.isLoading = false
+            state.isError = true
+            state.message = action.payload
+            state.loaders = []
         })
     }
 })

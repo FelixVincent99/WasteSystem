@@ -61,9 +61,9 @@ function ResponsiveNavbar(props) {
             link: 'trucklist'
         },
         {
-            name: 'Scheduling',
+            name: 'Schedule',
             icon: <CalendarMonthIcon/>,
-            link: 'schedulinglist'
+            link: 'schedulelist'
         },
         {
             name: 'Map',
