@@ -14,19 +14,19 @@ module.exports = (sequelize, DataTypes) => {
         endDateTime: {
             type: DataTypes.DATE,
         },
-        areaId: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: 'areas',
-                key: 'id'
-            }
-        },
         truckId: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
                 model: 'trucks',
+                key: 'id'
+            }
+        },
+        areaId: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'areas',
                 key: 'id'
             }
         },
