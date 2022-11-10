@@ -2,19 +2,11 @@ module.exports = (sequelize, DataTypes) => {
     const Route = sequelize.define("Route", {
         scheduleId: {
             type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: 'schedules',
-                key: 'id'
-            }
+            allowNull: false
         },
         stopId: {
             type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: 'stops',
-                key: 'id'
-            }
+            allowNull: false
         },
         status: {
             type: DataTypes.INTEGER,

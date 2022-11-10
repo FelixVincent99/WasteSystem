@@ -2,19 +2,11 @@ module.exports = (sequelize, DataTypes) => {
     const Bincollection = sequelize.define("Bincollection", {
         collectionId: {
             type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: 'collections',
-                key: 'id'
-            }
+            allowNull: false
         },
         binId: {
             type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: 'bins',
-                key: 'id'
-            }
+            allowNull: false
         },
         weight: {
             type: DataTypes.FLOAT,
