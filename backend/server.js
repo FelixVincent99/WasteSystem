@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require("cors");
 const colors = require('colors');
 const dotenv = require('dotenv').config();
+const process = require('process');
 
 const { errorHandler } = require('./middleware/errorMiddleware');
 
@@ -40,5 +41,5 @@ app.use('/api/trucks', require('./routes/truckRoutes'));
 app.use('/api/manpowers', require('./routes/manpowerRoutes'));
 app.use('/api/schedules', require('./routes/scheduleRoutes'));
 
-app.use(errorHandler);
 app.listen(PORT, () => console.log(`Server is running on port ${ PORT }`))
+app.use(errorHandler);

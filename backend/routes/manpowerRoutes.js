@@ -4,6 +4,8 @@ const router = express.Router();
 const manpowerController = require('../controllers/manpowerController');
 const { protect } = require('../middleware/authMiddleware');
 
+router.get('/drivers', protect, manpowerController.getAllDrivers);
+router.get('/loaders', protect, manpowerController.getAllLoaders);
 router.post('/', protect, manpowerController.addManpower);
 router.get('/', protect, manpowerController.getAllManpowers);
 router.get('/:id', protect, manpowerController.getOneManpower);

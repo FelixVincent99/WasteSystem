@@ -31,7 +31,7 @@ export const getAllTrucks = createAsyncThunk(
             truckItem.statusType = truckItem.status === 1? 'Active': truckItem.status === 2? 'Temporarily Unavailable': truckItem.status === 3? 'Inactive': 'Error'
             truckItem.truckTypeName = truckItem.truckType === 1? 'Compactor Truck': truckItem.truckType === 2? 'RoRo Truck': truckItem.truckType === 3? 'Prime Mover': 'Error'
             truckItem.operationStartDateFormatted =  truckItem.operationStartDate.split("T")[0]
-            truckItem.operationEndDateFormatted =  truckItem.operationEndDate.split("T")[0]
+            truckItem.operationEndDateFormatted = truckItem.operationEndDateFormatted === 1? truckItem.operationEndDate.split("T")[0] : ''
             truckItem.updatedAtFormatted =  truckItem.updatedAt.split("T")[0]
             return truckItem
         })
