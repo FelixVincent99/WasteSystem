@@ -28,7 +28,11 @@ import Truck from './pages/Truck/Truck';
 //Manpower
 import Manpower from './pages/Manpower/Manpower';
 import ManpowerList from './pages/Manpower/ManpowerList';
-import AddManpower from './pages/Manpower/AddManpower'; 
+import AddManpower from './pages/Manpower/AddManpower';
+
+//Schedule
+import ScheduleList from './pages/Schedule/ScheduleList';
+import Schedule from './pages/Schedule/Schedule';
 
 function App() {  
 
@@ -54,6 +58,9 @@ function App() {
           <Route path='/manpowerlist' element={<PrivateRoute><ManpowerList /></PrivateRoute>}></Route>
           <Route path='/addmanpower' element={<PrivateRoute><AddManpower /></PrivateRoute>}></Route>
           <Route path='/manpower/:id' element={<PrivateRoute><Manpower /></PrivateRoute>}></Route>
+
+          <Route path='/schedulelist' element={<PrivateRoute><ScheduleList /></PrivateRoute>}></Route>          
+          <Route path='/schedule' element={<PrivateRoute><Schedule /></PrivateRoute>}></Route>
           
           <Route path='/login' element={<Login />}></Route>
           <Route path='/' element={<PrivateRoute><Home /></PrivateRoute>}></Route>

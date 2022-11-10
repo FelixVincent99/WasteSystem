@@ -9,6 +9,7 @@ const addSchedule = asyncHandler(async(req, res) => {
 
     let data = {
         scheduleDate: req.body.scheduleDate,
+        scheduleTime: req.body.scheduleTime,
         startDateTime: req.body.startDateTime,
         endDateTime: req.body.endDateTime,
         areaId: req.body.areaId,

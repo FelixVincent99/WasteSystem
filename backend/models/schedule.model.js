@@ -4,13 +4,15 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.DATE,
             allowNull: false
         },
-        startDateTime: {
-            type: DataTypes.DATE,
+        scheduleTime: {
+            type: DataTypes.TIME,
             allowNull: false
+        },
+        startDateTime: {
+            type: DataTypes.DATE,            
         },
         endDateTime: {
             type: DataTypes.DATE,
-            allowNull: false
         },
         areaId: {
             type: DataTypes.INTEGER,
@@ -37,12 +39,8 @@ module.exports = (sequelize, DataTypes) => {
             }
         },
         loaderId: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allowNull: false,
-            references: {
-                model: 'manpowers',
-                key: 'id'
-            }
         },
         weightFromSensor: {
             type: DataTypes.FLOAT

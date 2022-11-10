@@ -47,10 +47,37 @@ const updateManpower = asyncHandler(async(req, res) => {
     res.status(204).send(manpower);
 });
 
+// 5. get all drivers
+
+const getAllDrivers = asyncHandler(async(req, res) => {
+
+    let manpowers = await Manpower.findAll({ where: {
+        [Op.and]: [
+            { role: 1 },
+            { status: 1 }
+        ]
+    }});
+    res.status(200).send(manpowers);
+});
+
+// 6. get all loaders
+
+const getAllLoaders = asyncHandler(async(req, res) => {
+
+    let manpowers =await Manpower.findAll({ where: {
+        [Op.and]: [
+            { role: 2 },
+            { status: 1 }
+        ]
+    }});
+    res.status(200).send(manpowers);
+});
 
 module.exports = {
     addManpower,
     getAllManpowers,
     getOneManpower,
-    updateManpower
+    updateManpower,
+    getAllDrivers,
+    getAllLoaders,
 }
