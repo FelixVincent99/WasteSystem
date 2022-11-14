@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 var validator = require('validator');
 
 const db = require("../models");
-const User = db.users;
+const User = db.User;
 const Op = db.Sequelize.Op;
 
 
