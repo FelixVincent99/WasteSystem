@@ -16,15 +16,27 @@ module.exports = (sequelize, DataTypes) => {
         },
         truckId: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: false,
+            references: {
+                model: 'trucks',
+                key: 'id'
+            }
         },
         areaId: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: false,
+            references: {
+                model: 'areas',
+                key: 'id'
+            }
         },
         driverId: {
             type: DataTypes.INTEGER,
             allowNull: false,
+            references: {
+                model: 'manpowers',
+                key: 'id'
+            }
         },
         loaderId: {
             type: DataTypes.STRING,

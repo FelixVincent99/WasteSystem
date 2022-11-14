@@ -2,7 +2,11 @@ module.exports = (sequelize, DataTypes) => {
     const Bin = sequelize.define("Bin", {
         stopId: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: false,
+            references: {
+                model: 'stops',
+                key: 'id'
+            }
         },
         binType: {
             type: DataTypes.INTEGER,

@@ -6,7 +6,11 @@ module.exports = (sequelize, DataTypes) => {
         },
         areaId: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: false,
+            references: {
+                model: 'areas',
+                key: 'id'
+            }
         },
         binAmount: {
             type: DataTypes.INTEGER
