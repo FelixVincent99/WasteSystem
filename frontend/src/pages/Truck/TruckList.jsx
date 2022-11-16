@@ -110,7 +110,7 @@ function TruckList() {
 
   return (
     <>
-      <Button sx={{ my:2 }} href="/addTruck" variant="contained">Add Truck</Button>  
+      <Button sx={{ my:2 }} href="/truck/add" variant="contained">Add Truck</Button>  
       <div style={{ height: 400, width: '100%' }}>
         <div style={{ display: 'flex', height: '100%' }}>
           <div style={{ flexGrow: 1 }}>

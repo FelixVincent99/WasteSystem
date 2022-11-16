@@ -34,7 +34,7 @@ function AddArea() {
         }
         if(isSuccess){
             toast.success("Area has been created")
-            navigate('/arealist')
+            navigate('/area/list')
         }
         dispatch(reset())
     }, [isError, isSuccess, message, navigate, dispatch])

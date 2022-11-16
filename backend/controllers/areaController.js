@@ -1,5 +1,5 @@
 const db = require("../models");
-const Area = db.areas;
+const Area = db.Area;
 const Op = db.Sequelize.Op;
 const asyncHandler = require('express-async-handler');
 

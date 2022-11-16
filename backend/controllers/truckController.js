@@ -1,5 +1,5 @@
 const db = require("../models");
-const Truck = db.trucks;
+const Truck = db.Truck;
 const Op = db.Sequelize.Op;
 const asyncHandler = require('express-async-handler');
 
