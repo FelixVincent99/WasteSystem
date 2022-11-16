@@ -33,7 +33,7 @@ const getAllSchedules = asyncHandler(async(req, res) => {
 
     const [results, metadata] = await seq.query(
         "SELECT s.*, a.areaCode, t.truckNo, d.mpName AS driver, l.mpName AS loader" +
-        " FROM schedules s JOIN areas a ON s.areaId = a.id JOIN trucks t ON s.truckId = t.id JOIN manpowers d ON s.driverId = d.id JOIN manpowers l ON s.loaderId = l.id"
+        " FROM Schedules s JOIN Areas a ON s.areaId = a.id JOIN Trucks t ON s.truckId = t.id JOIN Manpowers d ON s.driverId = d.id JOIN Manpowers l ON s.loaderId = l.id"
     );
     res.status(200).send(results);
 });
@@ -45,7 +45,7 @@ const getOneSchedule = asyncHandler(async(req, res) => {
     let id = req.params.id;
     const [results, metadata] = await seq.query(
         "SELECT s.*, a.areaCode, t.truckNo, d.mpName AS driver, l.mpName AS loader" +
-        " FROM schedules s JOIN areas a ON s.areaId = a.id JOIN trucks t ON s.truckId = t.id JOIN manpowers d ON s.driverId = d.id JOIN manpowers l ON s.loaderId = l.id" +
+        " FROM Schedules s JOIN Areas a ON s.areaId = a.id JOIN Trucks t ON s.truckId = t.id JOIN Manpowers d ON s.driverId = d.id JOIN Manpowers l ON s.loaderId = l.id" +
         " WHERE s.id = " + id
     );
     // let manpower = await Manpower.findOne({ where: { id: id, status: 1 } });
