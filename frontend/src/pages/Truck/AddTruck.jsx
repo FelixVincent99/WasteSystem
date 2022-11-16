@@ -41,7 +41,7 @@ function AddTruck() {
         }
         if(isSuccess){
             toast.success("Truck has been created")
-            navigate('/trucklist')
+            navigate('/truck/list')
         }
 
         dispatch(reset())

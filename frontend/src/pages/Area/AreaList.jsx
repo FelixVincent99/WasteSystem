@@ -74,7 +74,7 @@ function AreaList() {
     ]
   return (
     <>
-        <Button sx={{ my: 2 }} href="/addArea" variant="contained">Add Area</Button>
+        <Button sx={{ my: 2 }} href="/area/add" variant="contained">Add Area</Button>
         <div style={{ height: 400, width: '100%'}}>
             <div style={{ display: 'flex', height: '100%'}}>
                 <div style={{ flexGrow: 1 }}>

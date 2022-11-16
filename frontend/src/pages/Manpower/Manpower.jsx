@@ -52,7 +52,7 @@ function Manpower() {
         }
         if(isSuccess){
             toast.success("Manpower has been updated")
-            navigate('/manpowerlist')
+            navigate('/manpower/list')
         }
         dispatch(reset())
         getManpower(params.id)

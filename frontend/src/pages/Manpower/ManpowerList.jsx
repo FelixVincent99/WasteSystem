@@ -106,7 +106,7 @@ function ManpowerList() {
     ]
   return (
     <>
-      <Button sx={{ my:2 }} href="/addManpower" variant="contained">Add Manpower</Button>  
+      <Button sx={{ my:2 }} href="/manpower/add" variant="contained">Add Manpower</Button>  
       <div style={{ height: 400, width: '100%' }}>
         <div style={{ display: 'flex', height: '100%' }}>
           <div style={{ flexGrow: 1 }}>

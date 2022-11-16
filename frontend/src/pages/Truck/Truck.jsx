@@ -51,7 +51,7 @@ const {isError, isLoading, isSuccess, message} = useSelector(state => state.truc
     }
     if(isSuccess){
         toast.success("Truck has been updated")
-        navigate('/trucklist')
+        navigate('/truck/list')
     }
     dispatch(reset())
     getTruck(params.id)

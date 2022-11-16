@@ -47,19 +47,19 @@ function App() {
         <Box component="main" sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}>
         <Toolbar />
         <Routes>
-          <Route path='/arealist' element={<PrivateRoute><AreaList /></PrivateRoute>}></Route>
-          <Route path='/addarea' element={<PrivateRoute><AddArea /></PrivateRoute>}></Route>
+          <Route path='/area/list' element={<PrivateRoute><AreaList /></PrivateRoute>}></Route>
+          <Route path='/area/add' element={<PrivateRoute><AddArea /></PrivateRoute>}></Route>
           <Route path='/area/:id' element={<PrivateRoute><Area /></PrivateRoute>}></Route>
 
-          <Route path='/trucklist' element={<PrivateRoute><TruckList /></PrivateRoute>}></Route>
-          <Route path='/addtruck' element={<PrivateRoute><AddTruck /></PrivateRoute>}></Route>
+          <Route path='/truck/list' element={<PrivateRoute><TruckList /></PrivateRoute>}></Route>
+          <Route path='/truck/add' element={<PrivateRoute><AddTruck /></PrivateRoute>}></Route>
           <Route path='/truck/:id' element={<PrivateRoute><Truck /></PrivateRoute>}></Route>
 
-          <Route path='/manpowerlist' element={<PrivateRoute><ManpowerList /></PrivateRoute>}></Route>
-          <Route path='/addmanpower' element={<PrivateRoute><AddManpower /></PrivateRoute>}></Route>
+          <Route path='/manpower/list' element={<PrivateRoute><ManpowerList /></PrivateRoute>}></Route>
+          <Route path='/manpower/add' element={<PrivateRoute><AddManpower /></PrivateRoute>}></Route>
           <Route path='/manpower/:id' element={<PrivateRoute><Manpower /></PrivateRoute>}></Route>
 
-          <Route path='/schedulelist' element={<PrivateRoute><ScheduleList /></PrivateRoute>}></Route>          
+          <Route path='/schedule/list' element={<PrivateRoute><ScheduleList /></PrivateRoute>}></Route>          
           <Route path='/schedule' element={<PrivateRoute><Schedule /></PrivateRoute>}></Route>
           
           <Route path='/login' element={<Login />}></Route>
