@@ -1,43 +1,38 @@
-const dbConfig = require("../config/db.config.js");
-const Sequelize = require("sequelize");
-const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
-    host: dbConfig.HOST,
-    dialect: dbConfig.dialect,
-    operatorsAliases: 0,
-    pool: {
-        max: dbConfig.pool.max,
-        min: dbConfig.pool.min,
-        acquire: dbConfig.pool.acquire,
-        idle: dbConfig.pool.idle
-    }
-});
+'use strict';
+
+const fs = require('fs');
+const path = require('path');
+const Sequelize = require('sequelize');
+const process = require('process');
+const basename = path.basename(__filename);
+const env = process.env.NODE_ENV || 'development';
+const config = require(__dirname + '/../config/config.json')[env];
 const db = {};
-db.Sequelize = Sequelize;
+
+let sequelize;
+if (config.use_env_variable) {
+  sequelize = new Sequelize(process.env[config.use_env_variable], config);
+} else {
+  sequelize = new Sequelize(config.database, config.username, config.password, config);
+}
+
+fs
+  .readdirSync(__dirname)
+  .filter(file => {
+    return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
+  })
+  .forEach(file => {
+    const model = require(path.join(__dirname, file))(sequelize, Sequelize);
+    db[model.name] = model;
+  });
+
+Object.keys(db).forEach(modelName => {
+  if (db[modelName].associate) {
+    db[modelName].associate(db);
+  }
+});
+
 db.sequelize = sequelize;
-
-//for auth
-db.users = require("./user.model.js")(sequelize, Sequelize);
-db.roles = require("./role.model.js")(sequelize, Sequelize);
-db.roles.belongsToMany(db.users, {
-    through: "user_roles",
-    foreignKey: "roleId",
-    otherKey: "userId"
-});
-db.users.belongsToMany(db.roles, {
-    through: "user_roles",
-    foreignKey: "userId",
-    otherKey: "roleId"
-});
-db.ROLES = ["admin", "manager", "supervisor"];
-
-db.trucks = require("./truck.model.js")(sequelize, Sequelize);
-db.areas = require("./area.model.js")(sequelize, Sequelize);
-db.stops = require("./stop.model.js")(sequelize, Sequelize);
-db.manpowers = require("./manpower.model.js")(sequelize, Sequelize);
-db.schedules = require("./schedule.model.js")(sequelize, Sequelize);
-db.routes = require("./route.model.js")(sequelize, Sequelize);
-db.collections = require("./collection.model.js")(sequelize, Sequelize);
-db.bins = require("./bin.model.js")(sequelize, Sequelize);
-db.bincollections = require("./bincollection.model.js")(sequelize, Sequelize);
+db.Sequelize = Sequelize;
 
 module.exports = db;

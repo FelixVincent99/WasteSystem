@@ -1,5 +1,5 @@
 const db = require("../models");
-const Schedule = db.schedules;
+const Schedule = db.Schedule;
 const seq = db.sequelize;
 const asyncHandler = require('express-async-handler');
 

@@ -1,5 +1,5 @@
 const db = require("../models");
-const Manpower = db.manpowers;
+const Manpower = db.Manpower;
 const Op = db.Sequelize.Op;
 const asyncHandler = require('express-async-handler');
 

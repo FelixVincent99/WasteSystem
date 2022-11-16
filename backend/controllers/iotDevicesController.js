@@ -1,5 +1,5 @@
 const db = require("../models");
-const Collection = db.collections;
+const Collection = db.Collection;
 const Op = db.Sequelize.Op;
 const asyncHandler = require('express-async-handler');
 const url = require('url');

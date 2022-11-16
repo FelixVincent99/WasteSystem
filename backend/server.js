@@ -9,17 +9,17 @@ const { errorHandler } = require('./middleware/errorMiddleware');
 var app = express();
 
 const db = require("./models");
-const initialDBSetup = require("./models/dummyData");
-// db.sequelize.sync().then(() => {
-db.sequelize.sync({ force: true }).then(() => {
-    initialDBSetup();
+// const initialDBSetup = require("./models/dummyData");
+db.sequelize.sync().then(() => {
+// db.sequelize.sync({ force: true }).then(() => {
+    // initialDBSetup();
     console.log("Synced DB");
 }).catch((err) => {
     console.log("Failed to sync db: " + err.message);
 });
 
 var corsOptions = {
-    origin: "http://localhost:80"
+    origin: "http://localhost:8081"
 };
 
 const PORT = process.env.PORT || 8000;
