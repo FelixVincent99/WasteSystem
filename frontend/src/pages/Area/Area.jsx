@@ -45,7 +45,7 @@ function Area() {
     }
     if(isSuccess){
         toast.success("Area has been updated")
-        navigate('/arealist')
+        navigate('/area/list')
     }
     dispatch(reset())
     getArea(params.id)    

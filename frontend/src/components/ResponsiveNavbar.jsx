@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import PropTypes from 'prop-types';
+import { useLocation } from 'react-router-dom'
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
@@ -30,8 +31,8 @@ const drawerWidth = 240;
 function ResponsiveNavbar(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [moduleName, setModuleName] = useState("")
-
+  const location = useLocation().pathname.split("/")[1]
+console.log(location)
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -48,27 +49,27 @@ function ResponsiveNavbar(props) {
         {
             name: 'Area',
             icon: <LocationOnIcon/>,
-            link: 'arealist'
+            link: '/area/list'
         },
         {
             name: 'Manpower',
             icon: <EngineeringIcon/>,
-            link: 'manpowerlist'
+            link: '/manpower/list'
         },
         {
             name: 'Truck',
             icon: <LocalShippingIcon/>,
-            link: 'trucklist'
+            link: '/truck/list'
         },
         {
             name: 'Schedule',
             icon: <CalendarMonthIcon/>,
-            link: 'schedulelist'
+            link: '/schedule/list'
         },
         {
             name: 'Map',
             icon: <MapIcon/>,
-            link: 'map'
+            link: '/map'
         }    
     ];  
 
@@ -79,7 +80,7 @@ function ResponsiveNavbar(props) {
         <List>
             {menuList.map((menuItem, index) => (
             <ListItem key={menuItem.name} disablePadding>                
-                <ListItemLink to={menuItem.link} onClick={()=>{setModuleName(menuItem.name)}}>
+                <ListItemLink to={menuItem.link} onClick={()=>{console.log(menuItem.name)}}>
                     <ListItemIcon>{menuItem.icon}</ListItemIcon>
                     <ListItemText primary={menuItem.name} />
               </ListItemLink>
@@ -111,7 +112,7 @@ function ResponsiveNavbar(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            {moduleName}
+            {location.toUpperCase()}
           </Typography>
         </Toolbar>
       </AppBar>

@@ -88,7 +88,7 @@ function Schedule() {
         }
         if(isSuccess){
             toast.success("Schedule has been created")
-            navigate('/schedulelist')
+            navigate('/schedule/list')
         }        
         initFetch()
     }, [isError, isSuccess, message, navigate, dispatch, initFetch]) 
