@@ -17,7 +17,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 
 import { createSchedule, updateSchedule, reset } from '../../features/schedule/scheduleSlice'
 import Spinner from '../../components/Spinner'
-import { getAllManpowers } from '../../features/manpower/manpowerSlice'
+import { getAvailableDriversLoaders } from '../../features/manpower/manpowerSlice'
 import { getAllAreas } from '../../features/area/areaSlice'
 import { getAllTrucks } from '../../features/truck/truckSlice'
 
@@ -63,24 +63,24 @@ function Schedule() {
     const {isError, isLoading, isSuccess, message} = useSelector(state => state.schedules)
     const areas = useSelector(state => state.areas.areas)
     const trucks = useSelector(state => state.trucks.trucks)
-    const manpowers = useSelector(state => state.manpowers.manpowers)
+    const driversloaders = useSelector(state => state.manpowers.driversloaders)
 
     var drivers = []
     var loaders = []
-    for(var a=0; a<manpowers.length; a++){
-        if(manpowers[a].role === 'Driver'){
-            drivers.push(manpowers[a])
-        }else if(manpowers[a].role === 'Loader'){
-            loaders.push(manpowers[a])
+    for(var a=0; a<driversloaders.length; a++){
+        if(driversloaders[a].role === 'Driver'){
+            drivers.push(driversloaders[a])
+        }else if(driversloaders[a].role === 'Loader'){
+            loaders.push(driversloaders[a])
         }
     }
     
-    const initFetch = useCallback(()=>{
-        dispatch(getAllManpowers())
+    const initFetch = useCallback(()=>{        
+        dispatch(getAvailableDriversLoaders({'scheduleDate': location.value.scheduleDate, 'scheduleId': location.value.scheduleId}))
         dispatch(getAllAreas())
         dispatch(getAllTrucks())
-        dispatch(reset())
-    },[dispatch])
+        dispatch(reset())        
+    },[dispatch, location.value.scheduleDate, location.value.scheduleId])
 
     useEffect(()=>{
         if(isError){
@@ -168,13 +168,13 @@ function Schedule() {
             <FormControl>
                 <InputLabel id="driverLabel">Driver</InputLabel>
                 <Select labelId="driverLabel" id="driverId" name="driverId" value={driverId} label="Driver" onChange={onChangeSchedule}>
-                    {drivers.map(( {id, mpName}, index) =>  <MenuItem key={index} value={id}>{mpName}</MenuItem>)}
+                    {drivers.map(( {id, mpName, disabled}, index) =>  <MenuItem key={index} value={id} disabled={disabled}>{mpName}</MenuItem>)}
                 </Select>
             </FormControl>
             <FormControl>
                 <InputLabel id="manpowerLabel">Loaders</InputLabel>
                 <Select labelId="manpowerLabel" id="loaderId" name="loaderId" value={loaderId} input={<OutlinedInput label="Name" />} onChange={onChangeSchedule} multiple >
-                    {loaders.map(( {id, mpName}, index) =>  <MenuItem key={index} value={id}>{mpName}</MenuItem>)}
+                    {loaders.map(( {id, mpName, disabled}, index) =>  <MenuItem key={index} value={id} disabled={disabled}>{mpName}</MenuItem>)}
                 </Select>
             </FormControl>
         </Stack>

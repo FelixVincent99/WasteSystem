@@ -1,6 +1,7 @@
 const db = require("../models");
 const Manpower = db.Manpower;
 const Op = db.Sequelize.Op;
+const seq = db.sequelize;
 const asyncHandler = require('express-async-handler');
 
 // 1. add manpower
@@ -73,6 +74,22 @@ const getAllLoaders = asyncHandler(async(req, res) => {
     res.status(200).send(manpowers);
 });
 
+// 5. get not available drivers
+const getNotAvailableDrivers = asyncHandler(async(req, res) => {
+    const [results, metadata] = await seq.query(
+        "SELECT * FROM Manpowers m WHERE EXISTS (SELECT * FROM Schedules s WHERE scheduleDate = '" + req.body.scheduleDate + "' AND m.id = s.driverId AND s.id != '" + req.body.scheduleId + "') AND role = 1"
+    );
+    res.status(200).send(results);
+});
+
+// 6. get not available loaders
+const getNotAvailableLoaders = asyncHandler(async(req, res) => {    
+    const [results, metadata] = await seq.query(        
+        "SELECT loaderId FROM Schedules WHERE scheduleDate = '" + req.body.scheduleDate + "' AND id != '" + req.body.scheduleId + "'"
+    );
+    res.status(200).send(results);
+});
+
 module.exports = {
     addManpower,
     getAllManpowers,
@@ -80,4 +97,6 @@ module.exports = {
     updateManpower,
     getAllDrivers,
     getAllLoaders,
+    getNotAvailableDrivers,
+    getNotAvailableLoaders,
 }

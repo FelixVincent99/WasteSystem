@@ -33,6 +33,16 @@ const getAllLoaders = async () => {
     return response.data
 };
 
+const getNotAvailableDrivers = async (data) => {    
+    const response = await http.post(API_URL + '/notAvailableDrivers', data)    
+    return response.data
+};
+
+const getNotAvailableLoaders = async (data) => {
+    const response = await http.post(API_URL + '/notAvailableLoaders',data)
+    return response.data
+};
+
 const manpowerService = {
   getAll,
   get,
@@ -40,6 +50,8 @@ const manpowerService = {
   update,
   getAllDrivers,
   getAllLoaders,
+  getNotAvailableDrivers,
+  getNotAvailableLoaders
 };
 
 export default manpowerService;

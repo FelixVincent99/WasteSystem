@@ -7,6 +7,9 @@ const initialState = {
     isLoading: false,
     message: '',
     manpowers: [],
+    drivers: [],
+    loaders: [],
+    driversloaders: [],
     currentManpower: {}
 }
 
@@ -94,6 +97,66 @@ export const getAllLoaders = createAsyncThunk(
             return manpowerItem
         })
         return proccessedLoaderList
+    }
+)
+
+export const getAvailableDriversLoaders = createAsyncThunk(
+    'manpowers/getAvailableDriversLoaders',
+    async (data, thunkAPI)=>{
+
+        const driverList = await manpowerService.getAllDrivers()
+        var proccessedDriverList = driverList.map(manpowerItem => {
+            manpowerItem.statusType = manpowerItem.status === 1? 'Active': manpowerItem.status === 2? 'Temporarily Unavailable': manpowerItem.status === 3? 'Inactive': 'Error'
+            manpowerItem.role = manpowerItem.role === 1? 'Driver': 'Error'
+            manpowerItem.gender =  manpowerItem.gender === 1? 'Male': manpowerItem.gender === 2? 'Female': 'Error'
+            manpowerItem.operationStartDateFormatted =  manpowerItem.operationStartDate.split("T")[0]
+            manpowerItem.operationEndDateFormatted = manpowerItem.operationEndDateFormatted === 1 ?  manpowerItem.operationEndDate.split("T")[0] : ''
+            manpowerItem.updatedAtFormatted =  manpowerItem.updatedAt.split("T")[0]
+            manpowerItem.disabled = false
+            return manpowerItem
+        })
+
+        const loaderList = await manpowerService.getAllLoaders()
+        var proccessedLoaderList = loaderList.map(manpowerItem => {
+            manpowerItem.statusType = manpowerItem.status === 1? 'Active': manpowerItem.status === 2? 'Temporarily Unavailable': manpowerItem.status === 3? 'Inactive': 'Error'
+            manpowerItem.role = manpowerItem.role === 2? 'Loader': 'Error'
+            manpowerItem.gender =  manpowerItem.gender === 1? 'Male': manpowerItem.gender === 2? 'Female': 'Error'
+            manpowerItem.operationStartDateFormatted =  manpowerItem.operationStartDate.split("T")[0]
+            manpowerItem.operationEndDateFormatted = manpowerItem.operationEndDateFormatted === 1 ?  manpowerItem.operationEndDate.split("T")[0] : ''
+            manpowerItem.updatedAtFormatted =  manpowerItem.updatedAt.split("T")[0]
+            manpowerItem.disabled = false
+            return manpowerItem
+        })
+
+        const notAvailableDriverList = await manpowerService.getNotAvailableDrivers(data)        
+        for(var a=0; a<notAvailableDriverList.length; a++){
+            for(var b=0; b<proccessedDriverList.length; b++){
+                if(notAvailableDriverList[a].id === proccessedDriverList[b].id){
+                    proccessedDriverList[b].disabled = true
+                }
+            }
+        }
+        
+        const notAvailableLoaders = await manpowerService.getNotAvailableLoaders(data)
+        var notAvailableLoadersList = []
+        for(var c=0; c<notAvailableLoaders.length; c++){
+            for(var d=0; d<notAvailableLoaders[c].loaderId.split(",").length; d++){
+                notAvailableLoadersList.push(notAvailableLoaders[c].loaderId.split(",")[d])
+            }
+        }
+
+        for(var e=0; e<notAvailableLoadersList.length; e++){
+            for(var f=0; f<proccessedLoaderList.length; f++){
+                if(Number(notAvailableLoadersList[e]) === proccessedLoaderList[f].id){
+                    proccessedLoaderList[f].disabled = true
+                }
+            }
+        }
+
+        console.log(proccessedLoaderList)
+
+        const manpowers = proccessedLoaderList.concat(proccessedDriverList)
+        return manpowers
     }
 )
 
@@ -186,6 +249,19 @@ const manpowerSlice = createSlice({
             state.isError = true
             state.message = action.payload
             state.loaders = []
+        })
+        .addCase(getAvailableDriversLoaders.pending, (state)=>{
+            state.isLoading = true
+        })
+        .addCase(getAvailableDriversLoaders.fulfilled, (state, action)=>{
+            state.isLoading = false
+            state.driversloaders = action.payload
+        })
+        .addCase(getAvailableDriversLoaders.rejected, (state, action)=>{
+            state.isLoading = false
+            state.isError = true
+            state.message = action.payload
+            state.driversloaders = []
         })
     }
 })
