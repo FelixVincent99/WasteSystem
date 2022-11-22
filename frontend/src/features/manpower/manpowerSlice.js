@@ -116,7 +116,7 @@ export const getAvailableDriversLoaders = createAsyncThunk(
             manpowerItem.updatedAtFormatted =  manpowerItem.updatedAt.split("T")[0]
             manpowerItem.disabled = false
             return manpowerItem
-        })
+        })     
 
         const loaderList = await manpowerService.getAllLoaders()
         var proccessedLoaderList = loaderList.map(manpowerItem => {
@@ -124,11 +124,11 @@ export const getAvailableDriversLoaders = createAsyncThunk(
             manpowerItem.role = manpowerItem.role === 2? 'Loader': 'Error'
             manpowerItem.gender =  manpowerItem.gender === 1? 'Male': manpowerItem.gender === 2? 'Female': 'Error'
             manpowerItem.operationStartDateFormatted =  manpowerItem.operationStartDate.split("T")[0]
-            manpowerItem.operationEndDateFormatted = manpowerItem.operationEndDate.split("T")[0]
+            manpowerItem.operationEndDateFormatted = manpowerItem.operationEndDate === 1 ?  manpowerItem.operationEndDate.split("T")[0] : ''
             manpowerItem.updatedAtFormatted =  manpowerItem.updatedAt.split("T")[0]
             manpowerItem.disabled = false
             return manpowerItem
-        })
+        })        
 
         const notAvailableDriverList = await manpowerService.getNotAvailableDrivers(data)        
         for(var a=0; a<notAvailableDriverList.length; a++){
