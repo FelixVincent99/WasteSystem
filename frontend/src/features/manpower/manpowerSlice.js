@@ -10,7 +10,9 @@ const initialState = {
     drivers: [],
     loaders: [],
     driversloaders: [],
-    currentManpower: {}
+    leaves: [],
+    currentManpower: {},
+    currentLeave: {}
 }
 
 export const createManpower = createAsyncThunk(
@@ -110,7 +112,7 @@ export const getAvailableDriversLoaders = createAsyncThunk(
             manpowerItem.role = manpowerItem.role === 1? 'Driver': 'Error'
             manpowerItem.gender =  manpowerItem.gender === 1? 'Male': manpowerItem.gender === 2? 'Female': 'Error'
             manpowerItem.operationStartDateFormatted =  manpowerItem.operationStartDate.split("T")[0]
-            manpowerItem.operationEndDateFormatted = manpowerItem.operationEndDateFormatted === 1 ?  manpowerItem.operationEndDate.split("T")[0] : ''
+            manpowerItem.operationEndDateFormatted = manpowerItem.operationEndDate === 1 ?  manpowerItem.operationEndDate.split("T")[0] : ''
             manpowerItem.updatedAtFormatted =  manpowerItem.updatedAt.split("T")[0]
             manpowerItem.disabled = false
             return manpowerItem
@@ -122,7 +124,7 @@ export const getAvailableDriversLoaders = createAsyncThunk(
             manpowerItem.role = manpowerItem.role === 2? 'Loader': 'Error'
             manpowerItem.gender =  manpowerItem.gender === 1? 'Male': manpowerItem.gender === 2? 'Female': 'Error'
             manpowerItem.operationStartDateFormatted =  manpowerItem.operationStartDate.split("T")[0]
-            manpowerItem.operationEndDateFormatted = manpowerItem.operationEndDateFormatted === 1 ?  manpowerItem.operationEndDate.split("T")[0] : ''
+            manpowerItem.operationEndDateFormatted = manpowerItem.operationEndDate.split("T")[0]
             manpowerItem.updatedAtFormatted =  manpowerItem.updatedAt.split("T")[0]
             manpowerItem.disabled = false
             return manpowerItem
@@ -160,6 +162,58 @@ export const getAvailableDriversLoaders = createAsyncThunk(
     }
 )
 
+export const createLeave = createAsyncThunk(
+    'manpowers/createLeave',
+    async (leave, thunkAPI)=>{
+        try{
+            return await manpowerService.createLeave(leave)
+        }catch(error){
+            const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
+export const getAllLeaves = createAsyncThunk(
+    'manpowers/getAllLeaves',
+    async ()=>{
+        const leaveList = await manpowerService.getAllLeaves()        
+        const proccessedLeaveList = leaveList.map(leaveItem => {
+            leaveItem.statusType = leaveItem.status === 1? 'Active': leaveItem.status === 2? 'Inactive': 'Error'
+            leaveItem.leaveStartDateFormatted =  leaveItem.leaveStartDate.split("T")[0]
+            leaveItem.leaveEndDateFormatted = leaveItem.leaveEndDate.split("T")[0]
+            leaveItem.updatedAtFormatted =  leaveItem.updatedAt.split("T")[0]
+            leaveItem.mpName = leaveItem.Manpower.mpName
+            leaveItem.role = leaveItem.Manpower.role === 1? 'Driver': leaveItem.Manpower.role === 2? 'Loader': 'Error'
+            return leaveItem
+        })        
+        return proccessedLeaveList
+    }
+)
+
+export const updateLeave = createAsyncThunk(
+    'manpowers/updateLeave',
+    async (leave, thunkAPI)=>{
+        try{
+            return await manpowerService.updateLeave(leave)
+        }catch(error){
+            const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
+export const getLeave = createAsyncThunk(
+    'manpowers/getLeave',
+    async (leave, thunkAPI)=>{
+        try{
+            return await manpowerService.getLeave(leave)
+        }catch(error){
+            const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
 const manpowerSlice = createSlice({
     name: 'manpower',
     initialState,
@@ -262,6 +316,57 @@ const manpowerSlice = createSlice({
             state.isError = true
             state.message = action.payload
             state.driversloaders = []
+        })
+        .addCase(createLeave.pending, (state)=>{
+            state.isLoading = true
+        })
+        .addCase(createLeave.fulfilled, (state, action)=>{
+            state.isLoading = false
+            state.isSuccess = true
+            state.leaves.push(action.payload)
+        })
+        .addCase(createLeave.rejected, (state, action)=>{
+            state.isLoading = false
+            state.isError = true
+            state.message = action.payload            
+        })
+        .addCase(getAllLeaves.pending, (state)=>{
+            state.isLoading = true
+        })
+        .addCase(getAllLeaves.fulfilled, (state, action)=>{
+            state.isLoading = false
+            state.leaves = action.payload
+        })
+        .addCase(getAllLeaves.rejected, (state, action)=>{
+            state.isLoading = false
+            state.isError = true
+            state.message = action.payload
+            state.leaves = []
+        })
+        .addCase(getLeave.pending, (state)=>{
+            state.isLoading = true
+        })
+        .addCase(getLeave.fulfilled, (state, action)=>{
+            state.isLoading = false
+            state.currentLeave = action.payload
+        })
+        .addCase(getLeave.rejected, (state, action)=>{
+            state.isLoading = false
+            state.isError = true
+            state.message = action.payload
+            state.currentLeave = {}
+        })
+        .addCase(updateLeave.pending, (state, action)=>{
+            state.isLoading = true
+        })
+        .addCase(updateLeave.fulfilled, (state, action)=>{
+            state.isLoading = false
+            state.isSuccess = true                        
+        })
+        .addCase(updateLeave.rejected, (state, action)=>{
+            state.isLoading = false
+            state.isError = true            
+            state.message = action.payload
         })
     }
 })

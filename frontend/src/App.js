@@ -29,6 +29,9 @@ import Truck from './pages/Truck/Truck';
 import Manpower from './pages/Manpower/Manpower';
 import ManpowerList from './pages/Manpower/ManpowerList';
 import AddManpower from './pages/Manpower/AddManpower';
+import AddLeave from './pages/Manpower/AddLeave';
+import LeaveList from './pages/Manpower/LeaveList';
+import Leave from './pages/Manpower/Leave';
 
 //Schedule
 import ScheduleList from './pages/Schedule/ScheduleList';
@@ -57,6 +60,9 @@ function App() {
 
           <Route path='/manpower/list' element={<PrivateRoute><ManpowerList /></PrivateRoute>}></Route>
           <Route path='/manpower/add' element={<PrivateRoute><AddManpower /></PrivateRoute>}></Route>
+          <Route path='/manpower/leave/add' element={<PrivateRoute><AddLeave /></PrivateRoute>}></Route>
+          <Route path='/manpower/leave/list' element={<PrivateRoute><LeaveList /></PrivateRoute>}></Route>
+          <Route path='/manpower/leave/:id' element={<PrivateRoute><Leave /></PrivateRoute>}></Route>
           <Route path='/manpower/:id' element={<PrivateRoute><Manpower /></PrivateRoute>}></Route>
 
           <Route path='/schedule/list' element={<PrivateRoute><ScheduleList /></PrivateRoute>}></Route>          

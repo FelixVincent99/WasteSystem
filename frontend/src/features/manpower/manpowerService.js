@@ -43,6 +43,27 @@ const getNotAvailableLoaders = async (data) => {
     return response.data
 };
 
+const getAllLeaves = async () => {
+    const response = await http.get(API_URL+'/leaves')
+    return response.data
+};
+
+const getLeave = async (id) => {    
+    const response = await http.get(API_URL + `/leave/${id}`)    
+    return response.data
+  
+};
+
+const createLeave = async (data) => {    
+    const response = await http.post(API_URL + '/leaves', data.leaveData)    
+    return response.data  
+};
+
+const updateLeave = async (data) => {
+    const response = await http.put(API_URL + `/leave/${data.leaveData.id}`, data.leaveData)
+    return response.data
+};
+
 const manpowerService = {
   getAll,
   get,
@@ -51,7 +72,11 @@ const manpowerService = {
   getAllDrivers,
   getAllLoaders,
   getNotAvailableDrivers,
-  getNotAvailableLoaders
+  getNotAvailableLoaders,
+  getAllLeaves,
+  getLeave,
+  createLeave,
+  updateLeave,
 };
 
 export default manpowerService;
