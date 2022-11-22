@@ -25,11 +25,36 @@ const update = async (data) => {
     return response.data
 };
 
+const getAllUnavailability = async () => {
+    const response = await http.get(API_URL + '/unavailability')
+    return response.data
+};
+
+const getUnavailability = async (id) => {
+    const response = await http.get(API_URL + `/unavailability/${id}`)
+    return response.data
+  
+};
+
+const createUnavailability = async (data) => {
+    const response = await http.post(API_URL + '/unavailability', data.unavailabilityData)    
+    return response.data  
+};
+
+const updateUnavailability = async (data) => {    
+    const response = await http.put(API_URL + `/unavailability/${data.unavailabilityData.id}`, data.unavailabilityData)
+    return response.data
+};
+
 const truckService = {
   getAll,
   get,
   create,
   update,
+  getAllUnavailability,
+  getUnavailability,
+  createUnavailability,
+  updateUnavailability,
 };
 
 export default truckService;

@@ -12,61 +12,60 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
-import OutlinedInput from '@mui/material/OutlinedInput';
 
 import Spinner from '../../components/Spinner'
-import manpowerService from '../../features/manpower/manpowerService';
-import { updateLeave, reset, getAllManpowers } from '../../features/manpower/manpowerSlice'
+import truckService from '../../features/truck/truckService'
+import { updateTruckUnavailability, reset, getAllTrucks } from '../../features/truck/truckSlice'
 
 
-function Leave() {
+function Unavailability() {
     const params = useParams();
 
-    const initialLeaveState = {        
-        manpowerId: "",
-        leaveStartDate: new Date(),
-        leaveEndDate: new Date(),
+    const initialUnavailabilityState = {        
+        truckId: "",
+        unavailabilityStartDate: new Date(),
+        unavailabilityEndDate: new Date(),
         status: "1"
     }
-    const [leaveData, setLeaveData] = useState(initialLeaveState)    
-    const {isError, isLoading, isSuccess, message} = useSelector(state => state.manpowers);
+    const [unavailabilityData, setUnavailabilityData] = useState(initialUnavailabilityState)    
+    const {isError, isLoading, isSuccess, message} = useSelector(state => state.trucks);
   
     const dispatch = useDispatch()
     const navigate = useNavigate()
   
-    const getLeave = id => {        
-        manpowerService.getLeave(id)
+    const getUnavailability = id => {        
+        truckService.getUnavailability(id)
         .then(response => {
-            setLeaveData(response)            
+            setUnavailabilityData(response)            
         })
         .catch(e => {
             console.log(e);
         });
     };
-    const manpowers = useSelector(state => state.manpowers.manpowers)
+    const trucks = useSelector(state => state.trucks.trucks)
   
     useEffect(() => {
         if(isError){
             toast.error(message)
         }
         if(isSuccess){
-            toast.success("Leave has been updated")
-            navigate('/manpower/leave/list')
+            toast.success("Unavailability has been updated")
+            navigate('/truck/unavailability/list')
         }
-        dispatch(getAllManpowers())
+        dispatch(getAllTrucks())
         dispatch(reset())
-        getLeave(params.id)
+        getUnavailability(params.id)
     }, [params.id, isError, isSuccess, navigate, message, dispatch]);
   
-    const onChangeLeave = (e) => {
-        setLeaveData((prevState) => ({
+    const onChangeUnavailability = (e) => {
+        setUnavailabilityData((prevState) => ({
             ...prevState,
             [e.target.name]: e.target.value,
         }))
     }
-    const saveUpdateLeave = (e) => {
+    const saveUpdateUnavailability = (e) => {
         e.preventDefault()
-        dispatch(updateLeave({leaveData}))
+        dispatch(updateTruckUnavailability({unavailabilityData}))
     }
 
     if(isLoading){
@@ -74,24 +73,24 @@ function Leave() {
     }
 
     return (
-        <Box component="form" onSubmit={saveUpdateLeave} noValidate sx={{ m: 1 }}>            
+        <Box component="form" onSubmit={saveUpdateUnavailability} noValidate sx={{ m: 1 }}>            
             <Stack spacing={2}>
             <FormControl>
-                <InputLabel id="manpowerLabel">Name</InputLabel>
-                <Select labelId="manpowerLabel" id="manpowerId" name="manpowerId" value={leaveData.manpowerId} input={<OutlinedInput label="Name" />} onChange={onChangeLeave} >
-                    {manpowers.map(( {id, mpName}, index) =>  <MenuItem key={index} value={id} >{mpName}</MenuItem>)}
+                <InputLabel id="truckLabel">Truck</InputLabel>
+                <Select labelId="truckLabel" id="truckId" name="truckId" value={unavailabilityData.truckId} label="Truck" onChange={onChangeUnavailability}>
+                    {trucks.map(( {id, truckNo}, index) =>  <MenuItem key={index} value={id}>{truckNo}</MenuItem>)}
                 </Select>
             </FormControl>
             <LocalizationProvider dateAdapter={AdapterMoment} >
                 <DatePicker            
                 onChange={(newValue)=>{
-                    setLeaveData((prevState) => ({
+                    setUnavailabilityData((prevState) => ({
                         ...prevState,
-                        [`leaveStartDate`]: newValue.toDate()  
+                        [`unavailabilityStartDate`]: newValue.toDate()  
                     }))
                 }}
-                value={leaveData.leaveStartDate}
-                label="Leave Start Date"
+                value={unavailabilityData.unavailabilityStartDate}
+                label="Unavailability Start Date"
                 views={['year', 'month', 'day']}            
                 renderInput={(params) => <TextField {...params} fullWidth/>}
                 />
@@ -99,20 +98,20 @@ function Leave() {
             <LocalizationProvider dateAdapter={AdapterMoment}>
                 <DatePicker            
                 onChange={(newValue)=>{
-                    setLeaveData((prevState) => ({
+                    setUnavailabilityData((prevState) => ({
                         ...prevState,
-                        [`leaveEndDate`]: newValue.toDate()  
+                        [`unavailabilityEndDate`]: newValue.toDate()  
                     }))
                 }}
-                value={leaveData.leaveEndDate}
-                label="Leave End Date"
+                value={unavailabilityData.unavailabilityEndDate}
+                label="Unavailability End Date"
                 views={['year', 'month', 'day']}            
                 renderInput={(params) => <TextField {...params} fullWidth/>}
                 />
             </LocalizationProvider>
             <FormControl sx={{ m: 1, minWidth: 120 }}>
                 <InputLabel id="statusLabel">Status</InputLabel>
-                <Select labelId="statusLabel" id="status" name="status" value={leaveData.status} label="Status" onChange={onChangeLeave}>
+                <Select labelId="statusLabel" id="status" name="status" value={unavailabilityData.status} label="Status" onChange={onChangeUnavailability}>
                     <MenuItem value="1">Active</MenuItem>
                     <MenuItem value="2">Inactive</MenuItem>
                 </Select>
@@ -125,4 +124,4 @@ function Leave() {
     )
 }
 
-export default Leave
+export default Unavailability

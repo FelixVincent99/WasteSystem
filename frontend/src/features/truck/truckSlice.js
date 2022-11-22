@@ -7,7 +7,9 @@ const initialState = {
     isLoading: false,
     message: '',
     trucks: [],
-    currentTruck: {}
+    unavailability: [],
+    currentTruck: {},
+    currentUnavailability: {},
 };
 
 export const createTruck = createAsyncThunk(
@@ -57,6 +59,62 @@ export const getTruck = createAsyncThunk(
     async (truck, thunkAPI)=>{
         try{
             return await truckService.get(truck)
+        }catch(error){
+            const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
+export const createTruckUnavailability = createAsyncThunk(
+    'trucks/createTruckUnavailability',
+    async (truckUnavailability, thunkAPI)=>{
+        try{
+            return await truckService.createUnavailability(truckUnavailability)
+        }catch(error){
+            const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
+export const getAllTrucksUnavailability = createAsyncThunk(
+    'trucks/getAllTrucksUnavailability',
+    async ()=>{
+        const truckUnavailabilityList = await truckService.getAllUnavailability()
+        const proccessedTruckUnavailabilityList = truckUnavailabilityList.map(truckItem => {
+            truckItem.statusType = truckItem.status === 1? 'Active': truckItem.status === 2? 'Inactive': 'Error'            
+            truckItem.unavailabilityStartDateFormatted =  truckItem.unavailabilityStartDate.split("T")[0]
+            truckItem.unavailabilityEndDateFormatted = truckItem.unavailabilityEndDate.split("T")[0]
+            truckItem.updatedAtFormatted =  truckItem.updatedAt.split("T")[0]
+            truckItem.truckNo = truckItem.Truck.truckNo
+            truckItem.truckTypeName = truckItem.Truck.truckType === 1? 'Compactor Truck': truckItem.Truck.truckType === 2? 'RoRo Truck': truckItem.Truck.truckType === 3? 'Prime Mover': 'Error'
+            return truckItem
+        })
+        return proccessedTruckUnavailabilityList
+    }
+)
+
+export const updateTruckUnavailability = createAsyncThunk(
+    'trucks/updateTruckUnavailability',
+    async (truckUnavailability, thunkAPI)=>{
+        try{
+            return await truckService.updateUnavailability(truckUnavailability)
+        }catch(error){
+            const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
+export const getTruckUnavailability = createAsyncThunk(
+    'trucks/getTruckUnavailability',
+    async (truckUnavailability, thunkAPI)=>{
+        try{
+            return await truckService.getUnavailability(truckUnavailability)
         }catch(error){
             const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
 
@@ -125,6 +183,57 @@ const truckSlice = createSlice({
             state.isSuccess = true                        
         })
         .addCase(updateTruck.rejected, (state, action)=>{
+            state.isLoading = false
+            state.isError = true            
+            state.message = action.payload
+        })
+        .addCase(createTruckUnavailability.pending, (state)=>{
+            state.isLoading = true
+        })
+        .addCase(createTruckUnavailability.fulfilled, (state, action)=>{
+            state.isLoading = false
+            state.isSuccess = true
+            state.unavailability.push(action.payload)
+        })
+        .addCase(createTruckUnavailability.rejected, (state, action)=>{
+            state.isLoading = false
+            state.isError = true
+            state.message = action.payload            
+        })
+        .addCase(getAllTrucksUnavailability.pending, (state)=>{
+            state.isLoading = true
+        })
+        .addCase(getAllTrucksUnavailability.fulfilled, (state, action)=>{
+            state.isLoading = false
+            state.unavailability = action.payload
+        })
+        .addCase(getAllTrucksUnavailability.rejected, (state, action)=>{
+            state.isLoading = false
+            state.isError = true
+            state.message = action.payload
+            state.unavailability = []
+        })
+        .addCase(getTruckUnavailability.pending, (state)=>{
+            state.isLoading = true
+        })
+        .addCase(getTruckUnavailability.fulfilled, (state, action)=>{
+            state.isLoading = false
+            state.currentUnavailability = action.payload
+        })
+        .addCase(getTruckUnavailability.rejected, (state, action)=>{
+            state.isLoading = false
+            state.isError = true
+            state.message = action.payload
+            state.currentUnavailability = {}
+        })
+        .addCase(updateTruckUnavailability.pending, (state, action)=>{
+            state.isLoading = true
+        })
+        .addCase(updateTruckUnavailability.fulfilled, (state, action)=>{
+            state.isLoading = false
+            state.isSuccess = true                        
+        })
+        .addCase(updateTruckUnavailability.rejected, (state, action)=>{
             state.isLoading = false
             state.isError = true            
             state.message = action.payload
