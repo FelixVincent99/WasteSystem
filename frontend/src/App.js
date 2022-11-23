@@ -23,12 +23,18 @@ import Area from './pages/Area/Area'
 import TruckList from './pages/Truck/TruckList';
 import AddTruck from './pages/Truck/AddTruck';
 import Truck from './pages/Truck/Truck';
+import Unavailability from './pages/Truck/Unavailability'; 
+import UnavailabilityList from './pages/Truck/UnavailabilityList';
+import AddUnavailability from './pages/Truck/AddUnvailability';
 
 
 //Manpower
 import Manpower from './pages/Manpower/Manpower';
 import ManpowerList from './pages/Manpower/ManpowerList';
 import AddManpower from './pages/Manpower/AddManpower';
+import AddLeave from './pages/Manpower/AddLeave';
+import LeaveList from './pages/Manpower/LeaveList';
+import Leave from './pages/Manpower/Leave';
 
 //Schedule
 import ScheduleList from './pages/Schedule/ScheduleList';
@@ -51,10 +57,16 @@ function App() {
           <Route path='/area/add' element={<PrivateRoute><AddArea /></PrivateRoute>}></Route>
           <Route path='/area/:id' element={<PrivateRoute><Area /></PrivateRoute>}></Route>
 
+          <Route path='/truck/unavailability/list' element={<PrivateRoute><UnavailabilityList /></PrivateRoute>}></Route>
+          <Route path='/truck/unavailability/add' element={<PrivateRoute><AddUnavailability /></PrivateRoute>}></Route>
+          <Route path='/truck/unavailability/:id' element={<PrivateRoute><Unavailability /></PrivateRoute>}></Route>
           <Route path='/truck/list' element={<PrivateRoute><TruckList /></PrivateRoute>}></Route>
           <Route path='/truck/add' element={<PrivateRoute><AddTruck /></PrivateRoute>}></Route>
           <Route path='/truck/:id' element={<PrivateRoute><Truck /></PrivateRoute>}></Route>
 
+          <Route path='/manpower/leave/add' element={<PrivateRoute><AddLeave /></PrivateRoute>}></Route>
+          <Route path='/manpower/leave/list' element={<PrivateRoute><LeaveList /></PrivateRoute>}></Route>
+          <Route path='/manpower/leave/:id' element={<PrivateRoute><Leave /></PrivateRoute>}></Route>
           <Route path='/manpower/list' element={<PrivateRoute><ManpowerList /></PrivateRoute>}></Route>
           <Route path='/manpower/add' element={<PrivateRoute><AddManpower /></PrivateRoute>}></Route>
           <Route path='/manpower/:id' element={<PrivateRoute><Manpower /></PrivateRoute>}></Route>

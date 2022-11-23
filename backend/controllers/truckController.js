@@ -1,10 +1,11 @@
 const db = require("../models");
 const Truck = db.Truck;
+const TruckUnavailability = db.TruckUnavailability;
 const Op = db.Sequelize.Op;
+const seq = db.sequelize;
 const asyncHandler = require('express-async-handler');
 
 // 1. add truck
-
 const addTruck = asyncHandler(async(req, res) => {
 
     let data = {
@@ -34,7 +35,6 @@ const addTruck = asyncHandler(async(req, res) => {
 });
 
 // 2. get all trucks
-
 const getAllTrucks = asyncHandler(async(req, res) => {
 
     let trucks = await Truck.findAll({ where: { status: 1 } });
@@ -42,7 +42,6 @@ const getAllTrucks = asyncHandler(async(req, res) => {
 });
 
 // 3. get single truck
-
 const getOneTruck = asyncHandler(async(req, res) => {
 
     let id = req.params.id;
@@ -51,7 +50,6 @@ const getOneTruck = asyncHandler(async(req, res) => {
 });
 
 // 4. update truck
-
 const updateTruck = asyncHandler(async(req, res) => {
 
     let id = req.params.id;
@@ -80,9 +78,64 @@ const updateTruck = asyncHandler(async(req, res) => {
     res.status(204).send(truck);
 });
 
+// 5. add truck unavailability
+const addTruckUnavailability = asyncHandler(async(req, res) => {
+
+    let data = {
+        truckId: req.body.truckId,
+        unavailabilityStartDate: req.body.unavailabilityStartDate,
+        unavailabilityEndDate: req.body.unavailabilityEndDate,        
+        status: req.body.status
+    }
+
+    const truckUnavailability = await TruckUnavailability.create(data);
+    res.status(201).send(truckUnavailability);
+});
+
+// 6. get all trucks unavailability
+const getAllTruckUnavailability = asyncHandler(async(req, res) => {
+
+    let truckUnavailability = await TruckUnavailability.findAll({
+        where: { status: 1 },
+        include: [{
+            model: Truck
+        }]
+    });
+    res.status(200).send(truckUnavailability);
+});
+
+// 7. get single truck unavailability
+const getOneTruckUnavailability = asyncHandler(async(req, res) => {
+
+    let id = req.params.id;
+    let truckUnavailability = await TruckUnavailability.findOne({ where: { id: id } });
+    res.status(200).send(truckUnavailability);
+});
+
+// 8. update truck unavailability
+const updateTruckUnavailability = asyncHandler(async(req, res) => {
+
+    let id = req.params.id;
+    const truckUnavailability = await TruckUnavailability.update(req.body, { where: { id: id } });
+    res.status(204).send(truckUnavailability);
+});
+
+// 9. get not available trucks
+const getNotAvailableTrucks = asyncHandler(async(req, res) => {
+    const [results, metadata] = await seq.query(
+        "SELECT t.* FROM trucks t JOIN schedules s ON t.id = s.truckId WHERE '" + req.body.scheduleDate + "' = s.scheduleDate UNION SELECT t.* FROM trucks t JOIN truckunavailabilities tu ON t.id = tu.truckId WHERE '" + req.body.scheduleDate + "' BETWEEN CONVERT(tu.unavailabilityStartDate, DATE) AND CONVERT(tu.unavailabilityEndDate, DATE)"
+    );
+    res.status(200).send(results);
+});
+
 module.exports = {
     addTruck,
     getAllTrucks,
     getOneTruck,
-    updateTruck
+    updateTruck,
+    addTruckUnavailability,
+    getAllTruckUnavailability,
+    getOneTruckUnavailability,
+    updateTruckUnavailability,
+    getNotAvailableTrucks
 }

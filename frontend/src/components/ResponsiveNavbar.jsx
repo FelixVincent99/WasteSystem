@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import { useLocation } from 'react-router-dom'
 import Box from '@mui/material/Box';
@@ -12,6 +12,8 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemLink from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -22,6 +24,7 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import MapIcon from '@mui/icons-material/Map';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { AppBar } from '@mui/material';
+import Collapse from '@mui/material/Collapse';
 
 import {useDispatch} from 'react-redux'
 import {logout, reset} from '../features/auth/authSlice'
@@ -32,11 +35,10 @@ function ResponsiveNavbar(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation().pathname.split("/")[1]
-console.log(location)
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-
 
   const dispatch = useDispatch()
   const onLogout = () => {
@@ -54,12 +56,20 @@ console.log(location)
         {
             name: 'Manpower',
             icon: <EngineeringIcon/>,
-            link: '/manpower/list'
+            link: '/manpower/list',
+            expand: [{
+              name: 'Availability',
+              link: '/manpower/leave/list'
+            }]
         },
         {
             name: 'Truck',
             icon: <LocalShippingIcon/>,
-            link: '/truck/list'
+            link: '/truck/list',
+            expand: [{
+              name: 'Availability',
+              link: '/truck/unavailability/list'
+            }]
         },
         {
             name: 'Schedule',
@@ -71,7 +81,23 @@ console.log(location)
             icon: <MapIcon/>,
             link: '/map'
         }    
-    ];  
+    ];
+
+    const [expandList, setExpandList] = useState({
+      settings: [
+        { name: "Manpower", open: false },
+        { name: "Truck", open: false }
+      ]
+    })
+
+    const handleCollapse = name => {
+      setExpandList(state => ({
+        ...state,
+        settings: state.settings.map(item =>
+          item.name === name ? { ...item, open: !item.open } : item
+        )
+      }));
+    };
 
     const drawer = (
         <div>      
@@ -79,12 +105,30 @@ console.log(location)
         <Divider />
         <List>
             {menuList.map((menuItem, index) => (
-            <ListItem key={menuItem.name} disablePadding>                
-                <ListItemLink to={menuItem.link} onClick={()=>{console.log(menuItem.name)}}>
+            <Fragment key={menuItem.name}>
+              <ListItem disablePadding>
+                <ListItemLink to={menuItem.link}>
                     <ListItemIcon>{menuItem.icon}</ListItemIcon>
-                    <ListItemText primary={menuItem.name} />
-              </ListItemLink>
-            </ListItem>
+                    <ListItemText primary={menuItem.name} />                      
+                </ListItemLink>
+                {/* {menuItem.expand !== undefined ? menuItem.open ? <ExpandLess onClick={() => handleCollapse(menuItem.name)}/> : <ExpandMore onClick={() => handleCollapse(menuItem.name)}/>: <></>} */}
+                {menuItem.expand !== undefined ? expandList.settings.find(item => item.name === menuItem.name).open ? <ExpandLess onClick={() => handleCollapse(menuItem.name)}/> : <ExpandMore onClick={() => handleCollapse(menuItem.name)}/>: <></>}
+              </ListItem>
+              <Divider />
+              {menuItem.expand !== undefined ?
+              <Collapse in={expandList.settings.find(item => item.name === menuItem.name).open} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                  {menuItem.expand.map(subMenu => (
+                    <ListItem key={subMenu.name} button>
+                     <ListItemLink to={subMenu.link}>
+                        <ListItemText primary={subMenu.name} />                        
+                      </ListItemLink>
+                    </ListItem>
+                  ))}
+                </List>
+              </Collapse>
+              :<></>}
+            </Fragment>
             ))}            
         </List>
         <Divider />
