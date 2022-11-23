@@ -119,6 +119,14 @@ const updateTruckUnavailability = asyncHandler(async(req, res) => {
     res.status(204).send(truckUnavailability);
 });
 
+// 9. get not available trucks
+const getNotAvailableTrucks = asyncHandler(async(req, res) => {
+    const [results, metadata] = await seq.query(
+        "SELECT t.* FROM trucks t JOIN schedules s ON t.id = s.truckId WHERE '" + req.body.scheduleDate + "' = s.scheduleDate UNION SELECT t.* FROM trucks t JOIN truckunavailabilities tu ON t.id = tu.truckId WHERE '" + req.body.scheduleDate + "' BETWEEN tu.unavailabilityStartDate AND tu.unavailabilityEndDate"
+    );
+    res.status(200).send(results);
+});
+
 module.exports = {
     addTruck,
     getAllTrucks,
@@ -127,5 +135,6 @@ module.exports = {
     addTruckUnavailability,
     getAllTruckUnavailability,
     getOneTruckUnavailability,
-    updateTruckUnavailability
+    updateTruckUnavailability,
+    getNotAvailableTrucks
 }
