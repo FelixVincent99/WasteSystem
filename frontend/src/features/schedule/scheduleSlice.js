@@ -27,7 +27,8 @@ export const getAllSchedules = createAsyncThunk(
     'schedules/getAll',
     async ()=>{
         const scheduleList = await scheduleService.getAll()
-        const areaList = await areaService.getAll()        
+        const areaList = await areaService.getAll()
+
         const proccessedScheduleList = areaList.map(areaItem => {
             var schedule = [];
             for(var a=0; a<scheduleList.length; a++){

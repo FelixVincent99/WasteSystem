@@ -32,8 +32,8 @@ const addSchedule = asyncHandler(async(req, res) => {
 const getAllSchedules = asyncHandler(async(req, res) => {
 
     const [results, metadata] = await seq.query(
-        "SELECT s.*, a.areaCode, t.truckNo, d.mpName AS driver, l.mpName AS loader" +
-        " FROM Schedules s JOIN Areas a ON s.areaId = a.id JOIN Trucks t ON s.truckId = t.id JOIN Manpowers d ON s.driverId = d.id JOIN Manpowers l ON s.loaderId = l.id"
+        "SELECT s.*, a.areaCode, t.truckNo, d.mpName AS driver" +
+        " FROM Schedules s JOIN Areas a ON s.areaId = a.id JOIN Trucks t ON s.truckId = t.id JOIN Manpowers d ON s.driverId = d.id"
     );
     res.status(200).send(results);
 });
