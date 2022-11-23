@@ -72,7 +72,7 @@ const getAllLoaders = asyncHandler(async(req, res) => {
 // 7. get not available drivers
 const getNotAvailableDrivers = asyncHandler(async(req, res) => {
     const [results, metadata] = await seq.query(
-        "SELECT * FROM Manpowers m WHERE EXISTS (SELECT * FROM Schedules s WHERE scheduleDate = '" + req.body.scheduleDate + "' AND m.id = s.driverId AND s.id != '" + req.body.scheduleId + "') AND role = 1"
+        "SELECT m.* FROM Manpowers m JOIN schedules s ON m.id = s.driverId WHERE '" + req.body.scheduleDate + "' = s.scheduleDate AND m.role = 1 UNION SELECT m.* FROM Manpowers m JOIN manpowerleaves ml ON m.id = ml.manpowerId WHERE '" + req.body.scheduleDate + "' BETWEEN ml.leaveStartDate AND ml.leaveEndDate AND m.role = 1"
     );
     res.status(200).send(results);
 });
@@ -80,7 +80,7 @@ const getNotAvailableDrivers = asyncHandler(async(req, res) => {
 // 8. get not available loaders
 const getNotAvailableLoaders = asyncHandler(async(req, res) => {    
     const [results, metadata] = await seq.query(        
-        "SELECT loaderId FROM Schedules WHERE scheduleDate = '" + req.body.scheduleDate + "' AND id != '" + req.body.scheduleId + "'"
+        "SELECT GROUP_CONCAT(loaderId) AS loaderId FROM (SELECT s.loaderId FROM Manpowers m JOIN schedules s ON m.id = s.loaderId WHERE '" + req.body.scheduleDate + "' = s.scheduleDate AND m.role = 2 UNION SELECT GROUP_CONCAT(m.id) AS loaderId FROM Manpowers m JOIN manpowerleaves ml ON m.id = ml.manpowerId WHERE '" + req.body.scheduleDate + "' BETWEEN ml.leaveStartDate AND ml.leaveEndDate AND m.role = 2) AS RESULT"
     );
     res.status(200).send(results);
 });
