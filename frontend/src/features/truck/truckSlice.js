@@ -7,6 +7,7 @@ const initialState = {
     isLoading: false,
     message: '',
     trucks: [],
+    availabletrucks: [],
     unavailability: [],
     currentTruck: {},
     currentUnavailability: {},
@@ -120,6 +121,31 @@ export const getTruckUnavailability = createAsyncThunk(
 
             return thunkAPI.rejectWithValue(message)
         }
+    }
+)
+
+export const getAvailableTrucks = createAsyncThunk(
+    'trucks/getAvaiableTrucks',
+    async (data, thunkAPI) => {
+        var truckList = await truckService.getAll()
+        const notAvailableTruckList = await truckService.getNotAvailableTrucks(data)    
+        
+        truckList.map(truckItem => {
+            truckItem.disabled = false
+            return truckItem
+        })
+
+        if(notAvailableTruckList.length !== 0){
+            for(var a=0; a<notAvailableTruckList.length; a++){
+                for(var b=0; b<truckList.length; b++){
+                    if(notAvailableTruckList[a].id === truckList[b].id){                        
+                        truckList[b].disabled = true
+                    }
+                }
+            }
+        }
+        
+        return truckList
     }
 )
 
@@ -237,6 +263,19 @@ const truckSlice = createSlice({
             state.isLoading = false
             state.isError = true            
             state.message = action.payload
+        })
+        .addCase(getAvailableTrucks.pending, (state)=>{
+            state.isLoading = true
+        })
+        .addCase(getAvailableTrucks.fulfilled, (state, action)=>{
+            state.isLoading = false
+            state.availabletrucks = action.payload
+        })
+        .addCase(getAvailableTrucks.rejected, (state, action)=>{
+            state.isLoading = false
+            state.isError = true
+            state.message = action.payload
+            state.availabletrucks = []
         })
     }
 })

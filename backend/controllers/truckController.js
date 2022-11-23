@@ -2,6 +2,7 @@ const db = require("../models");
 const Truck = db.Truck;
 const TruckUnavailability = db.TruckUnavailability;
 const Op = db.Sequelize.Op;
+const seq = db.sequelize;
 const asyncHandler = require('express-async-handler');
 
 // 1. add truck

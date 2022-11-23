@@ -19,7 +19,7 @@ import { createSchedule, updateSchedule, reset } from '../../features/schedule/s
 import Spinner from '../../components/Spinner'
 import { getAvailableDriversLoaders } from '../../features/manpower/manpowerSlice'
 import { getAllAreas } from '../../features/area/areaSlice'
-import { getAllTrucks } from '../../features/truck/truckSlice'
+import { getAvailableTrucks } from '../../features/truck/truckSlice'
 
 
 function Schedule() {
@@ -62,7 +62,8 @@ function Schedule() {
 
     const {isError, isLoading, isSuccess, message} = useSelector(state => state.schedules)
     const areas = useSelector(state => state.areas.areas)
-    const trucks = useSelector(state => state.trucks.trucks)
+    // const trucks = useSelector(state => state.trucks.trucks)
+    const trucks = useSelector(state => state.trucks.availabletrucks)
     const driversloaders = useSelector(state => state.manpowers.driversloaders)
 
     var drivers = []
@@ -78,7 +79,7 @@ function Schedule() {
     const initFetch = useCallback(()=>{        
         dispatch(getAvailableDriversLoaders({'scheduleDate': location.value.scheduleDate, 'scheduleId': location.value.scheduleId}))
         dispatch(getAllAreas())
-        dispatch(getAllTrucks())
+        dispatch(getAvailableTrucks({'scheduleDate': location.value.scheduleDate, 'scheduleId': location.value.scheduleId}))
         dispatch(reset())        
     },[dispatch, location.value.scheduleDate, location.value.scheduleId])
 
@@ -162,7 +163,7 @@ function Schedule() {
             <FormControl>
                 <InputLabel id="truckLabel">Truck</InputLabel>
                 <Select labelId="truckLabel" id="truckId" name="truckId" value={truckId} label="Truck" onChange={onChangeSchedule}>
-                    {trucks.map(( {id, truckNo}, index) =>  <MenuItem key={index} value={id}>{truckNo}</MenuItem>)}
+                    {trucks.map(( {id, truckNo, disabled}, index) =>  <MenuItem key={index} value={id} disabled={disabled}>{truckNo}</MenuItem>)}
                 </Select>
             </FormControl>
             <FormControl>
