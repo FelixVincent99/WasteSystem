@@ -130,32 +130,36 @@ export const getAvailableDriversLoaders = createAsyncThunk(
             return manpowerItem
         })        
 
-        const notAvailableDriverList = await manpowerService.getNotAvailableDrivers(data)        
-        for(var a=0; a<notAvailableDriverList.length; a++){
-            for(var b=0; b<proccessedDriverList.length; b++){
-                if(notAvailableDriverList[a].id === proccessedDriverList[b].id){
-                    proccessedDriverList[b].disabled = true
+        const notAvailableDriverList = await manpowerService.getNotAvailableDrivers(data)
+        if(notAvailableDriverList.length !== 0){
+            for(var a=0; a<notAvailableDriverList.length; a++){
+                for(var b=0; b<proccessedDriverList.length; b++){
+                    if(notAvailableDriverList[a].id === proccessedDriverList[b].id){
+                        proccessedDriverList[b].disabled = true
+                    }
                 }
             }
         }
         
-        const notAvailableLoaders = await manpowerService.getNotAvailableLoaders(data)
+        const notAvailableLoaders = await manpowerService.getNotAvailableLoaders(data)        
         var notAvailableLoadersList = []
-        for(var c=0; c<notAvailableLoaders.length; c++){
-            for(var d=0; d<notAvailableLoaders[c].loaderId.split(",").length; d++){
-                notAvailableLoadersList.push(notAvailableLoaders[c].loaderId.split(",")[d])
-            }
-        }
-
-        for(var e=0; e<notAvailableLoadersList.length; e++){
-            for(var f=0; f<proccessedLoaderList.length; f++){
-                if(Number(notAvailableLoadersList[e]) === proccessedLoaderList[f].id){
-                    proccessedLoaderList[f].disabled = true
+        if(notAvailableLoaders[0].loaderId !== null){
+            for(var c=0; c<notAvailableLoaders.length; c++){
+                for(var d=0; d<notAvailableLoaders[c].loaderId.split(",").length; d++){
+                    notAvailableLoadersList.push(notAvailableLoaders[c].loaderId.split(",")[d])
                 }
             }
         }
 
-        console.log(proccessedLoaderList)
+        if(notAvailableLoadersList.length !== 0){
+            for(var e=0; e<notAvailableLoadersList.length; e++){
+                for(var f=0; f<proccessedLoaderList.length; f++){
+                    if(Number(notAvailableLoadersList[e]) === proccessedLoaderList[f].id){
+                        proccessedLoaderList[f].disabled = true
+                    }
+                }
+            }
+        }
 
         const manpowers = proccessedLoaderList.concat(proccessedDriverList)
         return manpowers
