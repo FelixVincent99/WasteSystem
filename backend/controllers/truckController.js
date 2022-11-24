@@ -123,7 +123,7 @@ const updateTruckUnavailability = asyncHandler(async(req, res) => {
 // 9. get not available trucks
 const getNotAvailableTrucks = asyncHandler(async(req, res) => {
     const [results, metadata] = await seq.query(
-        "SELECT t.* FROM trucks t JOIN schedules s ON t.id = s.truckId WHERE '" + req.body.scheduleDate + "' = s.scheduleDate UNION SELECT t.* FROM trucks t JOIN truckunavailabilities tu ON t.id = tu.truckId WHERE '" + req.body.scheduleDate + "' BETWEEN CONVERT(tu.unavailabilityStartDate, DATE) AND CONVERT(tu.unavailabilityEndDate, DATE)"
+        "SELECT t.* FROM Trucks t JOIN Schedules s ON t.id = s.truckId WHERE '" + req.body.scheduleDate + "' = s.scheduleDate UNION SELECT t.* FROM Trucks t JOIN TruckUnavailabilities tu ON t.id = tu.truckId WHERE '" + req.body.scheduleDate + "' BETWEEN CONVERT(tu.unavailabilityStartDate, DATE) AND CONVERT(tu.unavailabilityEndDate, DATE)"
     );
     res.status(200).send(results);
 });
