@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom'
-import {useSelector} from 'react-redux'
+import {useSelector, useDispatch} from 'react-redux'
 
 import {ToastContainer} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -40,10 +40,29 @@ import Leave from './pages/Manpower/Leave';
 import ScheduleList from './pages/Schedule/ScheduleList';
 import Schedule from './pages/Schedule/Schedule';
 
+import {logout, reset} from './features/auth/authSlice'
+
 function App() {  
 
-  const {user} = useSelector((state)=> state.auth)
+  const {user} = useSelector((state)=> state.auth)  
   const drawerWidth = 240;
+  const dispatch = useDispatch()
+
+  const parseJwt = (token) => {
+    try {
+      return JSON.parse(atob(token.split(".")[1]));
+    } catch (e) {
+      return null;
+    }
+  };
+    
+  if(user){
+    const token = parseJwt(user.token)
+    if (token.exp * 1000 < Date.now()) {
+      dispatch(logout())
+      dispatch(reset())  
+    }
+  }
 
   return (
     <Box sx={{ display: 'flex' }}>
