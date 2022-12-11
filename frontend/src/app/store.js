@@ -4,6 +4,7 @@ import truckReducer from '../features/truck/truckSlice'
 import areaReducer from '../features/area/areaSlice'
 import manpowerReducer from '../features/manpower/manpowerSlice'
 import scheduleReducer  from '../features/schedule/scheduleSlice'
+import collectionReducer  from '../features/collection/collectionSlice'
 
 export const store = configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export const store = configureStore({
     areas: areaReducer,
     manpowers: manpowerReducer,
     schedules: scheduleReducer,
+    collections: collectionReducer
   },
 });

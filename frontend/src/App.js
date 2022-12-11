@@ -40,6 +40,9 @@ import Leave from './pages/Manpower/Leave';
 import ScheduleList from './pages/Schedule/ScheduleList';
 import Schedule from './pages/Schedule/Schedule';
 
+//Map
+import Map from './pages/Map/Map';
+
 import {logout, reset} from './features/auth/authSlice'
 
 function App() {  
@@ -92,6 +95,8 @@ function App() {
 
           <Route path='/schedule/list' element={<PrivateRoute><ScheduleList /></PrivateRoute>}></Route>          
           <Route path='/schedule' element={<PrivateRoute><Schedule /></PrivateRoute>}></Route>
+
+          <Route path='/map' element={<PrivateRoute><Map /></PrivateRoute>}></Route>
           
           <Route path='/login' element={<Login />}></Route>
           <Route path='/' element={<PrivateRoute><Home /></PrivateRoute>}></Route>
