@@ -51,6 +51,11 @@ const getNotAvailableTrucks = async (data) => {
     return response.data
 };
 
+const getDefaultAvailableTrucks = async (data) => {
+    const response = await http.post(API_URL + '/defaultAvailableTrucks', data)
+    return response.data
+};
+
 const truckService = {
   getAll,
   get,
@@ -61,6 +66,7 @@ const truckService = {
   createUnavailability,
   updateUnavailability,
   getNotAvailableTrucks,
+  getDefaultAvailableTrucks,
 };
 
 export default truckService;

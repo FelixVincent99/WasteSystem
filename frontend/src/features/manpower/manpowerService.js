@@ -9,8 +9,7 @@ const getAll = async () => {
 
 const get = async (id) => {    
     const response = await http.get(API_URL + `/${id}`)    
-    return response.data
-  
+    return response.data  
 };
 
 const create = async (data) => {    
@@ -64,6 +63,17 @@ const updateLeave = async (data) => {
     return response.data
 };
 
+
+const getDefaultAvailableDrivers = async (data) => {
+    const response = await http.post(API_URL + '/defaultAvailableDrivers', data)
+    return response.data
+};
+
+
+const getDefaultAvailableLoaders = async (data) => {
+    const response = await http.post(API_URL + '/defaultAvailableLoaders', data)
+    return response.data
+};
 const manpowerService = {
   getAll,
   get,
@@ -77,6 +87,8 @@ const manpowerService = {
   getLeave,
   createLeave,
   updateLeave,
+  getDefaultAvailableDrivers,
+  getDefaultAvailableLoaders,
 };
 
 export default manpowerService;

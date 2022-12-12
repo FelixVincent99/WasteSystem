@@ -7,7 +7,26 @@ import { Button } from '@mui/material'
 
 function AreaList() {
 
-    const areas = useSelector(state => state.areas.areas)
+    var rawAreas = useSelector(state => state.areas.areas)
+    var manpowers = useSelector(state => state.manpowers.manpowers)
+
+    var areas = rawAreas.map(area => {
+        var myArea = Object.assign({}, area);
+        myArea.defaultLoaders = []
+        var defaultLoaders = myArea.defaultLoadersId === null ? "" : myArea.defaultLoadersId.split(",")
+        
+        for(var a=0; a<defaultLoaders.length; a++){
+            if(defaultLoaders[a] !== ""){
+                for(var b=0; b<manpowers.length; b++){
+                    if(defaultLoaders[a] === manpowers[b].id){
+                        myArea.defaultLoaders.push(manpowers[b])
+                    }
+                }
+            }
+        }
+        return myArea
+    })
+    
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -52,6 +71,30 @@ function AreaList() {
             flex: 0.5
         },
         {
+            field: 'cf',
+            headerName: 'Collection Frequency',
+            minWidth:200,
+            flex: 1
+        },
+        {
+            field: 'truckNo',
+            headerName: 'Default Truck',
+            minWidth:150,
+            flex: 0.5
+        },
+        {
+            field: 'driverName',
+            headerName: 'Driver',
+            minWidth:150,
+            flex: 0.5
+        },
+        {
+            field: 'loaders',
+            headerName: 'Loaders',
+            minWidth:150,
+            flex: 0.5
+        },
+        {
             field: 'statusType',
             headerName: 'Status',
             minWidth:150,
@@ -61,13 +104,13 @@ function AreaList() {
             field: 'updatedAtFormatted',
             headerName: 'Latest Update',
             minWidth:150,
-            flex: 1
+            flex: 0.5
         },
         {
             field: 'action',
             headerName: 'Action',
             minWidth: 150,
-            flex: 1,
+            flex: 0.5,
             renderCell: renderDetailsButton,
             disableClickEventBubbling: true,
         },

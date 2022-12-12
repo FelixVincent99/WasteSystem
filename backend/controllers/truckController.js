@@ -128,6 +128,46 @@ const getNotAvailableTrucks = asyncHandler(async(req, res) => {
     res.status(200).send(results);
 });
 
+
+// 10. get default available trucks
+const getDefaultAvailableTrucks = asyncHandler(async(req, res) => {
+
+    var cfQuery = "WHERE "
+    if(req.body.cf.monday == true){
+        cfQuery += "collectionFrequency LIKE '%/1/%' OR "
+    }
+    if(req.body.cf.tuesday == true){
+        cfQuery += "collectionFrequency LIKE '%/2/%' OR "
+    }
+    if(req.body.cf.wednesday == true){
+        cfQuery += "collectionFrequency LIKE '%/3/%' OR "
+    }
+    if(req.body.cf.thursday == true){
+        cfQuery += "collectionFrequency LIKE '%/4/%' OR "
+    }
+    if(req.body.cf.friday == true){
+        cfQuery += "collectionFrequency LIKE '%/5/%' OR "
+    }
+    if(req.body.cf.saturday == true){
+        cfQuery += "collectionFrequency LIKE '%/6/%' OR "
+    }
+    if(req.body.cf.sunday == true){
+        cfQuery += "collectionFrequency LIKE '%/0/%' OR "
+    }
+
+    cfQuery = cfQuery == "WHERE " ? "" : cfQuery.slice(0,-3)
+
+    var idQuery = ""
+    if(req.body.defaultTruckId !== undefined){
+        idQuery = " UNION SELECT * from Trucks WHERE id = '" + req.body.defaultTruckId + "'"
+    }
+
+    const [results, metadata] = await seq.query(        
+        "SELECT * from Trucks WHERE id NOT IN (SELECT * FROM(SELECT defaultTruckId FROM Areas " + cfQuery + ")a WHERE a.defaultTruckId IS NOT NULL) AND status = '1'" + idQuery
+    );    
+    res.status(200).send(results);
+});
+
 module.exports = {
     addTruck,
     getAllTrucks,
@@ -137,5 +177,6 @@ module.exports = {
     getAllTruckUnavailability,
     getOneTruckUnavailability,
     updateTruckUnavailability,
-    getNotAvailableTrucks
+    getNotAvailableTrucks,
+    getDefaultAvailableTrucks
 }

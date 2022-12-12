@@ -12,6 +12,8 @@ router.post('/leaves', manpowerController.addManpowerLeaves);
 router.get('/leaves', manpowerController.getAllManpowerLeaves);
 router.get('/leave/:id', manpowerController.getOneManpowerLeave);
 router.put('/leave/:id', manpowerController.updateManpowerLeave);
+router.post('/defaultAvailableDrivers', protect, manpowerController.getDefaultAvailableDrivers);
+router.post('/defaultAvailableLoaders', protect, manpowerController.getDefaultAvailableLoaders);
 router.post('/', protect, manpowerController.addManpower);
 router.get('/', protect, manpowerController.getAllManpowers);
 router.get('/:id', protect, manpowerController.getOneManpower);

@@ -128,6 +128,99 @@ const updateManpowerLeave = asyncHandler(async(req, res) => {
     res.status(204).send(leave);
 });
 
+// 13. get default available drivers
+const getDefaultAvailableDrivers = asyncHandler(async(req, res) => {    
+    var cfQuery = "WHERE "
+    if(req.body.cf.monday == true){
+        cfQuery += "collectionFrequency LIKE '%/1/%' OR "
+    }
+    if(req.body.cf.tuesday == true){
+        cfQuery += "collectionFrequency LIKE '%/2/%' OR "
+    }
+    if(req.body.cf.wednesday == true){
+        cfQuery += "collectionFrequency LIKE '%/3/%' OR "
+    }
+    if(req.body.cf.thursday == true){
+        cfQuery += "collectionFrequency LIKE '%/4/%' OR "
+    }
+    if(req.body.cf.friday == true){
+        cfQuery += "collectionFrequency LIKE '%/5/%' OR "
+    }
+    if(req.body.cf.saturday == true){
+        cfQuery += "collectionFrequency LIKE '%/6/%' OR "
+    }
+    if(req.body.cf.sunday == true){
+        cfQuery += "collectionFrequency LIKE '%/0/%' OR "
+    }
+
+    cfQuery = cfQuery == "WHERE " ? "" : cfQuery.slice(0,-3)
+
+    var idQuery = ""
+    if(req.body.defaultDriverId !== undefined){
+        idQuery = " UNION SELECT * from Manpowers WHERE id = '" + req.body.defaultDriverId + "'"
+    }
+
+    const [results, metadata] = await seq.query(        
+        "SELECT * from Manpowers WHERE id NOT IN (SELECT * FROM (SELECT defaultDriverId FROM Areas " + cfQuery + " )a WHERE a.defaultDriverId IS NOT NULL) AND role = '1' AND status = '1'" + idQuery
+    );
+    res.status(200).send(results);
+});
+
+// 14. get default available loaders
+const getDefaultAvailableLoaders = asyncHandler(async(req, res) => {
+    console.log(req.body)
+    var cfQuery = "WHERE "
+    if(req.body.cf.monday == true){
+        cfQuery += "collectionFrequency LIKE '%/1/%' OR "
+    }
+    if(req.body.cf.tuesday == true){
+        cfQuery += "collectionFrequency LIKE '%/2/%' OR "
+    }
+    if(req.body.cf.wednesday == true){
+        cfQuery += "collectionFrequency LIKE '%/3/%' OR "
+    }
+    if(req.body.cf.thursday == true){
+        cfQuery += "collectionFrequency LIKE '%/4/%' OR "
+    }
+    if(req.body.cf.friday == true){
+        cfQuery += "collectionFrequency LIKE '%/5/%' OR "
+    }
+    if(req.body.cf.saturday == true){
+        cfQuery += "collectionFrequency LIKE '%/6/%' OR "
+    }
+    if(req.body.cf.sunday == true){
+        cfQuery += "collectionFrequency LIKE '%/0/%' OR "
+    }
+
+    cfQuery = cfQuery == "WHERE " ? "" : cfQuery.slice(0,-3)
+
+    const [defaultLoadersId, metadata] = await seq.query(        
+        "SELECT * FROM (SELECT defaultLoadersId FROM Areas " + cfQuery + ")a WHERE a.defaultLoadersId IS NOT NULL"
+    );
+    var proccessedExistLoadersId = []
+    for(var a=0; a<defaultLoadersId.length; a++){
+        for(var b=0; b<defaultLoadersId[a].defaultLoadersId.split(",").length; b++){
+            proccessedExistLoadersId.push(defaultLoadersId[a].defaultLoadersId.split(",")[b])
+        }
+    }
+
+    const [rawLoadersId, metadata2] = await seq.query(        
+        "SELECT * from Manpowers WHERE role = '2' AND status = '1'"
+    );
+    var results = []
+    for(var c=0; c<rawLoadersId.length; c++){
+        if(!proccessedExistLoadersId.includes(rawLoadersId[c].id.toString())){
+            results.push(rawLoadersId[c])
+        }
+        if(req.body.loaders != undefined){
+            if(req.body.loaders.includes(rawLoadersId[c].id)){
+                results.push(rawLoadersId[c])
+            }
+        }
+    }    
+    res.status(200).send(results);
+});
+
 module.exports = {
     addManpower,
     getAllManpowers,
@@ -141,4 +234,6 @@ module.exports = {
     getAllManpowerLeaves,
     getOneManpowerLeave,
     updateManpowerLeave,
+    getDefaultAvailableDrivers,
+    getDefaultAvailableLoaders
 }

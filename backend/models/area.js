@@ -10,7 +10,12 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      Area.belongsTo(models.Truck, {
+        foreignKey: 'defaultTruckId'
+      });
+      Area.belongsTo(models.Manpower, {
+        foreignKey: 'defaultDriverId'
+      });
     }
   }
   Area.init({
@@ -21,7 +26,27 @@ module.exports = (sequelize, DataTypes) => {
     status: {
         type: DataTypes.INTEGER,
         allowNull: false
-    }
+    },
+    defaultTruckId: {
+      type: DataTypes.INTEGER,
+      references: {
+          model: 'Trucks',
+          key: 'id'
+      }
+    },
+    defaultDriverId: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: 'Manpowers',
+            key: 'id'
+        }
+    },
+    defaultLoadersId: {
+        type: DataTypes.STRING,
+    },
+    collectionFrequency: {
+      type: DataTypes.STRING,
+    },
   }, {
     sequelize,
     modelName: 'Area',
