@@ -158,8 +158,8 @@ const getDefaultAvailableTrucks = asyncHandler(async(req, res) => {
     cfQuery = cfQuery == "WHERE " ? "" : cfQuery.slice(0,-3)
 
     var idQuery = ""
-    if(req.body.defaultTruckId !== undefined){
-        idQuery = " UNION SELECT * from Trucks WHERE id = '" + req.body.defaultTruckId + "'"
+    if(req.body.oriDefaultTruckId !== undefined){
+        idQuery = " UNION SELECT * from Trucks WHERE id = '" + req.body.oriDefaultTruckId + "'"
     }
 
     const [results, metadata] = await seq.query(        

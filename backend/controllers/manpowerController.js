@@ -156,8 +156,8 @@ const getDefaultAvailableDrivers = asyncHandler(async(req, res) => {
     cfQuery = cfQuery == "WHERE " ? "" : cfQuery.slice(0,-3)
 
     var idQuery = ""
-    if(req.body.defaultDriverId !== undefined){
-        idQuery = " UNION SELECT * from Manpowers WHERE id = '" + req.body.defaultDriverId + "'"
+    if(req.body.oriDefaultDriverId !== undefined){
+        idQuery = " UNION SELECT * from Manpowers WHERE id = '" + req.body.oriDefaultDriverId + "'"
     }
 
     const [results, metadata] = await seq.query(        
@@ -167,8 +167,7 @@ const getDefaultAvailableDrivers = asyncHandler(async(req, res) => {
 });
 
 // 14. get default available loaders
-const getDefaultAvailableLoaders = asyncHandler(async(req, res) => {
-    console.log(req.body)
+const getDefaultAvailableLoaders = asyncHandler(async(req, res) => {    
     var cfQuery = "WHERE "
     if(req.body.cf.monday == true){
         cfQuery += "collectionFrequency LIKE '%/1/%' OR "
@@ -213,7 +212,7 @@ const getDefaultAvailableLoaders = asyncHandler(async(req, res) => {
             results.push(rawLoadersId[c])
         }
         if(req.body.loaders != undefined){
-            if(req.body.loaders.includes(rawLoadersId[c].id)){
+            if(req.body.oriLoaders.includes(rawLoadersId[c].id)){
                 results.push(rawLoadersId[c])
             }
         }

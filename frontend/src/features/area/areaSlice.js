@@ -181,7 +181,8 @@ export const getArea = createAsyncThunk(
     'areas/get',
     async (area, thunkAPI)=>{
         try{
-            return await areaService.get(area)
+            const data = await areaService.get(area)
+            return data
         }catch(error){
             const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
             return thunkAPI.rejectWithValue(message)

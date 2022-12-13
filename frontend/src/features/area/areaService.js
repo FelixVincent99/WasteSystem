@@ -56,6 +56,11 @@ const get = async (id) => {
     area.defaultDriverId = area.defaultDriverId === null ? "" : area.defaultDriverId
     area.defaultTruckId = area.defaultTruckId === null ? "" : area.defaultTruckId
 
+    area.oriDefaultDriverId = area.defaultDriverId
+    area.oriDefaultLoadersId = area.defaultLoadersId
+    area.oriLoaders = area.loaders
+    area.oriDefaultTruckId = area.defaultTruckId
+
     return area
   
 };
