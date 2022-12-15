@@ -48,9 +48,7 @@ const get = async (id) => {
     area.loaders = []
     if(area.defaultLoadersId !== null){
         for(var b=0; b<area.defaultLoadersId.split(",").length; b++){
-            if(area.defaultLoadersId.split(",")[b] !== ""){
-                area.loaders.push(parseInt(area.defaultLoadersId.split(",")[b]))
-            }
+            area.loaders.push(parseInt(area.defaultLoadersId.split(",")[b]))
         }
     }
     area.defaultDriverId = area.defaultDriverId === null ? "" : area.defaultDriverId

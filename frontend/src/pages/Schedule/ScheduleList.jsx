@@ -7,6 +7,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
 import { DataGrid, GridToolbar } from '@mui/x-data-grid'
 import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider'
+import Box from '@mui/material/Box';
 
 import { getAllSchedules } from '../../features/schedule/scheduleSlice'
 
@@ -34,11 +36,18 @@ function ScheduleList() {
       field: formatDate(day),
       headerName: formatDate(day),
       renderCell: (params) => {
-        if(params.value === 'NA'){
-          <div><Typography>NA</Typography></div>
+        var scheduleCell, defaultCell
+        if(params.value.scheduleItem === 'NA'){
+           scheduleCell = <Box sx={{height:150}}><Typography sx={{color: params.value.textColor}}>NA</Typography></Box>
         }else{
-          return <div><Typography>{params.value.driverName}</Typography><Typography>{params.value.truckNo}</Typography></div>
+          scheduleCell = <Box sx={{height:150}}><Typography sx={{color: params.value.textColor}}>{params.value.scheduleItem.driverName}</Typography><Typography sx={{color: params.value.textColor}}>{params.value.scheduleItem.truckNo}</Typography><Typography sx={{color: params.value.textColor}}>{params.value.scheduleItem.scheduleLoaders}</Typography></Box>
         }
+        if(params.value.defaultItem === 'NA'){
+          defaultCell = <Box sx={{height:150}}><Typography>NA</Typography></Box>
+        }else{
+          defaultCell = <Box sx={{height:150}}><Typography>{params.value.defaultItem.defaultDriver}</Typography><Typography>{params.value.defaultItem.defaultTruck}</Typography><Typography>{params.value.defaultItem.defaultLoaders}</Typography></Box>
+        }
+        return <Box>{scheduleCell}<Divider />{defaultCell}</Box>
       }
     }
     return column
@@ -58,6 +67,9 @@ function ScheduleList() {
     for(var a=1; a<columns.length; a++){
       var date = columns[a].field
       var scheduleItem = 'NA'
+      var defaultItem = 'NA'
+      var match = false
+      var textColor = 'black'
       if(schedule.schedule !== undefined){
         for(var b=0; b<schedule.schedule.length; b++){
           if(schedule.schedule[b].scheduleDate === date){
@@ -65,13 +77,48 @@ function ScheduleList() {
           }
         }
       }
-      processedScheduleItem[columns[a].field] = scheduleItem
-    }
+      
+      if(schedule.collectionFrequency.includes(new Date(columns[a].field).getDay())){        
+        defaultItem = {
+          defaultDriver: schedule.defaultDriver,
+          defaultTruck: schedule.defaultTruck,
+          defaultLoaders: schedule.defaultLoaders,
+          defaultLoadersId: schedule.defaultLoadersId
+        }
+      }
+
+      if(scheduleItem === 'NA' && defaultItem === 'NA'){
+        match = true
+      }else{
+        if(scheduleItem !== 'NA' && defaultItem !== 'NA'){          
+          if(defaultItem.defaultDriver === scheduleItem.driverName && defaultItem.defaultTruck === scheduleItem.truckNo && defaultItem.defaultLoadersId.split(",").sort().toString() === scheduleItem.loaderId.split(",").sort().toString()){
+            match = true
+          }else{
+            match = false
+          }
+        }else{
+          match = false
+        }        
+      }
+      
+      if(match){
+        textColor = 'black'
+      }else{
+        textColor = 'red'
+      }
+
+      processedScheduleItem[columns[a].field] = {
+        scheduleItem: scheduleItem,
+        defaultItem: defaultItem,
+        match: match,
+        textColor: textColor
+      }
+    }    
     return processedScheduleItem
   })
 
-  const handleOnCellClick = (params) => {        
-    if(params.formattedValue === 'NA'){
+  const handleOnCellClick = (params) => {
+    if(params.formattedValue.scheduleItem === 'NA'){
       navigate('/schedule',{state:{
         type: "add",
         value: {
@@ -102,7 +149,7 @@ function ScheduleList() {
         renderInput={(params) => <TextField {...params} helperText={null}/>}
         />
       </LocalizationProvider>
-      <div style={{ height: 400, width: '100%'}}>
+      <div style={{ height: 800, width: '100%'}}>
           <div style={{ display: 'flex', height: '100%'}}>
               <div style={{ flexGrow: 1 }}>
                   <DataGrid 
@@ -110,6 +157,7 @@ function ScheduleList() {
                       columns={columns}
                       components={{ Toolbar: GridToolbar }}
                       onCellClick={ handleOnCellClick }
+                      getRowHeight={() => 'auto'}
                   />
               </div>
           </div>

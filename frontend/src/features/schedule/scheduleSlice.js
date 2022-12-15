@@ -1,6 +1,7 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
 import scheduleService from './scheduleService'
 import areaService from '../area/areaService'
+import manpowerService from '../manpower/manpowerService'
 
 const initialState = {
     isError: false,
@@ -28,11 +29,23 @@ export const getAllSchedules = createAsyncThunk(
     async ()=>{
         const scheduleList = await scheduleService.getAll()
         const areaList = await areaService.getAll()
-
+        const manpowerList = await manpowerService.getAll()
+        // console.log(areaList)
         const proccessedScheduleList = areaList.map(areaItem => {
             var schedule = [];
             for(var a=0; a<scheduleList.length; a++){
                 if(areaItem.id === scheduleList[a].areaId){
+
+                    var scheduleLoaders=""                                        
+                    for(var b=0; b<scheduleList[a].loaderId.split(",").length; b++){
+                        for(var c=0; c<manpowerList.length; c++){                            
+                            if(manpowerList[c].id === parseInt(scheduleList[a].loaderId.split(",")[b])){
+                                scheduleLoaders += manpowerList[c].mpName + ", "
+                            }
+                        }
+                    }
+                    scheduleLoaders = scheduleLoaders.charAt(scheduleLoaders.length -2) === "," ? scheduleLoaders.slice(0, -2) : scheduleLoaders 
+
                     schedule.push({
                         scheduleId: scheduleList[a].id,
                         scheduleDate: scheduleList[a].scheduleDate.split("T")[0],
@@ -42,13 +55,31 @@ export const getAllSchedules = createAsyncThunk(
                         driverId: scheduleList[a].driverId,
                         driverName: scheduleList[a].driver,
                         loaderId: scheduleList[a].loaderId,
+                        scheduleLoaders: scheduleLoaders,
                         status: scheduleList[a].status,
                     })
                 }
             }
+
+            var defaultLoaders=""                                        
+            for(var d=0; d<areaItem.defaultLoadersId.split(",").length; d++){
+                for(var e=0; e<manpowerList.length; e++){                            
+                    if(manpowerList[e].id === parseInt(areaItem.defaultLoadersId.split(",")[d])){
+                        defaultLoaders += manpowerList[e].mpName + ", "
+                    }
+                }
+            }
+            defaultLoaders = defaultLoaders.charAt(defaultLoaders.length -2) === "," ? defaultLoaders.slice(0, -2) : defaultLoaders
             var scheduleItem = {
                 areaId: areaItem.id,
                 areaCode: areaItem.areaCode,
+                collectionFrequency: areaItem.collectionFrequency,
+                defaultDriverId: areaItem.defaultDriverId,
+                defaultLoadersId: areaItem.defaultLoadersId,
+                defaultTruckId: areaItem.defaultTruckId,
+                defaultDriver: areaItem.Manpower.mpName,
+                defaultTruck: areaItem.Truck.truckNo,
+                defaultLoaders: defaultLoaders,
                 schedule: schedule
             }
             return scheduleItem
@@ -100,7 +131,6 @@ const scheduleSlice = createSlice({
         .addCase(createSchedule.fulfilled, (state, action)=>{
             state.isLoading = false
             state.isSuccess = true
-            state.schedules.push(action.payload)
         })
         .addCase(createSchedule.rejected, (state, action)=>{
             state.isLoading = false

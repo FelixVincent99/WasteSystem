@@ -42,16 +42,9 @@ export const createArea = createAsyncThunk(
                     collectionFrequency += "6/"
                 }
                 if(area.areaData.cfData.sunday === true){
-                    collectionFrequency += "7/"
-                }
-                if(area.areaData.defaultLoadersId.length !== 0){
-                    defaultLoadersIdString = ""
-                    for(var a=0; a<area.areaData.defaultLoadersId.length; a++){
-                        defaultLoadersIdString += area.areaData.defaultLoadersId[a] + ","
-                    }
-                }else{
-                    defaultLoadersIdString = null
-                }
+                    collectionFrequency += "0/"
+                }             
+                defaultLoadersIdString = area.areaData.defaultLoadersId.length === 0 ? null: area.areaData.defaultLoadersId.toString()
             }
             area.areaData.collectionFrequency = collectionFrequency
             area.areaData.defaultLoadersId = defaultLoadersIdString
@@ -154,16 +147,9 @@ export const updateArea = createAsyncThunk(
                     collectionFrequency += "6/"
                 }
                 if(area.areaData.cf.sunday === true){
-                    collectionFrequency += "7/"
+                    collectionFrequency += "0/"
                 }
-                if(area.areaData.loaders.length !== 0){
-                    defaultLoadersIdString = ""
-                    for(var a=0; a<area.areaData.loaders.length; a++){
-                        defaultLoadersIdString += area.areaData.loaders[a] + ","
-                    }
-                }else{
-                    defaultLoadersIdString = null
-                }
+                defaultLoadersIdString = area.areaData.loaders.length === 0 ? null: area.areaData.loaders.toString()
             }
             area.areaData.collectionFrequency = collectionFrequency
             area.areaData.defaultLoadersId = defaultLoadersIdString
