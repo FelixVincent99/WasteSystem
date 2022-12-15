@@ -9,8 +9,11 @@ import { DataGrid, GridToolbar } from '@mui/x-data-grid'
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider'
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button'
+import {toast} from 'react-toastify'
 
-import { getAllSchedules } from '../../features/schedule/scheduleSlice'
+import { getAllSchedules, createSchedule } from '../../features/schedule/scheduleSlice'
+import Spinner from '../../components/Spinner'
 
 function ScheduleList() {
 
@@ -19,6 +22,7 @@ function ScheduleList() {
   const [filterMonth, setFilterMonth] = useState(initFilterMonth)
   
   const schedules = useSelector(state => state.schedules.schedules)
+  const {isError, isLoading, isSuccess, message} = useSelector(state => state.schedules)
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -27,14 +31,26 @@ function ScheduleList() {
       dispatch(getAllSchedules())
   },[dispatch])
 
-  useEffect(() => {    
+  useEffect(() => {
+    if(isError){
+      toast.error(message)
+    }
+    if(isSuccess){
+        toast.success("Schedule has been created")
+        window.location.reload(false)
+    }  
       initFetch()
-  },[initFetch])
+  },[initFetch, isError, isSuccess, message])
 
-  var columns = daysInMonth.map(day => {
+  var columns = daysInMonth.map(day => {    
     const column = {
+      minWidth: 150,
       field: formatDate(day),
-      headerName: formatDate(day),
+      // headerName: formatDate(day),
+      // headerName: <Box><Typography>{formatDate(day)}</Typography><Divider/><Typography>ABC</Typography></Box>,
+      renderHeader: () => (
+        <Box id={formatDate(day)}><Typography sx={{ mt: 5}}>{formatDate(day)}</Typography><Divider/><Button variant="contained" onClick={updateBlankSchedule}>Update</Button></Box>
+      ),
       renderCell: (params) => {
         var scheduleCell, defaultCell
         if(params.value.scheduleItem === 'NA'){
@@ -79,11 +95,17 @@ function ScheduleList() {
       }
       
       if(schedule.collectionFrequency.includes(new Date(columns[a].field).getDay())){        
-        defaultItem = {
-          defaultDriver: schedule.defaultDriver,
-          defaultTruck: schedule.defaultTruck,
-          defaultLoaders: schedule.defaultLoaders,
-          defaultLoadersId: schedule.defaultLoadersId
+        if(schedule.defaultDriver==="" && schedule.defaultLoaders==="" && schedule.defaultTruck===""){
+          defaultItem = 'NA'
+        }else{
+          defaultItem = {
+            defaultDriver: schedule.defaultDriver,
+            defaultTruck: schedule.defaultTruck,
+            defaultLoaders: schedule.defaultLoaders,
+            defaultDriverId: schedule.defaultDriverId,
+            defaultTruckId: schedule.defaultTruckId,
+            defaultLoadersId: schedule.defaultLoadersId
+          }
         }
       }
 
@@ -96,6 +118,8 @@ function ScheduleList() {
           }else{
             match = false
           }
+        }else if(scheduleItem !== 'NA' && defaultItem === 'NA'){
+          match = true
         }else{
           match = false
         }        
@@ -135,7 +159,39 @@ function ScheduleList() {
     }
   };
 
+  const updateBlankSchedule = (e) => {
+    var selectedDay = e.target.parentNode.id
+    var requireUpdateSchedule =[]
 
+    for(var a=0; a<rows.length; a++){
+      if((!rows[a][selectedDay].match) && rows[a][selectedDay].scheduleItem === "NA" && rows[a][selectedDay].defaultItem !== "NA"){
+        if(rows[a][selectedDay].defaultItem.defaultDriverId !== null && rows[a][selectedDay].defaultItem.defaultTruckId !== null && rows[a][selectedDay].defaultItem.defaultLoadersId.length>0){
+          var loadersArray = rows[a][selectedDay].defaultItem.defaultLoadersId.split(",");
+          if(loadersArray.length >0){
+            for(var c=0; c<loadersArray.length; c++){
+              loadersArray[c] = parseInt(loadersArray[c])
+            }
+          }
+          requireUpdateSchedule.push({
+            scheduleDate: selectedDay,
+            scheduleTime: "",
+            areaId: rows[a].areaId,
+            driverId: rows[a][selectedDay].defaultItem.defaultDriverId,
+            loaderId: loadersArray,
+            truckId: rows[a][selectedDay].defaultItem.defaultTruckId,
+            status: "1"
+          })
+        }
+      }      
+    }
+    
+    for(var b=0; b<requireUpdateSchedule.length; b++){
+      dispatch(createSchedule({scheduleData: requireUpdateSchedule[b]}))
+    }
+  }
+  if(isLoading){
+    return <Spinner />
+  }
   return (
     <>
       <LocalizationProvider dateAdapter={AdapterMoment} >
@@ -158,6 +214,7 @@ function ScheduleList() {
                       components={{ Toolbar: GridToolbar }}
                       onCellClick={ handleOnCellClick }
                       getRowHeight={() => 'auto'}
+                      headerHeight={100}
                   />
               </div>
           </div>

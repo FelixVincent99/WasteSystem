@@ -14,9 +14,11 @@ const initialState = {
 
 export const createSchedule = createAsyncThunk(
     'schedules/create',
-    async (schedule, thunkAPI)=>{        
+    async (schedule, thunkAPI)=>{
+        console.log(schedule)
         try{
-            return await scheduleService.create(schedule)
+            const result = await scheduleService.create(schedule)            
+            return result
         }catch(error){
             const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
             return thunkAPI.rejectWithValue(message)
@@ -30,7 +32,7 @@ export const getAllSchedules = createAsyncThunk(
         const scheduleList = await scheduleService.getAll()
         const areaList = await areaService.getAll()
         const manpowerList = await manpowerService.getAll()
-        // console.log(areaList)
+        
         const proccessedScheduleList = areaList.map(areaItem => {
             var schedule = [];
             for(var a=0; a<scheduleList.length; a++){
@@ -60,16 +62,17 @@ export const getAllSchedules = createAsyncThunk(
                     })
                 }
             }
-
-            var defaultLoaders=""                                        
-            for(var d=0; d<areaItem.defaultLoadersId.split(",").length; d++){
-                for(var e=0; e<manpowerList.length; e++){                            
-                    if(manpowerList[e].id === parseInt(areaItem.defaultLoadersId.split(",")[d])){
-                        defaultLoaders += manpowerList[e].mpName + ", "
+            var defaultLoaders=""
+            if(areaItem.defaultLoadersId !== null){
+                for(var d=0; d<areaItem.defaultLoadersId.split(",").length; d++){
+                    for(var e=0; e<manpowerList.length; e++){                            
+                        if(manpowerList[e].id === parseInt(areaItem.defaultLoadersId.split(",")[d])){
+                            defaultLoaders += manpowerList[e].mpName + ", "
+                        }
                     }
-                }
+                }            
+                defaultLoaders = defaultLoaders.charAt(defaultLoaders.length -2) === "," ? defaultLoaders.slice(0, -2) : defaultLoaders
             }
-            defaultLoaders = defaultLoaders.charAt(defaultLoaders.length -2) === "," ? defaultLoaders.slice(0, -2) : defaultLoaders
             var scheduleItem = {
                 areaId: areaItem.id,
                 areaCode: areaItem.areaCode,
@@ -77,8 +80,8 @@ export const getAllSchedules = createAsyncThunk(
                 defaultDriverId: areaItem.defaultDriverId,
                 defaultLoadersId: areaItem.defaultLoadersId,
                 defaultTruckId: areaItem.defaultTruckId,
-                defaultDriver: areaItem.Manpower.mpName,
-                defaultTruck: areaItem.Truck.truckNo,
+                defaultDriver: areaItem.defaultDriverId !== null? areaItem.Manpower.mpName: "",
+                defaultTruck: areaItem.defaultTruckId !== null? areaItem.Truck.truckNo: "",
                 defaultLoaders: defaultLoaders,
                 schedule: schedule
             }
