@@ -1,15 +1,18 @@
 const db = require("../models");
 const Collection = db.Collection;
-const Op = db.Sequelize.Op;
+const seq = db.sequelize;
 const asyncHandler = require('express-async-handler');
 
-//get all collection
-const getAllCollections = asyncHandler(async(req, res) => {
-
-    let collections = await Collection.findAll();
+//get collections by date
+const getCollectionByDate = asyncHandler(async(req, res) => {
+    const data = req.body;
+    console.log(data);
+    const [collections, metadata] = await seq.query(
+        "SELECT * FROM collections WHERE DATE(createdAt) = '"+data.date+"'"
+    );
     res.status(200).send(collections);
 });
 
 module.exports = {
-    getAllCollections
+    getCollectionByDate
 }
