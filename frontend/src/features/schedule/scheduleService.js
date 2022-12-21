@@ -14,13 +14,11 @@ const get = async (id) => {
   
 };
 
-const create = async (data) => {    
+const create = async (data) => {        
     data.scheduleData.loaderId = data.scheduleData.loaderId.toString()
-    data.scheduleData.scheduleTime = new Date(data.scheduleData.scheduleTime)
-    data.scheduleData.scheduleTime = data.scheduleData.scheduleTime.getHours() + ":" + data.scheduleData.scheduleTime.getMinutes() + ":" + data.scheduleData.scheduleTime.getSeconds()
+    data.scheduleData.scheduleTime = data.scheduleData.scheduleTime !== "" ? data.scheduleData.scheduleTime.getHours() + ":" + data.scheduleData.scheduleTime.getMinutes() + ":" + data.scheduleData.scheduleTime.getSeconds(): "00:00:00"    
     const response = await http.post(API_URL, data.scheduleData)
-    console.log(response)
-    return response.data  
+    return response.data
 };
 
 const update = async (data) => {

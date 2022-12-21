@@ -129,7 +129,7 @@ export const getAvailableTrucks = createAsyncThunk(
     async (data, thunkAPI) => {
         var truckList = await truckService.getAll()
         const notAvailableTruckList = await truckService.getNotAvailableTrucks(data)    
-        
+        console.log(data)
         truckList.map(truckItem => {
             truckItem.disabled = false
             return truckItem
@@ -138,7 +138,7 @@ export const getAvailableTrucks = createAsyncThunk(
         if(notAvailableTruckList.length !== 0){
             for(var a=0; a<notAvailableTruckList.length; a++){
                 for(var b=0; b<truckList.length; b++){
-                    if(notAvailableTruckList[a].id === truckList[b].id){                        
+                    if(notAvailableTruckList[a].id === truckList[b].id && data.truckId !== truckList[b].id){                        
                         truckList[b].disabled = true
                     }
                 }
