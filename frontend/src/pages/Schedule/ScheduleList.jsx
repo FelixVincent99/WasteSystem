@@ -93,18 +93,19 @@ function ScheduleList() {
           }
         }
       }
-      
-      if(schedule.collectionFrequency.includes(new Date(columns[a].field).getDay())){        
-        if(schedule.defaultDriver==="" && schedule.defaultLoaders==="" && schedule.defaultTruck===""){
-          defaultItem = 'NA'
-        }else{
-          defaultItem = {
-            defaultDriver: schedule.defaultDriver,
-            defaultTruck: schedule.defaultTruck,
-            defaultLoaders: schedule.defaultLoaders,
-            defaultDriverId: schedule.defaultDriverId,
-            defaultTruckId: schedule.defaultTruckId,
-            defaultLoadersId: schedule.defaultLoadersId
+      if(!(schedule.collectionFrequency === undefined || schedule.collectionFrequency === null)){
+        if(schedule.collectionFrequency.includes(new Date(columns[a].field).getDay())){        
+          if(schedule.defaultDriver==="" && schedule.defaultLoaders==="" && schedule.defaultTruck===""){
+            defaultItem = 'NA'
+          }else{
+            defaultItem = {
+              defaultDriver: schedule.defaultDriver,
+              defaultTruck: schedule.defaultTruck,
+              defaultLoaders: schedule.defaultLoaders,
+              defaultDriverId: schedule.defaultDriverId,
+              defaultTruckId: schedule.defaultTruckId,
+              defaultLoadersId: schedule.defaultLoadersId
+            }
           }
         }
       }
