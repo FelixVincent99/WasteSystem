@@ -4,6 +4,6 @@ const router = express.Router();
 const collecitonController = require('../controllers/collectionController');
 const { protect } = require('../middleware/authMiddleware');
 
-router.get('/', collecitonController.getAllCollections);
+router.post('/', collecitonController.getCollectionByDate);
 
 module.exports = router;
