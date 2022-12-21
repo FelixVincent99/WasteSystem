@@ -20,7 +20,7 @@ const Map = () => {
 
   const initFetch = useCallback(() => {
     dispatch(getAllCollections({'date': selectionDate}));
-  }, [dispatch]);
+  }, [dispatch, selectionDate]);
 
   useEffect(() => {
     initFetch();
