@@ -2,13 +2,14 @@ import http from "../../http-common"
 
 const API_URL = '/collections'
 
-const getAll = async () => {
-  const response = await http.get(API_URL)
-  return response.data
+const getAllByDate = async (data) => {
+  data.date = data.date.toISOString().split('T')[0];
+  const response = await http.post(API_URL, data);
+  return response.data;
 };
 
 const collectionService = {
-  getAll
+  getAllByDate
 };
 
 export default collectionService;

@@ -10,9 +10,9 @@ const initialState = {
 };
 
 export const getAllCollections = createAsyncThunk(
-  'collection/getAll',
-  async ()=>{
-      const collectionList = await collectionService.getAll();
+  'collection/getAllByDate',
+  async (data)=>{
+      const collectionList = await collectionService.getAllByDate(data);
       return collectionList;
   }
 )
