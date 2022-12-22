@@ -91,6 +91,7 @@ function Leave() {
                     }))
                 }}
                 value={leaveData.leaveStartDate}
+                inputFormat="DD/MM/YYYY"
                 label="Leave Start Date"
                 views={['year', 'month', 'day']}            
                 renderInput={(params) => <TextField {...params} fullWidth/>}
@@ -105,6 +106,7 @@ function Leave() {
                     }))
                 }}
                 value={leaveData.leaveEndDate}
+                inputFormat="DD/MM/YYYY"
                 label="Leave End Date"
                 views={['year', 'month', 'day']}            
                 renderInput={(params) => <TextField {...params} fullWidth/>}

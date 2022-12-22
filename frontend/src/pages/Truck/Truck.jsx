@@ -84,6 +84,7 @@ const {isError, isLoading, isSuccess, message} = useSelector(state => state.truc
                         [`operationStartDate`]: newValue.toDate()  
                     }))
                 }}
+                inputFormat="DD/MM/YYYY"
                 value={truckData.operationStartDate}
                 label="Operation Start Date"
                 views={['year', 'month', 'day']}            
@@ -98,6 +99,7 @@ const {isError, isLoading, isSuccess, message} = useSelector(state => state.truc
                         [`operationEndDate`]: newValue.toDate()  
                     }))
                 }}
+                inputFormat="DD/MM/YYYY"
                 value={truckData.operationEndDate}
                 label="Operation End Date"
                 views={['year', 'month', 'day']}            

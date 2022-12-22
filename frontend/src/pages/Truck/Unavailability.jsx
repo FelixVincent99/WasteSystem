@@ -89,6 +89,7 @@ function Unavailability() {
                         [`unavailabilityStartDate`]: newValue.toDate()  
                     }))
                 }}
+                inputFormat="DD/MM/YYYY"
                 value={unavailabilityData.unavailabilityStartDate}
                 label="Unavailability Start Date"
                 views={['year', 'month', 'day']}            
@@ -103,6 +104,7 @@ function Unavailability() {
                         [`unavailabilityEndDate`]: newValue.toDate()  
                     }))
                 }}
+                inputFormat="DD/MM/YYYY"
                 value={unavailabilityData.unavailabilityEndDate}
                 label="Unavailability End Date"
                 views={['year', 'month', 'day']}            
