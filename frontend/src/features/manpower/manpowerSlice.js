@@ -105,7 +105,6 @@ export const getAllLoaders = createAsyncThunk(
 export const getAvailableDriversLoaders = createAsyncThunk(
     'manpowers/getAvailableDriversLoaders',
     async (data, thunkAPI)=>{
-
         const driverList = await manpowerService.getAllDrivers()
         var proccessedDriverList = driverList.map(manpowerItem => {
             manpowerItem.statusType = manpowerItem.status === 1? 'Active': manpowerItem.status === 2? 'Temporarily Unavailable': manpowerItem.status === 3? 'Inactive': 'Error'
@@ -134,7 +133,7 @@ export const getAvailableDriversLoaders = createAsyncThunk(
         if(notAvailableDriverList.length !== 0){
             for(var a=0; a<notAvailableDriverList.length; a++){
                 for(var b=0; b<proccessedDriverList.length; b++){
-                    if(notAvailableDriverList[a].id === proccessedDriverList[b].id){
+                    if(notAvailableDriverList[a].id === proccessedDriverList[b].id && data.driverId !== proccessedDriverList[b].id){
                         proccessedDriverList[b].disabled = true
                     }
                 }
@@ -150,11 +149,12 @@ export const getAvailableDriversLoaders = createAsyncThunk(
                 }
             }
         }
-
+        
+        var currentLoaderList = data.loaderId.split(",")
         if(notAvailableLoadersList.length !== 0){
             for(var e=0; e<notAvailableLoadersList.length; e++){
-                for(var f=0; f<proccessedLoaderList.length; f++){
-                    if(Number(notAvailableLoadersList[e]) === proccessedLoaderList[f].id){
+                for(var f=0; f<proccessedLoaderList.length; f++){                    
+                    if(Number(notAvailableLoadersList[e]) === proccessedLoaderList[f].id && !(currentLoaderList.includes(proccessedLoaderList[f].id.toString()))){                        
                         proccessedLoaderList[f].disabled = true
                     }
                 }

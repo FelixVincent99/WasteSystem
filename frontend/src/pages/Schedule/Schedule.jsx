@@ -24,25 +24,28 @@ import { getAvailableTrucks } from '../../features/truck/truckSlice'
 
 function Schedule() {
     const location = useLocation().state
-    var locScheduleDate, locScheduleTime, locAreaId, locTruckId, locDriverId, locLoaderId, locStatus;
+    var locScheduleDate, locScheduleTime, locAreaId, locTruckId, locDriverId, locLoaderId, locStatus, locScheduleId, locLoaderString;    
     if(location.type === 'add'){
+        locScheduleId = ''
         locScheduleDate= location.value.scheduleDate
         locAreaId = location.value.areaId
         locScheduleTime = ''
         locTruckId = ''
         locDriverId = ''
         locLoaderId = []
+        locLoaderString = ''
         locStatus = '1'
     }else if(location.type === 'edit'){
-        var locScheduleId = location.value.scheduleId
-        locScheduleDate= location.value.scheduleDate
-        locAreaId = location.areaId
-        const flagDate = new Date('July 1, 1999, ' + location.value.scheduleTime.split(":")[0] + ":" + location.value.scheduleTime.split(":")[1] + ":" + location.value.scheduleTime.split(":")[2]);
+        locScheduleId = location.value.scheduleItem.scheduleId
+        locScheduleDate= location.value.scheduleItem.scheduleDate
+        locAreaId = location.areaId        
+        const flagDate = new Date('July 1, 1999, ' + location.value.scheduleItem.scheduleTime.split(":")[0] + ":" + location.value.scheduleItem.scheduleTime.split(":")[1] + ":" + location.value.scheduleItem.scheduleTime.split(":")[2]);
         locScheduleTime = new Date().setTime(flagDate.getTime());
-        locTruckId = location.value.truckId
-        locDriverId = location.value.driverId
-        locLoaderId = location.value.loaderId.split(',').map(function(item) {return parseInt(item)})
-        locStatus = location.value.status
+        locTruckId = location.value.scheduleItem.truckId
+        locDriverId = location.value.scheduleItem.driverId
+        locLoaderId = location.value.scheduleItem.loaderId.split(',').map(function(item) {return parseInt(item)})
+        locLoaderString = location.value.scheduleItem.loaderId
+        locStatus = location.value.scheduleItem.status
     }    
     const initialScheduleState = {        
         scheduleDate: locScheduleDate,
@@ -65,7 +68,6 @@ function Schedule() {
     // const trucks = useSelector(state => state.trucks.trucks)
     const trucks = useSelector(state => state.trucks.availabletrucks)
     const driversloaders = useSelector(state => state.manpowers.driversloaders)
-
     var drivers = []
     var loaders = []
     for(var a=0; a<driversloaders.length; a++){
@@ -76,12 +78,12 @@ function Schedule() {
         }
     }
     
-    const initFetch = useCallback(()=>{        
-        dispatch(getAvailableDriversLoaders({'scheduleDate': location.value.scheduleDate, 'scheduleId': location.value.scheduleId}))
+    const initFetch = useCallback(()=>{
+        dispatch(getAvailableDriversLoaders({'scheduleDate': locScheduleDate, 'driverId': locDriverId, 'loaderId': locLoaderString}))
         dispatch(getAllAreas())
-        dispatch(getAvailableTrucks({'scheduleDate': location.value.scheduleDate, 'scheduleId': location.value.scheduleId}))
+        dispatch(getAvailableTrucks({'scheduleDate': locScheduleDate, 'truckId': locTruckId}))
         dispatch(reset())        
-    },[dispatch, location.value.scheduleDate, location.value.scheduleId])
+    },[dispatch, locScheduleDate, locTruckId, locDriverId, locLoaderString])
 
     useEffect(()=>{
         if(isError){
@@ -111,6 +113,7 @@ function Schedule() {
             loaderId,
             status,
         }
+        console.log(scheduleData)
         if(location.type === 'edit'){
             scheduleData['id'] = locScheduleId
             dispatch(updateSchedule({scheduleData}))
