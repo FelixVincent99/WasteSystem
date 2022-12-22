@@ -83,6 +83,7 @@ function AddTruck() {
                         [`operationStartDate`]: newValue.toDate()  
                     }))
                 }}
+                inputFormat="DD/MM/YYYY"
                 value={operationStartDate}
                 label="Operation Start Date"
                 views={['year', 'month', 'day']}            
@@ -97,6 +98,7 @@ function AddTruck() {
                         [`operationEndDate`]: newValue.toDate()  
                     }))
                 }}
+                inputFormat="DD/MM/YYYY"
                 value={operationEndDate}
                 label="Operation End Date"
                 views={['year', 'month', 'day']}            

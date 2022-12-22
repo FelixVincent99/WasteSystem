@@ -146,6 +146,7 @@ const scheduleSlice = createSlice({
         .addCase(getAllSchedules.fulfilled, (state, action)=>{
             state.isLoading = false
             state.schedules = action.payload
+            state.isSuccess = false
         })
         .addCase(getAllSchedules.rejected, (state, action)=>{
             state.isLoading = false

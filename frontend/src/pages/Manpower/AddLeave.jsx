@@ -84,6 +84,7 @@ function AddLeave() {
                         [`leaveStartDate`]: newValue.toDate()  
                     }))
                 }}
+                inputFormat="DD/MM/YYYY"
                 value={leaveStartDate}
                 label="Leave Start Date"
                 views={['year', 'month', 'day']}            
@@ -98,6 +99,7 @@ function AddLeave() {
                         [`leaveEndDate`]: newValue.toDate()  
                     }))
                 }}
+                inputFormat="DD/MM/YYYY"
                 value={leaveEndDate}
                 label="Leave End Date"
                 views={['year', 'month', 'day']}            

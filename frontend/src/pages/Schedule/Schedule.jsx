@@ -138,6 +138,7 @@ function Schedule() {
                         [`scheduleDate`]: newValue.toDate()
                     }))
                 }}
+                inputFormat="DD/MM/YYYY"
                 value={scheduleDate}
                 label="Schedule Date"
                 views={['year', 'month', 'day']}            

@@ -18,7 +18,7 @@ import Spinner from '../../components/Spinner'
 function ScheduleList() {
 
   const initFilterMonth = new Date()
-  const daysInMonth = getDaysInMonth(initFilterMonth.getMonth(), initFilterMonth.getFullYear())
+  const [daysInMonth, setDaysInMonth] = useState(getDaysInMonth(initFilterMonth.getMonth(), initFilterMonth.getFullYear()))
   const [filterMonth, setFilterMonth] = useState(initFilterMonth)
   
   const schedules = useSelector(state => state.schedules.schedules)
@@ -37,10 +37,10 @@ function ScheduleList() {
     }
     if(isSuccess){
         toast.success("Schedule has been created")
-        window.location.reload(false)
+        dispatch(getAllSchedules())
     }  
       initFetch()
-  },[initFetch, isError, isSuccess, message])
+  },[initFetch, isError, isSuccess, message, dispatch])
 
   var columns = daysInMonth.map(day => {    
     const column = {
@@ -190,6 +190,11 @@ function ScheduleList() {
       dispatch(createSchedule({scheduleData: requireUpdateSchedule[b]}))
     }
   }
+
+  const onChangeDateFilter = (e)=>{
+    setFilterMonth(e)
+    setDaysInMonth(getDaysInMonth(e._d.getMonth(),e._d.getFullYear()))    
+  }
   if(isLoading){
     return <Spinner />
   }
@@ -197,12 +202,11 @@ function ScheduleList() {
     <>
       <LocalizationProvider dateAdapter={AdapterMoment} >
         <DatePicker            
-        onChange={(newValue)=>{
-          setFilterMonth(newValue)
-        }}
+        onChange={onChangeDateFilter}
         value={filterMonth}
         label="Month"
-        views={['year', 'month']}            
+        views={['year', 'month']}
+        openTo="year"
         renderInput={(params) => <TextField {...params} helperText={null}/>}
         />
       </LocalizationProvider>
