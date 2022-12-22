@@ -100,6 +100,7 @@ function Manpower() {
                             [`operationStartDate`]: newValue.toDate()  
                         }))
                     }}
+                    inputFormat="DD/MM/YYYY"
                     value={manpowerData.operationStartDate}
                     label="Operation Start Date"
                     views={['year', 'month', 'day']}            
@@ -114,6 +115,7 @@ function Manpower() {
                             [`operationEndDate`]: newValue.toDate()  
                         }))
                     }}
+                    inputFormat="DD/MM/YYYY"
                     value={manpowerData.operationEndDate}
                     label="Operation End Date"
                     views={['year', 'month', 'day']}            
