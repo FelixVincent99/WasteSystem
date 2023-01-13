@@ -33,6 +33,9 @@ module.exports = (sequelize, DataTypes) => {
     milage: {
         type: DataTypes.FLOAT
     },
+    sensorId: {
+        type: DataTypes.INTEGER,
+    },
     status: {
         type: DataTypes.INTEGER,
         allowNull: false
