@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux'
 import  { updateTruck, reset } from '../../features/truck/truckSlice'
 import truckService from '../../features/truck/truckService'
+import sensorService from '../../features/sensor/sensorService';
 import {toast} from 'react-toastify'
 
 import Spinner from '../../components/Spinner'
@@ -15,7 +16,8 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import Button from '@mui/material/Button'
+import Button from '@mui/material/Button';
+import "./Truck.css";
 
 function Truck() {
   const params = useParams();
@@ -27,9 +29,11 @@ function Truck() {
     truckType: "",
     averageFuelConsumption: 0,
     milage: "",
+    sensorId: "",
     status: "1"
 }
 const [truckData, setTruckData] = useState(initialTruckState)
+const [sensorData, setSensorData] = useState([])
 const {isError, isLoading, isSuccess, message} = useSelector(state => state.trucks);
 
   const dispatch = useDispatch()
@@ -45,6 +49,16 @@ const {isError, isLoading, isSuccess, message} = useSelector(state => state.truc
       });
   };
 
+  const getSensor = () => {
+    sensorService.getAll()
+      .then(response => {
+        setSensorData(response);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  }
+
   useEffect(() => {
     if(isError){
         toast.error(message)
@@ -55,6 +69,7 @@ const {isError, isLoading, isSuccess, message} = useSelector(state => state.truc
     }
     dispatch(reset())
     getTruck(params.id)
+    getSensor()
   }, [params.id, isError, isSuccess, navigate, message, dispatch]);
 
   const onChangeTruck = (e) => {
@@ -115,6 +130,12 @@ const {isError, isLoading, isSuccess, message} = useSelector(state => state.truc
                 </Select>
             </FormControl>
             <TextField id="milage" name="milage" value={truckData.milage} onChange={onChangeTruck} label="Milage" variant="outlined" fullWidth/>
+            <FormControl sx={{ m: 1, minWidth: 120 }}>
+                <InputLabel id="sensorIdLabel">Sensor Color</InputLabel>
+                <Select labelId="sensorIdLabel" id="sensorId" name="sensorId" value={truckData.sensorId} label="Sensor Color" onChange={onChangeTruck}>
+                    {sensorData.map(( {id, color, note}, index) =>  <MenuItem key={index} value={id}><span className="dot" style={{backgroundColor: color}}></span> {color} - {note}</MenuItem>)}
+                </Select>
+            </FormControl>
             <FormControl sx={{ m: 1, minWidth: 120 }}>
                 <InputLabel id="statusLabel">Status</InputLabel>
                 <Select labelId="statusLabel" id="status" name="status" value={truckData.status} label="Status" onChange={onChangeTruck}>
