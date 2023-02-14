@@ -15,6 +15,7 @@ const addTruck = asyncHandler(async(req, res) => {
         truckType: req.body.truckType,
         averageFuelConsumption: req.body.averageFuelConsumption,
         milage: req.body.milage,
+        sensorId: req.body.sensorId,
         status: req.body.status
     }
 

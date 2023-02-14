@@ -41,6 +41,7 @@ app.use('/api/trucks', require('./routes/truckRoutes'));
 app.use('/api/manpowers', require('./routes/manpowerRoutes'));
 app.use('/api/schedules', require('./routes/scheduleRoutes'));
 app.use('/api/collections', require('./routes/collectionRoutes'));
+app.use('/api/sensors', require('./routes/sensorRoutes'));
 
 app.listen(PORT, () => console.log(`Server is running on port ${ PORT }`))
 app.use(errorHandler);
