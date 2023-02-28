@@ -27,6 +27,11 @@ import Unavailability from './pages/Truck/Unavailability';
 import UnavailabilityList from './pages/Truck/UnavailabilityList';
 import AddUnavailability from './pages/Truck/AddUnvailability';
 
+//Sensor Module
+import SensorList from './pages/Sensor/SensorList';
+import AddSensor from './pages/Sensor/AddSensor';
+import Sensor from './pages/Sensor/Sensor';
+
 
 //Manpower
 import Manpower from './pages/Manpower/Manpower';
@@ -97,6 +102,10 @@ function App() {
           <Route path='/schedule' element={<PrivateRoute><Schedule /></PrivateRoute>}></Route>
 
           <Route path='/map' element={<PrivateRoute><Map /></PrivateRoute>}></Route>
+
+          <Route path='/sensor/list' element={<PrivateRoute><SensorList /></PrivateRoute>}></Route>
+          <Route path='/sensor/add' element={<PrivateRoute><AddSensor /></PrivateRoute>}></Route>
+          <Route path='/sensor/:id' element={<PrivateRoute><Sensor /></PrivateRoute>}></Route>
           
           <Route path='/login' element={<Login />}></Route>
           <Route path='/' element={<PrivateRoute><Home /></PrivateRoute>}></Route>
