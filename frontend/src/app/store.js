@@ -5,6 +5,7 @@ import areaReducer from '../features/area/areaSlice'
 import manpowerReducer from '../features/manpower/manpowerSlice'
 import scheduleReducer  from '../features/schedule/scheduleSlice'
 import collectionReducer  from '../features/collection/collectionSlice'
+import sensorReducer  from '../features/sensor/sensorSlice'
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
     areas: areaReducer,
     manpowers: manpowerReducer,
     schedules: scheduleReducer,
-    collections: collectionReducer
+    collections: collectionReducer,
+    sensors: sensorReducer
   },
 });

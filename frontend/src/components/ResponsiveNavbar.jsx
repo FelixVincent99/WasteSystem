@@ -20,6 +20,7 @@ import Typography from '@mui/material/Typography';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import EngineeringIcon from '@mui/icons-material/Engineering';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import SensorsIcon from '@mui/icons-material/Sensors';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import MapIcon from '@mui/icons-material/Map';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
@@ -71,6 +72,11 @@ function ResponsiveNavbar(props) {
               link: '/truck/unavailability/list'
             }]
         },
+        {
+          name: 'Sensor',
+          icon: <SensorsIcon/>,
+          link: '/sensor/list'
+      },
         {
             name: 'Schedule',
             icon: <CalendarMonthIcon/>,

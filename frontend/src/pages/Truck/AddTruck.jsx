@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import {toast} from 'react-toastify'
 import{ createTruck, reset } from '../../features/truck/truckSlice'
+import sensorService from '../../features/sensor/sensorService';
 import Spinner from '../../components/Spinner'
 import { TextField } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -14,7 +15,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Button from '@mui/material/Button'
-
+import "./Truck.css";
 
 function AddTruck() {
 
@@ -25,15 +26,27 @@ function AddTruck() {
         truckType: "",
         averageFuelConsumption: 0,
         milage: "",
+        sensorId: "",
         status: "1"
     }
     const [truckData, setTruckData] = useState(initialTruckState)
-    const {truckNo, operationStartDate, operationEndDate, truckType, averageFuelConsumption, milage, status} = truckData
+    const [sensorData, setSensorData] = useState([])
+    const {truckNo, operationStartDate, operationEndDate, truckType, averageFuelConsumption, milage, sensorId, status} = truckData
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
     const {isError, isLoading, isSuccess, message} = useSelector(state => state.trucks);
+
+    const getSensor = () => {
+        sensorService.getAll()
+          .then(response => {
+            setSensorData(response);
+          })
+          .catch(e => {
+            console.log(e);
+          });
+      }
 
     useEffect(()=>{
         if(isError){
@@ -45,6 +58,7 @@ function AddTruck() {
         }
 
         dispatch(reset())
+        getSensor()
     }, [isError, isSuccess, message, navigate, dispatch]) 
 
     const onChangeTruck = (e) => {
@@ -63,6 +77,7 @@ function AddTruck() {
             truckType,
             averageFuelConsumption,
             milage,
+            sensorId,
             status
         }
         dispatch(createTruck({truckData}))
@@ -114,6 +129,12 @@ function AddTruck() {
                 </Select>
             </FormControl>
             <TextField id="milage" name="milage" value={milage} onChange={onChangeTruck} label="Milage" variant="outlined" fullWidth/>
+            <FormControl sx={{ m: 1, minWidth: 120 }}>
+                <InputLabel id="sensorIdLabel">Sensor Color</InputLabel>
+                <Select labelId="sensorIdLabel" id="sensorId" name="sensorId" value={truckData.sensorId} label="Sensor Color" onChange={onChangeTruck}>
+                    {sensorData.map(( {id, color, note}, index) =>  <MenuItem key={index} value={id}><span className="dot" style={{backgroundColor: color}}></span> {color} - {note}</MenuItem>)}
+                </Select>
+            </FormControl>
             <FormControl sx={{ m: 1, minWidth: 120 }}>
                 <InputLabel id="statusLabel">Status</InputLabel>
                 <Select labelId="statusLabel" id="status" name="status" value={status} label="Status" onChange={onChangeTruck}>
