@@ -1,12 +1,11 @@
 import React, { useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { DataGrid, GridToolbar, GridCellParams} from '@mui/x-data-grid'
+import { DataGrid, GridToolbar} from '@mui/x-data-grid'
 import { Button } from '@mui/material'
 
 import './Sensor.css'
 import { getAllSensors } from '../../features/sensor/sensorSlice'
-import { bgcolor, style } from "@mui/system"
 
 function SensorList() {
   const sensors = useSelector(state => state.sensors.sensors)
