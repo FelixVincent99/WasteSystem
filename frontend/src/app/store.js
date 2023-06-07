@@ -6,6 +6,7 @@ import manpowerReducer from '../features/manpower/manpowerSlice'
 import scheduleReducer  from '../features/schedule/scheduleSlice'
 import collectionReducer  from '../features/collection/collectionSlice'
 import sensorReducer  from '../features/sensor/sensorSlice'
+import stopReducer  from '../features/stop/stopSlice'
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ export const store = configureStore({
     manpowers: manpowerReducer,
     schedules: scheduleReducer,
     collections: collectionReducer,
-    sensors: sensorReducer
+    sensors: sensorReducer,
+    stops: stopReducer
   },
 });
