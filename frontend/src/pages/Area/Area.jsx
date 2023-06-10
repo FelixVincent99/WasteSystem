@@ -32,6 +32,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import { getAllAreas } from '../../features/area/areaSlice'
 import "./Area.css";
 
 function Area() {
@@ -62,12 +63,16 @@ function Area() {
   const [loaders, setLoadersData] = useState([])
   const {isError, isLoading, isSuccess, message} = useSelector(state => state.areas)
   const [openDialog, setOpenDialog] = React.useState(false);
+  const [openMoveDialog, setOpenMoveDialog] = React.useState(false);
+  
+  var areaList = useSelector(state => state.areas.areas)
 
   const initialStopState = {
     stopName: "",        
     lat: "",
     long: "",
     areaCode: "",
+    newAreaCode: "",
     stopOrder: 0,
     binAmount: 0,
     averageWeight: 0,
@@ -76,7 +81,7 @@ function Area() {
   const [stopData, setStopData] = useState(initialStopState)
   const [stopList, setStopList] = useState([])
   const [defaultCenterMap, setDefaultCenterMap] = useState({ lat: 1.4847902, lng: 110.3600244 })
-  const {stopName, lat, long} = stopData;
+  const {stopName, lat, long, areaCode, newAreaCode} = stopData;
   const [isEditStop, setIsEditStop] = useState(false)
 
   const onChangeStop = (e) => {
@@ -146,6 +151,7 @@ const initialGenerateResource = (data) => {
     }
     dispatch(reset())
     getArea(params.id)
+    dispatch(getAllAreas());
     
   }, [params.id, isError, isSuccess, navigate, message, dispatch])
 
@@ -245,7 +251,7 @@ const initialGenerateResource = (data) => {
                   size="small"
                   style={{ marginLeft: 5 }}
                   onClick={() => {
-                  handleEditClick(params)
+                  handleMoveClick(params)
                   }}
               >
                   Move
@@ -259,6 +265,27 @@ const initialGenerateResource = (data) => {
     setOpenDialog(true);
     setIsEditStop(true);
   }
+
+  const handleMoveClick = (params) => {
+    setStopData(params.row);
+    setOpenMoveDialog(true);
+    setIsEditStop(true);
+    setStopData((prevState) => ({
+      ...prevState,
+      newAreaCode: params.row.areaCode
+    }));
+  }
+
+  const handleMoveStop = () => {
+    setOpenMoveDialog(false);
+    var stop = {
+      id: 1,
+      areaCode: stopData.newAreaCode
+    }
+    dispatch(updateStop({stopData: stop}));
+    toast.success("Stop is moved!");
+    getArea(params.id);
+  };
 
   const rows = stopList;
   const columns = [
@@ -300,6 +327,7 @@ const initialGenerateResource = (data) => {
 
   const handleClose = () => {
     setOpenDialog(false);
+    setOpenMoveDialog(false);
   };
 
   const handleSaveStop = () => {
@@ -327,6 +355,18 @@ const initialGenerateResource = (data) => {
       );
     });
   };
+
+  const mapStyle = [
+    {
+      "featureType": "poi",
+      "elementType": "labels",
+      "stylers": [
+        {
+          "visibility": "off"
+        }
+      ]
+    }
+  ];
 
   const DialogButton = () => {
     if(!isEditStop){
@@ -434,6 +474,7 @@ const initialGenerateResource = (data) => {
               zoom={15}
               center={defaultCenterMap}
               mapContainerClassName="map-container"
+              options={{ styles: mapStyle}}
             >
               <div>{renderMarkers(stopList)}</div>
             </GoogleMap>  
@@ -468,6 +509,31 @@ const initialGenerateResource = (data) => {
                 <DialogActions>
                   <Button onClick={handleClose}>Cancel</Button>
                   <DialogButton />
+                </DialogActions>
+              </Dialog>
+              <Dialog open={openMoveDialog} onClose={handleClose}>
+                <DialogTitle>Move Stop</DialogTitle>
+                <DialogContent>
+                  <Grid container spacing={0} direction="column" alignItems="center" justifyContent="center">
+                    <Grid item xs={5}>
+                      <TextField id="stopAreaCode" name="stopAreaCode" value={areaCode} label="Area Code" variant="outlined" fullWidth sx={{ my: 1}} disabled />
+                    </Grid>
+                    <Grid item xs={2}>
+                      <h3> &darr; </h3>
+                    </Grid>
+                    <Grid item xs={5}>
+                      <FormControl style={{minWidth: 210}} sx={{ my: 1}}>
+                        <InputLabel id="newAreaCodeLabel">New Area Code</InputLabel>
+                        <Select labelId="newAreaCodeLabel" id="newAreaCode" name="newAreaCode" value={newAreaCode} label="New Area Code" onChange={onChangeStop}>
+                            {areaList.map(( {id, areaCode}, index) =>  <MenuItem key={index} value={areaCode} >{areaCode}</MenuItem>)}
+                        </Select>
+                    </FormControl>
+                    </Grid>
+                  </Grid>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClose}>Cancel</Button>
+                  <Button onClick={handleMoveStop}>Move</Button>
                 </DialogActions>
               </Dialog>
             </CardContent>
