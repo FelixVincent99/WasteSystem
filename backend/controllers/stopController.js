@@ -1,6 +1,6 @@
 const db = require("../models");
 const Stop = db.Stop;
-const Op = db.Sequelize.Op;
+const seq = db.sequelize;
 const asyncHandler = require('express-async-handler');
 
 // 1. add stop
@@ -30,8 +30,10 @@ const addStop = asyncHandler(async(req, res) => {
 
 const getAllStops = asyncHandler(async(req, res) => {
 
-    let stops = await Stop.findAll();
-    res.status(200).send(stops);
+    const [results, metadata] = await seq.query(
+        "SELECT s.*, a.areaColor FROM stops s JOIN areas a ON s.areaCode = a.areaCode"
+    );
+    res.status(200).send(results);
 });
 
 // 3. get stops by area code

@@ -22,12 +22,14 @@ import Spinner from '../../components/Spinner'
 import areaService from '../../features/area/areaService'
 import manpowerService from '../../features/manpower/manpowerService';
 import truckService from '../../features/truck/truckService';
-import { createStop, updateStop } from '../../features/stop/stopSlice';
+import { createStop, getAllStops, updateStop } from '../../features/stop/stopSlice';
 import stopService from '../../features/stop/stopService';
 
 import { Grid, Card, CardHeader, CardContent } from '@mui/material';
 import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
 import { DataGrid } from '@mui/x-data-grid'
+import { SketchPicker } from 'react-color';
+import InputAdornment from '@mui/material/InputAdornment';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -54,10 +56,11 @@ function Area() {
       friday:false,
       saturday:false,
       sunday:false
-    }
+    },
+    areaColor: ""
   }
 
-  const [areaData, setAreaData] = useState(initialAreaState)  
+  const [areaData, setAreaData] = useState(initialAreaState)
   const [trucks, setTrucksData] = useState([])
   const [drivers, setDriversData] = useState([])
   const [loaders, setLoadersData] = useState([])
@@ -279,7 +282,7 @@ const initialGenerateResource = (data) => {
   const handleMoveStop = () => {
     setOpenMoveDialog(false);
     var stop = {
-      id: 1,
+      id: stopData.id,
       areaCode: stopData.newAreaCode
     }
     dispatch(updateStop({stopData: stop}));
@@ -351,6 +354,23 @@ const initialGenerateResource = (data) => {
           key={data.id}
           title = { data.stopName }
           position={{ lat: data.lat, lng: data.long }}
+          onLoad={marker => {
+            const customIcon = (opts) => Object.assign({
+              // path: 'M12.75 0l-2.25 2.25 2.25 2.25-5.25 6h-5.25l4.125 4.125-6.375 8.452v0.923h0.923l8.452-6.375 4.125 4.125v-5.25l6-5.25 2.25 2.25 2.25-2.25-11.25-11.25zM10.5 12.75l-1.5-1.5 5.25-5.25 1.5 1.5-5.25 5.25z',
+              path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z',
+              // path: 'M7.8,1.3L7.8,1.3C6-0.4,3.1-0.4,1.3,1.3c-1.8,1.7-1.8,4.6-0.1,6.3c0,0,0,0,0.1,0.1 l3.2,3.2l3.2-3.2C9.6,6,9.6,3.2,7.8,1.3C7.9,1.4,7.9,1.4,7.8,1.3z M4.6,5.8c-0.7,0-1.3-0.6-1.3-1.4c0-0.7,0.6-1.3,1.4-1.3 c0.7,0,1.3,0.6,1.3,1.3 C5.9,5.3,5.3,5.9,4.6,5.8z',
+              fillColor: '#34495e',
+              fillOpacity: 1,
+              strokeColor: '#000',
+              strokeWeight: 1,
+              scale: 1,
+            }, opts);
+
+            marker.setIcon(customIcon({
+              fillColor: areaData.areaColor,
+              strokeColor: 'white'
+            }));
+          }}
         ></MarkerF>
       );
     });
@@ -374,6 +394,34 @@ const initialGenerateResource = (data) => {
     }else{
       return (<Button onClick={handleUpdateStop}>Update</Button>)
     }
+  }
+
+  const colorPickerChange = (color) => {
+    setAreaData((prevState) => ({
+        ...prevState,
+        areaColor: color.hex  
+    }));
+  };
+  if(areaData.areaColor === null){
+    setAreaData((prevState) => ({
+      ...prevState,
+      areaColor: ""
+    }));
+  }
+
+  const handleSaveAreaColor = () => {
+    var area = {
+      id: areaData.id,
+      areaCode: areaData.areaCode,
+      areaColor: areaData.areaColor
+    }
+    areaService.update({areaData: area}).then(response => {
+      toast.success("Marker Color is saved!");
+    });
+  };
+
+  const GoogleMapMarker = () => {
+    return (<div>{renderMarkers(stopList)}</div>);
   }
 
   if(isLoading){
@@ -476,10 +524,32 @@ const initialGenerateResource = (data) => {
               mapContainerClassName="map-container"
               options={{ styles: mapStyle}}
             >
-              <div>{renderMarkers(stopList)}</div>
-            </GoogleMap>  
+              <GoogleMapMarker /> 
+            </GoogleMap>
           </Grid>
           <Grid item xs={6}>
+            <Grid container sx={{px: 2}}>
+              <Grid item xs={5}>
+                <SketchPicker
+                  color={ areaData.areaColor }
+                  onChangeComplete={ colorPickerChange }
+                />
+              </Grid>
+              <Grid item xs={7}>
+                <Stack spacing={2}>
+                  <TextField id="areaColor" name="areaColor" 
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <span className="dot" style={{backgroundColor: areaData.areaColor}}></span>
+                        </InputAdornment>
+                      ),
+                    }}
+                    value={areaData.areaColor} onChange={onChangeArea} label="Color for Marker" variant="outlined" required fullWidth/>
+                    <Button variant="contained" color="secondary" onClick={handleSaveAreaColor}>Save Color</Button>
+                  </Stack>
+                </Grid>
+            </Grid>
             <CardContent>
               <Button sx={{ mb: 2 }} variant="contained" onClick={handleClickOpen}>Add Stop</Button>
               <div style={{ height: 400, width: '100%'}}>
@@ -496,13 +566,13 @@ const initialGenerateResource = (data) => {
               <Dialog open={openDialog} onClose={handleClose}>
                 <DialogTitle>Add Stop</DialogTitle>
                 <DialogContent>
-                  <TextField id="stopName" name="stopName" value={stopName} onChange={onChangeStop} label="Stop Name" variant="outlined" required fullWidth sx={{ my: 1}} />
+                  <TextField id="stopName" name="stopName" value={stopName} onChange={onChangeStop} label="Stop Name" variant="outlined" autoComplete="off" required fullWidth sx={{ my: 1}} />
                   <Grid container>
                     <Grid item xs={6}>
-                      <TextField id="lat" name="lat" value={lat} onChange={onChangeStop} label="Latitiude" variant="outlined" required fullWidth sx={{ my: 1}} />
+                      <TextField id="lat" name="lat" value={lat} onChange={onChangeStop} label="Latitiude" variant="outlined" autoComplete="off" required fullWidth sx={{ my: 1}} />
                     </Grid>
                     <Grid item xs={6}>
-                      <TextField id="long" name="long" value={long} onChange={onChangeStop} label="Longitude" variant="outlined" required fullWidth sx={{ my: 1}} />
+                      <TextField id="long" name="long" value={long} onChange={onChangeStop} label="Longitude" variant="outlined" autoComplete="off" required fullWidth sx={{ my: 1}} />
                     </Grid>
                   </Grid>
                 </DialogContent>
