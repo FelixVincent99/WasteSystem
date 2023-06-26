@@ -424,6 +424,15 @@ const initialGenerateResource = (data) => {
     return (<div>{renderMarkers(stopList)}</div>);
   }
 
+  const onClickAddMarker = (data) => {
+    handleClickOpen();
+    setStopData((prevState) => ({ //set area code after get the data
+      ...prevState,
+      lat: data.latLng.lat(),
+      long: data.latLng.lng()
+  }));
+  }
+
   if(isLoading){
     return <Spinner />
   }
@@ -523,6 +532,7 @@ const initialGenerateResource = (data) => {
               center={defaultCenterMap}
               mapContainerClassName="map-container"
               options={{ styles: mapStyle}}
+              onClick={onClickAddMarker}
             >
               <GoogleMapMarker /> 
             </GoogleMap>
