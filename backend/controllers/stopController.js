@@ -31,7 +31,7 @@ const addStop = asyncHandler(async(req, res) => {
 const getAllStops = asyncHandler(async(req, res) => {
 
     const [results, metadata] = await seq.query(
-        "SELECT s.*, a.areaColor FROM Stops s JOIN areas a ON s.areaCode = a.areaCode"
+        "SELECT s.*, a.areaColor FROM Stops s JOIN Areas a ON s.areaCode = a.areaCode"
     );
     res.status(200).send(results);
 });
