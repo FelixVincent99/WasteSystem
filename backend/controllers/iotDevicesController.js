@@ -5,9 +5,9 @@ const asyncHandler = require('express-async-handler');
 const url = require('url');
 
 const sendFromSensor = asyncHandler(async(req, res) => {
-    const { weight, lat, lng } = url.parse(req.url, true).query;
+    const { weight, lat, lng, sensorId } = url.parse(req.url, true).query;
 
-    if (!weight || !lat || !lng) {
+    if (!weight || !lat || !lng || !sensorId) {
         res.status(401);
         throw new Error('Invalid input');
     }
@@ -16,7 +16,8 @@ const sendFromSensor = asyncHandler(async(req, res) => {
         //mytodo: add route id
         weight: weight,
         lat: lat,
-        lng: lng
+        lng: lng,
+        sensorId: sensorId
     }
 
     const insertCollection = await Collection.create(collection);

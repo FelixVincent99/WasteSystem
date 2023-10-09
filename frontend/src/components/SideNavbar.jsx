@@ -18,6 +18,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import EngineeringIcon from '@mui/icons-material/Engineering';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import SensorsIcon from '@mui/icons-material/Sensors';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import MapIcon from '@mui/icons-material/Map';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
@@ -86,6 +87,10 @@ function SideNavbar() {
         {
             name: 'Truck',
             icon: <LocalShippingIcon/>,
+        },
+        {
+            name: 'Sensor',
+            icon: <SensorsIcon/>,
         },
         {
             name: 'Scheduling',

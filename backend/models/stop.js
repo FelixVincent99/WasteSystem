@@ -18,13 +18,18 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: false
     },
-    areaId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: 'Areas',
-            key: 'id'
-        }
+    stopOrder: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    areaCode: {
+        type: DataTypes.TEXT,
+    },
+    lat: {
+        type: DataTypes.FLOAT
+    },
+    long: {
+        type: DataTypes.FLOAT
     },
     binAmount: {
         type: DataTypes.INTEGER

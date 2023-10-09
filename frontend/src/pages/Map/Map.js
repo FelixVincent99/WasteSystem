@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllCollections } from "../../features/collection/collectionSlice";
 // import { useNavigate } from 'react-router-dom'
 import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
-import { TextField } from '@mui/material'
+import { TextField } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
@@ -13,13 +13,12 @@ import "./Map.css";
 const Map = () => {
   const collections = useSelector((state) => state.collections.collections);
   const [selectionDate, setSelectionDate] = useState(new Date());
-  console.log(collections);
 
   const dispatch = useDispatch();
   // const navigate = useNavigate()
 
   const initFetch = useCallback(() => {
-    dispatch(getAllCollections({'date': selectionDate}));
+    dispatch(getAllCollections({ date: selectionDate }));
   }, [dispatch, selectionDate]);
 
   useEffect(() => {
@@ -37,7 +36,7 @@ const Map = () => {
         <DatePicker
           onChange={(newValue) => {
             setSelectionDate(new Date(newValue));
-            dispatch(getAllCollections({'date': new Date(newValue)}));
+            dispatch(getAllCollections({ date: new Date(newValue) }));
           }}
           inputFormat="DD/MM/YYYY"
           value={selectionDate}
@@ -47,17 +46,16 @@ const Map = () => {
         />
       </LocalizationProvider>
       <br />
+      <div>
+        <strong>Truck Indicator</strong>
+      </div>
+      <DotIndicator data={collections} />
       <GMap collections={collections} />
     </div>
   );
 };
 
 const renderMarkers = (collections) => {
-  const iconMarker = {
-    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Location_dot_red.svg/96px-Location_dot_red.svg.png",
-    scaledSize: new window.google.maps.Size(10, 10),
-  };
-
   return collections.map((data) => {
     return (
       <MarkerF
@@ -65,7 +63,13 @@ const renderMarkers = (collections) => {
         // onClick = { this.onMarkerClick }
         // title = { location.locName }
         position={{ lat: parseFloat(data.lat), lng: parseFloat(data.lng) }}
-        icon={iconMarker}
+        icon={{
+          path: window.google.maps.SymbolPath.CIRCLE,
+          fillColor: data.color,
+          fillOpacity: 0.9,
+          strokeOpacity: 0,
+          scale: 5,
+        }}
         // desc = { location.desc }
         // animation = { this.state.animation[i] }
         // name = { location.locName }
@@ -84,6 +88,36 @@ const GMap = (props) => {
       <div>{renderMarkers(props.collections)}</div>
     </GoogleMap>
   );
+};
+
+const DotIndicator = (props) => {
+  const sensorDataOnly = [];
+  props.data.map((data1) => {
+    let exists = false;
+    sensorDataOnly.map((data2) => {
+      if (data2.sensorId === data1.sensorId) exists = true;
+      return ;
+    });
+
+    if (!exists) {
+      sensorDataOnly.push({
+        sensorId: data1.sensorId,
+        color: data1.color,
+        truckNo: data1.truckNo,
+      });
+    }
+
+    return ;
+  });
+
+  return sensorDataOnly.map((data) => {
+    return (
+      <div key={data.sensorId}>
+        <span className="circle" style={{ backgroundColor: data.color }}></span>
+        : <span>{data.truckNo == null ? "Sensor is not assigned." : data.truckNo }</span>
+      </div>
+    );
+  });
 };
 
 export default Map;

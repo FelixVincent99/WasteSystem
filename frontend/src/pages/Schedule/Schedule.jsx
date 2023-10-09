@@ -127,8 +127,9 @@ function Schedule() {
     }
     
   return (
-    <Box component="form"  onSubmit={saveSchedule}  noValidate sx={{ m: 1}}>
-        <Stack spacing={2}>
+    <Box component="form"  onSubmit={saveSchedule}  noValidate sx={{ m: 1}}>        
+        <h2>Schedule</h2>
+        <Stack spacing={2}>            
             <LocalizationProvider dateAdapter={AdapterMoment} >
                 <DatePicker
                 disabled readOnly
@@ -180,6 +181,18 @@ function Schedule() {
                 <InputLabel id="manpowerLabel">Loaders</InputLabel>
                 <Select labelId="manpowerLabel" id="loaderId" name="loaderId" value={loaderId} input={<OutlinedInput label="Name" />} onChange={onChangeSchedule} multiple >
                     {loaders.map(( {id, mpName, disabled}, index) =>  <MenuItem key={index} value={id} disabled={disabled}>{mpName}</MenuItem>)}
+                </Select>
+            </FormControl>
+        </Stack>
+        <h2>Report</h2>
+        <Stack spacing={2}>
+            <TextField id="actualWeight" name="actualWeight" label="Collected Weight" type="number" variant="outlined"/>
+            <FormControl>
+                <InputLabel id="statusLabel">Status</InputLabel>
+                <Select labelId="statusLabel" id="status" name="status" value={status} label="Status" onChange={onChangeSchedule}>
+                    <MenuItem value="1">Pending</MenuItem>
+                    <MenuItem value="2">Complete</MenuItem>
+                    <MenuItem value="3">Incomplete</MenuItem>
                 </Select>
             </FormControl>
         </Stack>
