@@ -1,4 +1,5 @@
 import http from "../../http-common"
+import axios from "axios";
 
 const API_URL = '/stops'
 
@@ -28,12 +29,20 @@ const getStopsAreaCode = async (id) => {
 
 };
 
+const getStopCoordinates = async (stop, key) => {
+  var google = "https://maps.google.com/maps/api/geocode/json?address=";
+  var address = ", Kuching, Sarawak";
+  const response = await axios.get(google + stop + address + "&key=" + key);
+  return response.data;
+}
+
 const sensorService = {
   getAll,
   get,
   create,
   update,
-  getStopsAreaCode
+  getStopsAreaCode,
+  getStopCoordinates
 };
 
 export default sensorService;
