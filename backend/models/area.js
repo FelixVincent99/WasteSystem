@@ -47,6 +47,9 @@ module.exports = (sequelize, DataTypes) => {
     collectionFrequency: {
       type: DataTypes.STRING,
     },
+    areaColor: {
+      type: DataTypes.STRING
+    },
   }, {
     sequelize,
     modelName: 'Area',

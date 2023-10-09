@@ -9,7 +9,6 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 
 import "./Map.css";
-import { color } from "@mui/system";
 
 const Map = () => {
   const collections = useSelector((state) => state.collections.collections);
@@ -96,7 +95,8 @@ const DotIndicator = (props) => {
   props.data.map((data1) => {
     let exists = false;
     sensorDataOnly.map((data2) => {
-      if (data2.sensorId == data1.sensorId) exists = true;
+      if (data2.sensorId === data1.sensorId) exists = true;
+      return ;
     });
 
     if (!exists) {
@@ -106,6 +106,8 @@ const DotIndicator = (props) => {
         truckNo: data1.truckNo,
       });
     }
+
+    return ;
   });
 
   return sensorDataOnly.map((data) => {
