@@ -96,6 +96,7 @@ const DotIndicator = (props) => {
     let exists = false;
     sensorDataOnly.map((data2) => {
       if (data2.sensorId === data1.sensorId) exists = true;
+      return ;
     });
 
     if (!exists) {
@@ -105,6 +106,8 @@ const DotIndicator = (props) => {
         truckNo: data1.truckNo,
       });
     }
+
+    return ;
   });
 
   return sensorDataOnly.map((data) => {

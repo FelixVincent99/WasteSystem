@@ -22,7 +22,7 @@ import Spinner from '../../components/Spinner'
 import areaService from '../../features/area/areaService'
 import manpowerService from '../../features/manpower/manpowerService';
 import truckService from '../../features/truck/truckService';
-import { createStop, getAllStops, updateStop } from '../../features/stop/stopSlice';
+import { createStop, updateStop } from '../../features/stop/stopSlice';
 import stopService from '../../features/stop/stopService';
 
 import { Grid, Card, CardHeader, CardContent } from '@mui/material';

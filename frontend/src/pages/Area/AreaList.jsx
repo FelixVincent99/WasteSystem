@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from 'react'
+import React, { useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllAreas } from '../../features/area/areaSlice'
 import { useNavigate } from 'react-router-dom'
