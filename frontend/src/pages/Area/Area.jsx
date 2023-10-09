@@ -427,10 +427,24 @@ const initialGenerateResource = (data) => {
   const onClickAddMarker = (data) => {
     handleClickOpen();
     setStopData((prevState) => ({ //set area code after get the data
-      ...prevState,
-      lat: data.latLng.lat(),
-      long: data.latLng.lng()
-  }));
+        ...prevState,
+        lat: data.latLng.lat(),
+        long: data.latLng.lng()
+    }));
+  }
+
+  const geoCodeStopName = () => {
+    if(stopName != ""){
+      stopService.getStopCoordinates(stopName, process.env.REACT_APP_GOOGLE_MAPS_API_KEY)
+      .then(response => {
+        var result = response.results;
+        setStopData((prevState) => ({ //set area code after get the data
+            ...prevState,
+            lat: result[0].geometry.location.lat,
+            long: result[0].geometry.location.lng
+        }));
+      });
+    }
   }
 
   if(isLoading){
@@ -576,7 +590,14 @@ const initialGenerateResource = (data) => {
               <Dialog open={openDialog} onClose={handleClose}>
                 <DialogTitle>Add Stop</DialogTitle>
                 <DialogContent>
-                  <TextField id="stopName" name="stopName" value={stopName} onChange={onChangeStop} label="Stop Name" variant="outlined" autoComplete="off" required fullWidth sx={{ my: 1}} />
+                  <Grid container>
+                    <Grid item xs={8}>
+                    <TextField id="stopName" name="stopName" value={stopName} onChange={onChangeStop} label="Stop Name" variant="outlined" autoComplete="off" required fullWidth sx={{ my: 1}} />
+                    </Grid>
+                    <Grid item xs={4}>
+                      <Button sx={{ m: 2}} variant="contained" onClick={geoCodeStopName}>Coordinate</Button>
+                    </Grid>
+                  </Grid>
                   <Grid container>
                     <Grid item xs={6}>
                       <TextField id="lat" name="lat" value={lat} onChange={onChangeStop} label="Latitiude" variant="outlined" autoComplete="off" required fullWidth sx={{ my: 1}} />
