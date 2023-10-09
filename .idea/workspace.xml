@@ -5,7 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="87c881e8-4596-42e7-88aa-425641129575" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Map/Map.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Map/Map.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.env" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.env" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,6 +51,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "git-widget-placeholder": "main",
     "node.js.selected.package.tslint": "(autodetect)"
   }
 }]]></component>
