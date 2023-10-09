@@ -11,6 +11,8 @@ import Divider from '@mui/material/Divider'
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button'
 import {toast} from 'react-toastify'
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
 
 import { getAllSchedules, createSchedule } from '../../features/schedule/scheduleSlice'
 import Spinner from '../../components/Spinner'
@@ -79,7 +81,7 @@ function ScheduleList() {
       'areaId': schedule.areaId,
       'id': schedule.areaId
     }
-    
+
     for(var a=1; a<columns.length; a++){
       var date = columns[a].field
       var scheduleItem = 'NA'
@@ -113,7 +115,7 @@ function ScheduleList() {
       if(scheduleItem === 'NA' && defaultItem === 'NA'){
         match = true
       }else{
-        if(scheduleItem !== 'NA' && defaultItem !== 'NA'){          
+        if(scheduleItem !== 'NA' && defaultItem !== 'NA'){
           if(defaultItem.defaultDriver === scheduleItem.driverName && defaultItem.defaultTruck === scheduleItem.truckNo && defaultItem.defaultLoadersId.split(",").sort().toString() === scheduleItem.loaderId.split(",").sort().toString()){
             match = true
           }else{
@@ -127,9 +129,18 @@ function ScheduleList() {
       }
       
       if(match){
-        textColor = 'black'
+        textColor = 'orange'
       }else{
         textColor = 'red'
+      }
+      if(scheduleItem === 'NA' && defaultItem === 'NA'){
+        textColor = 'black'
+      }
+
+      if(scheduleItem !== 'NA' && scheduleItem.status === '2'){
+        textColor = 'green'
+      }else if(scheduleItem !== 'NA' && scheduleItem.status === '3'){
+        textColor = 'brown'
       }
 
       processedScheduleItem[columns[a].field] = {
@@ -210,6 +221,11 @@ function ScheduleList() {
         renderInput={(params) => <TextField {...params} helperText={null}/>}
         />
       </LocalizationProvider>
+      <Stack direction="row" spacing={2}>
+        <Chip label="No Schedule" style={{backgroundColor:'red', color:'white'}} />
+        <Chip label="Scheduled" style={{backgroundColor:'orange', color:'white'}} />
+        <Chip label="Complete" style={{backgroundColor:'green', color:'white'}} />
+      </Stack>
       <div style={{ height: 800, width: '100%'}}>
           <div style={{ display: 'flex', height: '100%'}}>
               <div style={{ flexGrow: 1 }}>

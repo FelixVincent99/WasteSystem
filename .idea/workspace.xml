@@ -24,14 +24,6 @@
               <option name="branches">
                 <list>
                   <RecentBranch>
-                    <option name="branchName" value="fix_create_sensor_bug" />
-                    <option name="lastUsedInstant" value="1696835425" />
-                  </RecentBranch>
-                  <RecentBranch>
-                    <option name="branchName" value="main" />
-                    <option name="lastUsedInstant" value="1696835408" />
-                  </RecentBranch>
-                  <RecentBranch>
                     <option name="branchName" value="add_map_and_stop_to_areas" />
                     <option name="lastUsedInstant" value="1696834916" />
                   </RecentBranch>
@@ -58,7 +50,6 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "git-widget-placeholder": "fix__create__sensor__bug",
     "node.js.selected.package.tslint": "(autodetect)"
   }
 }]]></component>
