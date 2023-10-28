@@ -55,8 +55,20 @@ const Map = () => {
   );
 };
 
+function getCoordinateDegree(origin_lat, origin_lng, next_lat, next_lng) {
+  var dLon = (next_lng - origin_lng);
+  var dLat = (next_lat - origin_lat);
+  var degree = Math.atan2(dLon, dLat);
+  degree *= 180 / Math.PI;
+  return degree;
+}
+
 const renderMarkers = (collections) => {
-  return collections.map((data) => {
+  var rotationDegree;
+  return collections.map((data, index) => {
+    if(collections.length !== (index+1) ){
+      rotationDegree = getCoordinateDegree(parseFloat(data.lat), parseFloat(data.lng), parseFloat(collections[index+1].lat), parseFloat(collections[index+1].lng));
+    }
     return (
       <MarkerF
         key={data.id}
@@ -64,11 +76,12 @@ const renderMarkers = (collections) => {
         // title = { location.locName }
         position={{ lat: parseFloat(data.lat), lng: parseFloat(data.lng) }}
         icon={{
-          path: window.google.maps.SymbolPath.CIRCLE,
+          path: window.google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
           fillColor: data.color,
           fillOpacity: 0.9,
           strokeOpacity: 0,
-          scale: 5,
+          scale: 3,
+          rotation: rotationDegree,
         }}
         // desc = { location.desc }
         // animation = { this.state.animation[i] }
