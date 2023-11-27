@@ -67,6 +67,7 @@ function Area() {
   const {isError, isLoading, isSuccess, message} = useSelector(state => state.areas)
   const [openDialog, setOpenDialog] = React.useState(false);
   const [openMoveDialog, setOpenMoveDialog] = React.useState(false);
+  const [openOrderDialog, setOpenOrderDialog] = React.useState(false);
   
   var areaList = useSelector(state => state.areas.areas)
 
@@ -262,6 +263,39 @@ const initialGenerateResource = (data) => {
           </strong>
       )
   }
+  
+  const RenderSelectStopOrder = (params) => {
+    var stop = params.row;
+    const [stopOrder, setStopOrder] = React.useState(stop.stopOrder);
+    const updateStopOrder = (event) => {
+      setStopOrder(event.target.value);
+      var stopU = {
+        id: stop.id,
+        stopOrder: event.target.value
+      }
+      dispatch(updateStop({stopData: stopU}));
+      toast.success("Stop Order is changed!");
+      stopService.getStopsAreaCode(stop.areaCode).then(stopList => {
+        setStopList(stopList)
+      });
+    };
+    return(
+        <strong>
+          <FormControl sx={{ m: 1, minWidth: 100 }} size="small">
+            <InputLabel id="demo-select-small-label">Stop Order</InputLabel>
+            <Select
+              labelId="demo-select-small-label"
+              id="demo-select-small"
+              value={stopOrder}
+              label="Stop Order"
+              onChange={updateStopOrder}
+            >
+              {rows.map(( {id, stopOrder}, index) =>  <MenuItem key={index} value={index} >{index}</MenuItem>)}
+            </Select>
+          </FormControl>
+        </strong>
+    )
+}
 
   const handleEditClick = (params) => {
     setStopData(params.row);
@@ -328,9 +362,14 @@ const initialGenerateResource = (data) => {
     }));
   };
 
+  const handleOrderStopOpen = (params) => {
+    setOpenOrderDialog(true);
+  }
+
   const handleClose = () => {
     setOpenDialog(false);
     setOpenMoveDialog(false);
+    setOpenOrderDialog(false);
   };
 
   const handleSaveStop = () => {
@@ -576,6 +615,7 @@ const initialGenerateResource = (data) => {
             </Grid>
             <CardContent>
               <Button sx={{ mb: 2 }} variant="contained" onClick={handleClickOpen}>Add Stop</Button>
+              <Button sx={{ mb: 2 , ml: 1}} variant="contained" color="warning" onClick={handleOrderStopOpen}>Re-order Stop</Button>
               <div style={{ height: 400, width: '100%'}}>
                   <div style={{ display: 'flex', height: '100%'}}>
                       <div style={{ flexGrow: 1 }}>
@@ -635,6 +675,66 @@ const initialGenerateResource = (data) => {
                 <DialogActions>
                   <Button onClick={handleClose}>Cancel</Button>
                   <Button onClick={handleMoveStop}>Move</Button>
+                </DialogActions>
+              </Dialog>
+              <Dialog open={openOrderDialog} onClose={handleClose} fullWidth maxWidth="md">
+                <DialogTitle>Re-Order Stop</DialogTitle>
+                <DialogContent>
+                  <Grid container>
+                    <Grid item xs={6} sx={{ pr: 1}}>
+                      <div>Suggestion Stops</div>
+                      <div style={{ height: 400, width: '100%'}}>
+                          <div style={{ display: 'flex', height: '100%'}}>
+                              <div style={{ flexGrow: 1 }}>
+                                  <DataGrid 
+                                      rows={rows}
+                                      columns={[
+                                        {
+                                            field: 'stopOrder',
+                                            headerName: 'No',
+                                            flex: 0.1
+                                        },
+                                        {
+                                            field: 'stopName',
+                                            headerName: 'Stop Name',
+                                            flex: 0.4
+                                        }
+                                      ]}
+                                  />
+                              </div>
+                          </div>
+                      </div>
+                    </Grid>
+                    <Grid item xs={6} sx={{ pl: 1}}>
+                    <div>Update Stops</div>
+                      <div style={{ height: 400, width: '100%'}}>
+                          <div style={{ display: 'flex', height: '100%'}}>
+                              <div style={{ flexGrow: 1 }}>
+                                  <DataGrid 
+                                      rows={rows}
+                                      columns={[
+                                        {
+                                            field: 'stopOrder',
+                                            headerName: 'No',
+                                            flex: 0.2,
+                                            renderCell: RenderSelectStopOrder,
+                                            disableClickEventBubbling: true
+                                        },
+                                        {
+                                            field: 'stopName',
+                                            headerName: 'Stop Name',
+                                            flex: 0.3
+                                        }
+                                      ]}
+                                  />
+                              </div>
+                          </div>
+                      </div>
+                    </Grid>
+                  </Grid>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClose}>Close</Button>
                 </DialogActions>
               </Dialog>
             </CardContent>
