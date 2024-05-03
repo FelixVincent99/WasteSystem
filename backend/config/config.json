@@ -1,5 +1,21 @@
 {
   "development": {
+<<<<<<< HEAD
+=======
+      "username": "root",
+      "password": "",
+      "database": "dbtssmartdummy",
+      "host": "localhost",
+      "dialect": "mysql",
+      "pool": {
+          "max": 5,
+          "min": 0,
+          "acquire": 30000,
+          "idle": 10000
+      }
+  },
+  "production": {
+>>>>>>> 494de95c21e8c2a48d2caa1bc456f73d69b24bca
       "username": "felix",
       "password": "August@2022",
       "database": "dbtssmartsystem",
