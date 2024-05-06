@@ -10,7 +10,7 @@ import { Button } from '@mui/material'
 function TruckList() {
 
   const trucks = useSelector(state => state.trucks.trucks)
-  
+
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -21,7 +21,7 @@ function TruckList() {
 
   useEffect(()=>{
     initFetch()
-  },[initFetch])  
+  },[initFetch])
 
   const renderDetailsButton = (params) => {
     return (
@@ -44,7 +44,7 @@ function TruckList() {
   const handleEditClick = (params) => {
     const path="/truck/" + params.id
     navigate(path);
-  }  
+  }
 
   const rows = trucks
   const columns = [
@@ -61,18 +61,18 @@ function TruckList() {
       minWidth:150,
       flex: 0.5
     },
-    {
-      field: 'operationStartDateFormatted',
-      headerName: 'Operation Start Date',
-      minWidth:150,
-      flex: 1
-    },
-    {
-      field: 'operationEndDateFormatted',
-      headerName: 'Operation End Date',
-      minWidth:150,
-      flex: 1
-    },
+    // {
+    //   field: 'operationStartDateFormatted',
+    //   headerName: 'Operation Start Date',
+    //   minWidth:150,
+    //   flex: 1
+    // },
+    // {
+    //   field: 'operationEndDateFormatted',
+    //   headerName: 'Operation End Date',
+    //   minWidth:150,
+    //   flex: 1
+    // },
     {
       field: 'milage',
       headerName: 'Milage',
@@ -110,12 +110,12 @@ function TruckList() {
 
   return (
     <>
-      <Button sx={{ my:2 }} href="/truck/add" variant="contained">Add Truck</Button>  
+      <Button sx={{ my:2 }} href="/truck/add" variant="contained">Add Truck</Button>
       <div style={{ height: 400, width: '100%' }}>
         <div style={{ display: 'flex', height: '100%' }}>
           <div style={{ flexGrow: 1 }}>
-          <DataGrid 
-            rows={rows} 
+          <DataGrid
+            rows={rows}
             columns={columns}
             components={{ Toolbar: GridToolbar }}
           />

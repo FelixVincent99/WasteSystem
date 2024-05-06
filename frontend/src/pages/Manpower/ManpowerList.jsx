@@ -8,7 +8,7 @@ import { getAllManpowers } from '../../features/manpower/manpowerSlice'
 
 function ManpowerList() {
     const manpowers = useSelector(state => state.manpowers.manpowers)
-  
+
 
     const dispatch = useDispatch()
 
@@ -43,7 +43,7 @@ function ManpowerList() {
     const handleEditClick = (params) => {
         const path="/manpower/" + params.id
         navigate(path);
-    }  
+    }
 
     const rows = manpowers
     const columns = [
@@ -71,24 +71,25 @@ function ManpowerList() {
             minWidth:150,
             flex: 0.5
         },
-        {
-            field: 'operationStartDateFormatted',
-            headerName: 'Operation Start Date',
-            minWidth:150,
-            flex: 1
-        },
-        {
-            field: 'operationEndDateFormatted',
-            headerName: 'Operation End Date',
-            minWidth:150,
-            flex: 1
-        },        
+        //todo update
+        // {
+        //     field: 'operationStartDateFormatted',
+        //     headerName: 'Operation Start Date',
+        //     minWidth:150,
+        //     flex: 1
+        // },
+        // {
+        //     field: 'operationEndDateFormatted',
+        //     headerName: 'Operation End Date',
+        //     minWidth:150,
+        //     flex: 1
+        // },
         {
             field: 'statusType',
             headerName: 'Status',
             minWidth:150,
             flex: 0.5
-        },    
+        },
         {
             field: 'updatedAtFormatted',
             headerName: 'Latest Update',
@@ -106,12 +107,12 @@ function ManpowerList() {
     ]
   return (
     <>
-      <Button sx={{ my:2 }} href="/manpower/add" variant="contained">Add Manpower</Button>  
+      <Button sx={{ my:2 }} href="/manpower/add" variant="contained">Add Manpower</Button>
       <div style={{ height: 400, width: '100%' }}>
         <div style={{ display: 'flex', height: '100%' }}>
           <div style={{ flexGrow: 1 }}>
-          <DataGrid 
-            rows={rows} 
+          <DataGrid
+            rows={rows}
             columns={columns}
             components={{ Toolbar: GridToolbar }}
           />
