@@ -86,7 +86,7 @@ export const getAllTrucksUnavailability = createAsyncThunk(
     async ()=>{
         const truckUnavailabilityList = await truckService.getAllUnavailability()
         const proccessedTruckUnavailabilityList = truckUnavailabilityList.map(truckItem => {
-            truckItem.statusType = truckItem.status === 1? 'Active': truckItem.status === 2? 'Inactive': 'Error'            
+            truckItem.statusType = truckItem.status === 1? 'Active': truckItem.status === 2? 'Inactive': 'Error'
             truckItem.unavailabilityStartDateFormatted =  truckItem.unavailabilityStartDate.split("T")[0]
             truckItem.unavailabilityEndDateFormatted = truckItem.unavailabilityEndDate.split("T")[0]
             truckItem.updatedAtFormatted =  truckItem.updatedAt.split("T")[0]
@@ -128,8 +128,7 @@ export const getAvailableTrucks = createAsyncThunk(
     'trucks/getAvaiableTrucks',
     async (data, thunkAPI) => {
         var truckList = await truckService.getAll()
-        const notAvailableTruckList = await truckService.getNotAvailableTrucks(data)    
-        console.log(data)
+        const notAvailableTruckList = await truckService.getNotAvailableTrucks(data)
         truckList.map(truckItem => {
             truckItem.disabled = false
             return truckItem
@@ -138,13 +137,13 @@ export const getAvailableTrucks = createAsyncThunk(
         if(notAvailableTruckList.length !== 0){
             for(var a=0; a<notAvailableTruckList.length; a++){
                 for(var b=0; b<truckList.length; b++){
-                    if(notAvailableTruckList[a].id === truckList[b].id && data.truckId !== truckList[b].id){                        
+                    if(notAvailableTruckList[a].id === truckList[b].id && data.truckId !== truckList[b].id){
                         truckList[b].disabled = true
                     }
                 }
             }
         }
-        
+
         return truckList
     }
 )
@@ -158,7 +157,7 @@ const truckSlice = createSlice({
             state.isError = false;
             state.isSuccess = false;
             state.message = '';
-        }           
+        }
     },
     extraReducers: (builder)=>{
         builder
@@ -173,7 +172,7 @@ const truckSlice = createSlice({
         .addCase(createTruck.rejected, (state, action)=>{
             state.isLoading = false
             state.isError = true
-            state.message = action.payload            
+            state.message = action.payload
         })
         .addCase(getAllTrucks.pending, (state)=>{
             state.isLoading = true
@@ -206,11 +205,11 @@ const truckSlice = createSlice({
         })
         .addCase(updateTruck.fulfilled, (state, action)=>{
             state.isLoading = false
-            state.isSuccess = true                        
+            state.isSuccess = true
         })
         .addCase(updateTruck.rejected, (state, action)=>{
             state.isLoading = false
-            state.isError = true            
+            state.isError = true
             state.message = action.payload
         })
         .addCase(createTruckUnavailability.pending, (state)=>{
@@ -224,7 +223,7 @@ const truckSlice = createSlice({
         .addCase(createTruckUnavailability.rejected, (state, action)=>{
             state.isLoading = false
             state.isError = true
-            state.message = action.payload            
+            state.message = action.payload
         })
         .addCase(getAllTrucksUnavailability.pending, (state)=>{
             state.isLoading = true
@@ -257,11 +256,11 @@ const truckSlice = createSlice({
         })
         .addCase(updateTruckUnavailability.fulfilled, (state, action)=>{
             state.isLoading = false
-            state.isSuccess = true                        
+            state.isSuccess = true
         })
         .addCase(updateTruckUnavailability.rejected, (state, action)=>{
             state.isLoading = false
-            state.isError = true            
+            state.isError = true
             state.message = action.payload
         })
         .addCase(getAvailableTrucks.pending, (state)=>{

@@ -30,13 +30,13 @@ function Manpower() {
         operationEndDate: new Date(),
         status: "1"
     }
-    const [manpowerData, setManpowerData] = useState(initialManpowerState)    
+    const [manpowerData, setManpowerData] = useState(initialManpowerState)
     const {isError, isLoading, isSuccess, message} = useSelector(state => state.manpowers);
-  
+
     const dispatch = useDispatch()
     const navigate = useNavigate()
-  
-    const getManpower = id => {        
+
+    const getManpower = id => {
         manpowerService.get(id)
         .then(response => {
             setManpowerData(response)
@@ -45,7 +45,7 @@ function Manpower() {
             console.log(e);
         });
     };
-  
+
     useEffect(() => {
         if(isError){
             toast.error(message)
@@ -57,7 +57,7 @@ function Manpower() {
         dispatch(reset())
         getManpower(params.id)
     }, [params.id, isError, isSuccess, navigate, message, dispatch]);
-  
+
     const onChangeManpower = (e) => {
         setManpowerData((prevState) => ({
             ...prevState,
@@ -74,7 +74,7 @@ function Manpower() {
     }
 
     return (
-        <Box component="form" onSubmit={saveUpdateManpower} noValidate sx={{ m: 1 }}>            
+        <Box component="form" onSubmit={saveUpdateManpower} noValidate sx={{ m: 1 }}>
             <Stack spacing={2}>
                 <TextField id="mpName" name="mpName" value={manpowerData.mpName} onChange={onChangeManpower} label="Name" variant="outlined" required fullWidth/>
                 <TextField id="mpAge" name="mpAge" value={manpowerData.mpAge} onChange={onChangeManpower} label="Age" variant="outlined" fullWidth/>
@@ -92,36 +92,37 @@ function Manpower() {
                         <MenuItem value="2">Female</MenuItem>
                     </Select>
                 </FormControl>
-                <LocalizationProvider dateAdapter={AdapterMoment} >
-                    <DatePicker            
-                    onChange={(newValue)=>{
-                        setManpowerData((prevState) => ({
-                            ...prevState,
-                            [`operationStartDate`]: newValue.toDate()  
-                        }))
-                    }}
-                    inputFormat="DD/MM/YYYY"
-                    value={manpowerData.operationStartDate}
-                    label="Operation Start Date"
-                    views={['year', 'month', 'day']}            
-                    renderInput={(params) => <TextField {...params} fullWidth/>}
-                    />
-                </LocalizationProvider>
-                <LocalizationProvider dateAdapter={AdapterMoment}>
-                    <DatePicker            
-                    onChange={(newValue)=>{
-                        setManpowerData((prevState) => ({
-                            ...prevState,
-                            [`operationEndDate`]: newValue.toDate()  
-                        }))
-                    }}
-                    inputFormat="DD/MM/YYYY"
-                    value={manpowerData.operationEndDate}
-                    label="Operation End Date"
-                    views={['year', 'month', 'day']}            
-                    renderInput={(params) => <TextField {...params} fullWidth/>}
-                    />
-                </LocalizationProvider>
+                {/*todo update*/}
+                {/*<LocalizationProvider dateAdapter={AdapterMoment} >*/}
+                {/*    <DatePicker            */}
+                {/*    onChange={(newValue)=>{*/}
+                {/*        setManpowerData((prevState) => ({*/}
+                {/*            ...prevState,*/}
+                {/*            [`operationStartDate`]: newValue.toDate()  */}
+                {/*        }))*/}
+                {/*    }}*/}
+                {/*    inputFormat="DD/MM/YYYY"*/}
+                {/*    value={manpowerData.operationStartDate}*/}
+                {/*    label="Operation Start Date"*/}
+                {/*    views={['year', 'month', 'day']}            */}
+                {/*    renderInput={(params) => <TextField {...params} fullWidth/>}*/}
+                {/*    />*/}
+                {/*</LocalizationProvider>*/}
+                {/*<LocalizationProvider dateAdapter={AdapterMoment}>*/}
+                {/*    <DatePicker            */}
+                {/*    onChange={(newValue)=>{*/}
+                {/*        setManpowerData((prevState) => ({*/}
+                {/*            ...prevState,*/}
+                {/*            [`operationEndDate`]: newValue.toDate()  */}
+                {/*        }))*/}
+                {/*    }}*/}
+                {/*    inputFormat="DD/MM/YYYY"*/}
+                {/*    value={manpowerData.operationEndDate}*/}
+                {/*    label="Operation End Date"*/}
+                {/*    views={['year', 'month', 'day']}            */}
+                {/*    renderInput={(params) => <TextField {...params} fullWidth/>}*/}
+                {/*    />*/}
+                {/*</LocalizationProvider>*/}
                 <FormControl sx={{ m: 1, minWidth: 120 }}>
                     <InputLabel id="statusLabel">Status</InputLabel>
                     <Select labelId="statusLabel" id="status" name="status" value={manpowerData.status} label="Status" onChange={onChangeManpower}>
@@ -134,7 +135,7 @@ function Manpower() {
             <Box m={2} display="flex" justifyContent="flex-end" alignItems="flex-end">
                 <Button type="submit" variant="contained" color="primary" size="large">Update</Button>
             </Box>
-        </Box>        
+        </Box>
     )
 }
 

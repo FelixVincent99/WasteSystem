@@ -17,7 +17,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 function Login() {
 
-    const [formData, setFormData] = useState({        
+    const [formData, setFormData] = useState({
         email: '',
         password: '',
     });
@@ -34,17 +34,17 @@ function Login() {
             toast.error(message)
         }
         if(isSuccess || user){
-            navigate('/')
+            navigate('/area/list')
         }
 
         dispatch(reset())
-    }, [isError, isSuccess, user, message, navigate, dispatch])    
+    }, [isError, isSuccess, user, message, navigate, dispatch])
 
     const onChange = (e) => {
         setFormData((prevState) => ({
             ...prevState,
             [e.target.name]: e.target.value,
-        })) 
+        }))
     }
 
     const handleSubmit = (e) => {

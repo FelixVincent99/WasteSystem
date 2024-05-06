@@ -17,7 +17,7 @@ import { createManpower, reset } from '../../features/manpower/manpowerSlice'
 import Spinner from '../../components/Spinner'
 
 function AddManpower() {
-    const initialManpowerState = {        
+    const initialManpowerState = {
         mpName: "",
         mpAge: "",
         role: "",
@@ -44,13 +44,13 @@ function AddManpower() {
         }
 
         dispatch(reset())
-    }, [isError, isSuccess, message, navigate, dispatch]) 
+    }, [isError, isSuccess, message, navigate, dispatch])
 
     const onChangeManpower = (e) => {
         setManpowerData((prevState) => ({
             ...prevState,
             [e.target.name]: e.target.value,
-        })) 
+        }))
     }
 
     const saveManpower = (e) => {
@@ -63,13 +63,13 @@ function AddManpower() {
             operationStartDate,
             operationEndDate,
             status,
-        }       
+        }
         dispatch(createManpower({manpowerData}))
     }
 
     if(isLoading){
         return <Spinner />
-    }    
+    }
   return (
     <Box component="form"  onSubmit={saveManpower}  noValidate sx={{ m: 1 }}>
         <Stack spacing={2}>
@@ -89,36 +89,37 @@ function AddManpower() {
                     <MenuItem value="2">Female</MenuItem>
                 </Select>
             </FormControl>
-            <LocalizationProvider dateAdapter={AdapterMoment} >
-                <DatePicker            
-                onChange={(newValue)=>{
-                    setManpowerData((prevState) => ({
-                        ...prevState,
-                        [`operationStartDate`]: newValue.toDate()  
-                    }))
-                }}
-                inputFormat="DD/MM/YYYY"
-                value={operationStartDate}
-                label="Operation Start Date"
-                views={['year', 'month', 'day']}            
-                renderInput={(params) => <TextField {...params} fullWidth/>}
-                />
-            </LocalizationProvider>
-            <LocalizationProvider dateAdapter={AdapterMoment}>
-                <DatePicker            
-                onChange={(newValue)=>{
-                    setManpowerData((prevState) => ({
-                        ...prevState,
-                        [`operationEndDate`]: newValue.toDate()  
-                    }))
-                }}
-                inputFormat="DD/MM/YYYY"
-                value={operationEndDate}
-                label="Operation End Date"
-                views={['year', 'month', 'day']}            
-                renderInput={(params) => <TextField {...params} fullWidth/>}
-                />
-            </LocalizationProvider>
+            {/*todo update*/}
+            {/*<LocalizationProvider dateAdapter={AdapterMoment} >*/}
+            {/*    <DatePicker            */}
+            {/*    onChange={(newValue)=>{*/}
+            {/*        setManpowerData((prevState) => ({*/}
+            {/*            ...prevState,*/}
+            {/*            [`operationStartDate`]: newValue.toDate()  */}
+            {/*        }))*/}
+            {/*    }}*/}
+            {/*    inputFormat="DD/MM/YYYY"*/}
+            {/*    value={operationStartDate}*/}
+            {/*    label="Operation Start Date"*/}
+            {/*    views={['year', 'month', 'day']}            */}
+            {/*    renderInput={(params) => <TextField {...params} fullWidth/>}*/}
+            {/*    />*/}
+            {/*</LocalizationProvider>*/}
+            {/*<LocalizationProvider dateAdapter={AdapterMoment}>*/}
+            {/*    <DatePicker            */}
+            {/*    onChange={(newValue)=>{*/}
+            {/*        setManpowerData((prevState) => ({*/}
+            {/*            ...prevState,*/}
+            {/*            [`operationEndDate`]: newValue.toDate()  */}
+            {/*        }))*/}
+            {/*    }}*/}
+            {/*    inputFormat="DD/MM/YYYY"*/}
+            {/*    value={operationEndDate}*/}
+            {/*    label="Operation End Date"*/}
+            {/*    views={['year', 'month', 'day']}            */}
+            {/*    renderInput={(params) => <TextField {...params} fullWidth/>}*/}
+            {/*    />*/}
+            {/*</LocalizationProvider>*/}
             <FormControl sx={{ m: 1, minWidth: 120 }}>
                 <InputLabel id="statusLabel">Status</InputLabel>
                 <Select labelId="statusLabel" id="status" name="status" value={status} label="Status" onChange={onChangeManpower}>

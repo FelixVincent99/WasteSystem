@@ -24,7 +24,7 @@ import { getAvailableTrucks } from '../../features/truck/truckSlice'
 
 function Schedule() {
     const location = useLocation().state
-    var locScheduleDate, locScheduleTime, locAreaId, locTruckId, locDriverId, locLoaderId, locStatus, locScheduleId, locLoaderString;    
+    var locScheduleDate, locScheduleTime, locAreaId, locTruckId, locDriverId, locLoaderId, locStatus, locScheduleId, locLoaderString;
     if(location.type === 'add'){
         locScheduleId = ''
         locScheduleDate= location.value.scheduleDate
@@ -38,7 +38,7 @@ function Schedule() {
     }else if(location.type === 'edit'){
         locScheduleId = location.value.scheduleItem.scheduleId
         locScheduleDate= location.value.scheduleItem.scheduleDate
-        locAreaId = location.areaId        
+        locAreaId = location.areaId
         const flagDate = new Date('July 1, 1999, ' + location.value.scheduleItem.scheduleTime.split(":")[0] + ":" + location.value.scheduleItem.scheduleTime.split(":")[1] + ":" + location.value.scheduleItem.scheduleTime.split(":")[2]);
         locScheduleTime = new Date().setTime(flagDate.getTime());
         locTruckId = location.value.scheduleItem.truckId
@@ -46,17 +46,17 @@ function Schedule() {
         locLoaderId = location.value.scheduleItem.loaderId.split(',').map(function(item) {return parseInt(item)})
         locLoaderString = location.value.scheduleItem.loaderId
         locStatus = location.value.scheduleItem.status
-    }    
-    const initialScheduleState = {        
+    }
+    const initialScheduleState = {
         scheduleDate: locScheduleDate,
-        scheduleTime: locScheduleTime,        
-        areaId: locAreaId,        
+        scheduleTime: locScheduleTime,
+        areaId: locAreaId,
         truckId: locTruckId,
         driverId: locDriverId,
         loaderId: locLoaderId,
         status: locStatus
     }
-        
+
     const [scheduleData, setScheduleData] = useState(initialScheduleState)
     const { scheduleDate, scheduleTime, areaId, truckId, driverId, loaderId, status} = scheduleData
 
@@ -77,12 +77,12 @@ function Schedule() {
             loaders.push(driversloaders[a])
         }
     }
-    
+
     const initFetch = useCallback(()=>{
         dispatch(getAvailableDriversLoaders({'scheduleDate': locScheduleDate, 'driverId': locDriverId, 'loaderId': locLoaderString}))
         dispatch(getAllAreas())
         dispatch(getAvailableTrucks({'scheduleDate': locScheduleDate, 'truckId': locTruckId}))
-        dispatch(reset())        
+        dispatch(reset())
     },[dispatch, locScheduleDate, locTruckId, locDriverId, locLoaderString])
 
     useEffect(()=>{
@@ -92,28 +92,27 @@ function Schedule() {
         if(isSuccess){
             toast.success("Schedule has been created")
             navigate('/schedule/list')
-        }        
+        }
         initFetch()
-    }, [isError, isSuccess, message, navigate, dispatch, initFetch]) 
+    }, [isError, isSuccess, message, navigate, dispatch, initFetch])
 
     const onChangeSchedule = (e) => {
         setScheduleData((prevState) => ({
             ...prevState,
             [e.target.name]: e.target.value,
-        })) 
+        }))
     }
     const saveSchedule = (e) => {
         e.preventDefault()
         var scheduleData = {
             scheduleDate,
             scheduleTime,
-            areaId,            
+            areaId,
             truckId,
             driverId,
             loaderId,
             status,
         }
-        console.log(scheduleData)
         if(location.type === 'edit'){
             scheduleData['id'] = locScheduleId
             dispatch(updateSchedule({scheduleData}))
@@ -125,11 +124,11 @@ function Schedule() {
     if(isLoading){
         return <Spinner />
     }
-    
+
   return (
-    <Box component="form"  onSubmit={saveSchedule}  noValidate sx={{ m: 1}}>        
+    <Box component="form"  onSubmit={saveSchedule}  noValidate sx={{ m: 1}}>
         <h2>Schedule</h2>
-        <Stack spacing={2}>            
+        <Stack spacing={2}>
             <LocalizationProvider dateAdapter={AdapterMoment} >
                 <DatePicker
                 disabled readOnly
@@ -142,7 +141,7 @@ function Schedule() {
                 inputFormat="DD/MM/YYYY"
                 value={scheduleDate}
                 label="Schedule Date"
-                views={['year', 'month', 'day']}            
+                views={['year', 'month', 'day']}
                 renderInput={(params) => <TextField {...params} fullWidth />}
                 />
             </LocalizationProvider>
@@ -150,6 +149,7 @@ function Schedule() {
                 <TimePicker
                     label="Schedule Time"
                     value={scheduleTime}
+                    ampm={false}
                     onChange={(newValue)=>{
                         setScheduleData((prevState) => ({
                             ...prevState,

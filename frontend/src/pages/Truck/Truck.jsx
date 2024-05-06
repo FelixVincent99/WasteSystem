@@ -22,7 +22,7 @@ import "./Truck.css";
 function Truck() {
   const params = useParams();
 
-  const initialTruckState = {        
+  const initialTruckState = {
     truckNo: "",
     operationStartDate: new Date(),
     operationEndDate: new Date(),
@@ -41,7 +41,7 @@ const {isError, isLoading, isSuccess, message} = useSelector(state => state.truc
 
   const getTruck = id => {
     truckService.get(id)
-      .then(response => {        
+      .then(response => {
         setTruckData(response);
       })
       .catch(e => {
@@ -76,7 +76,7 @@ const {isError, isLoading, isSuccess, message} = useSelector(state => state.truc
     setTruckData((prevState) => ({
         ...prevState,
         [e.target.name]: e.target.value,
-    })) 
+    }))
   }
   const saveUpdateTruck = (e) => {
     e.preventDefault()
@@ -87,40 +87,40 @@ const {isError, isLoading, isSuccess, message} = useSelector(state => state.truc
     return <Spinner />
   }
   return (
-    
+
     <Box component="form" onSubmit={saveUpdateTruck} noValidate sx={{ m: 1 }}>
         <Stack spacing={2}>
             <TextField id="truckNo" name="truckNo" value={truckData.truckNo} onChange={onChangeTruck} label="Truck No" variant="outlined" required fullWidth/>
-            <LocalizationProvider dateAdapter={AdapterMoment} >
-                <DatePicker            
-                onChange={(newValue)=>{
-                    setTruckData((prevState) => ({
-                        ...prevState,
-                        [`operationStartDate`]: newValue.toDate()  
-                    }))
-                }}
-                inputFormat="DD/MM/YYYY"
-                value={truckData.operationStartDate}
-                label="Operation Start Date"
-                views={['year', 'month', 'day']}            
-                renderInput={(params) => <TextField {...params} fullWidth/>}
-                />
-            </LocalizationProvider>
-            <LocalizationProvider dateAdapter={AdapterMoment}>
-                <DatePicker            
-                onChange={(newValue)=>{
-                    setTruckData((prevState) => ({
-                        ...prevState,
-                        [`operationEndDate`]: newValue.toDate()  
-                    }))
-                }}
-                inputFormat="DD/MM/YYYY"
-                value={truckData.operationEndDate}
-                label="Operation End Date"
-                views={['year', 'month', 'day']}            
-                renderInput={(params) => <TextField {...params} fullWidth/>}
-                />
-            </LocalizationProvider>
+            {/*<LocalizationProvider dateAdapter={AdapterMoment} >*/}
+            {/*    <DatePicker            */}
+            {/*    onChange={(newValue)=>{*/}
+            {/*        setTruckData((prevState) => ({*/}
+            {/*            ...prevState,*/}
+            {/*            [`operationStartDate`]: newValue.toDate()  */}
+            {/*        }))*/}
+            {/*    }}*/}
+            {/*    inputFormat="DD/MM/YYYY"*/}
+            {/*    value={truckData.operationStartDate}*/}
+            {/*    label="Operation Start Date"*/}
+            {/*    views={['year', 'month', 'day']}            */}
+            {/*    renderInput={(params) => <TextField {...params} fullWidth/>}*/}
+            {/*    />*/}
+            {/*</LocalizationProvider>*/}
+            {/*<LocalizationProvider dateAdapter={AdapterMoment}>*/}
+            {/*    <DatePicker            */}
+            {/*    onChange={(newValue)=>{*/}
+            {/*        setTruckData((prevState) => ({*/}
+            {/*            ...prevState,*/}
+            {/*            [`operationEndDate`]: newValue.toDate()  */}
+            {/*        }))*/}
+            {/*    }}*/}
+            {/*    inputFormat="DD/MM/YYYY"*/}
+            {/*    value={truckData.operationEndDate}*/}
+            {/*    label="Operation End Date"*/}
+            {/*    views={['year', 'month', 'day']}            */}
+            {/*    renderInput={(params) => <TextField {...params} fullWidth/>}*/}
+            {/*    />*/}
+            {/*</LocalizationProvider>*/}
             <FormControl sx={{ m: 1, minWidth: 120 }}>
                 <InputLabel id="truckTypeLabel">Truck Type</InputLabel>
                 <Select labelId="truckTypeLabel" id="truckType" name="truckType" value={truckData.truckType} label="Truck Type" onChange={onChangeTruck}>
